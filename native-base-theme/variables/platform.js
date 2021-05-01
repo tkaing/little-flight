@@ -143,7 +143,7 @@ export default {
   brandLight: '#a9a9a9',
 
   // Container
-  containerBgColor: '#fff',
+  containerBgColor: '#000',
 
   // Date Picker
   datePickerFlex: 1,
@@ -288,7 +288,7 @@ export default {
   tabFontSize: 15,
 
   // Text
-  textColor: '#000',
+  textColor: '#fff',
   inverseTextColor: '#fff',
   noteFontSize: 14,
   get defaultTextColor() {

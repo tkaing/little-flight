@@ -1,13 +1,20 @@
 import React from "react";
-import { Container, Text } from "native-base";
+import {Button, Container, Content, Icon, Text} from "native-base";
+import { FpvRoute } from "../app/app_route";
 
-const HomeScreen = ({
-
-}) => {
+const HomeScreen = ({ navigation }) => {
 
     return (
         <Container>
-            <Text>Welcome to HomeScreen !</Text>
+            <Content style={{ flexDirection: 'column' }}
+                     padder
+                     contentContainerStyle={{ flex: 1, justifyContent: 'center', alignSelf: 'center' }}>
+                <Button block success rounded iconLeft
+                        onPress={ () => navigation.navigate(FpvRoute.name) }>
+                    <Icon name='videocam-outline' />
+                    <Text>Go to FPV !</Text>
+                </Button>
+            </Content>
         </Container>
     );
 };

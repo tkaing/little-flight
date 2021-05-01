@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, DarkTheme } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { StyleProvider } from "native-base";
 import { useFonts } from "expo-font";
@@ -7,7 +7,10 @@ import { Ionicons } from "@expo/vector-icons";
 import getTheme from './native-base-theme/components';
 import Platform from './native-base-theme/variables/platform';
 import AppLoading from "expo-app-loading/src/AppLoading";
-import AppScreen from "./src/application/app_screen";
+import { FpvRoute, AuthRoute, HomeRoute } from "./src/app/app_route";
+import FpvScreen from "./src/screens/FpvScreen";
+import AuthScreen from "./src/screens/AuthScreen";
+import HomeScreen from "./src/screens/HomeScreen";
 
 const Stack = createStackNavigator();
 
@@ -24,12 +27,22 @@ const App = () => {
 
     return (
         <StyleProvider style={ getTheme(Platform) }>
-            <NavigationContainer>
+            <NavigationContainer theme={ DarkTheme }>
                 <Stack.Navigator>
                     <Stack.Screen
-                        name={ AppScreen.Home.name }
-                        component={ AppScreen.Home.component }
-                        options={{ title: 'My Home' }}
+                        name={ AuthRoute.name }
+                        options={ AuthRoute.options }
+                        component={ AuthScreen }
+                    />
+                    <Stack.Screen
+                        name={ HomeRoute.name }
+                        options={ HomeRoute.options }
+                        component={ HomeScreen }
+                    />
+                    <Stack.Screen
+                        name={ FpvRoute.name }
+                        options={ FpvRoute.options }
+                        component={ FpvScreen }
                     />
                 </Stack.Navigator>
             </NavigationContainer>
