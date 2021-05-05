@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { NavigationContainer, DarkTheme } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { StyleProvider } from "native-base";
@@ -11,6 +11,8 @@ import { FpvRoute, AuthRoute, HomeRoute } from "./src/app/app_route";
 import FpvScreen from "./src/screens/FpvScreen";
 import AuthScreen from "./src/screens/AuthScreen";
 import HomeScreen from "./src/screens/HomeScreen";
+import * as firebase from "firebase";
+import * as api_firebase from "./src/api/api_firebase";
 
 const Stack = createStackNavigator();
 
@@ -21,6 +23,9 @@ const App = () => {
         Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf'),
         ...Ionicons.font
     });
+
+    if (!firebase.apps.length)
+        firebase.initializeApp(api_firebase.config);
 
     if (!fontsLoaded)
         return <AppLoading />;
