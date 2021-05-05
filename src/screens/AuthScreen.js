@@ -146,7 +146,7 @@ const SignUp = ({ setLoading, setSignIn, onPostSignUp }) => {
             initialValues={{ email: "", password: "" }}
             onSubmit={ (values => Api.signUp(values)) }>
             { ({ errors, touched, handleBlur, handleChange, handleSubmit, values }) => (
-                <View>
+                <View style={{ width: 270 }}>
                     <Form>
                         <Item error={ (touched.email && errors.email) !== undefined }>
                             <Icon active name='person-circle-outline' />
@@ -159,7 +159,6 @@ const SignUp = ({ setLoading, setSignIn, onPostSignUp }) => {
                                 <ErrorMessage>{ errors.email }</ErrorMessage>
                             }
                         </Item>
-
                         <Item error={ (touched.password && errors.password) !== undefined } style={{ marginTop: 10 }}>
                             <Icon active name='key-outline' />
                             <Input placeholder='Password'
