@@ -1,40 +1,23 @@
-import React, {useState} from "react";
-import {Button, Container, Content, Icon, Form, Input, Item, Text, View} from "native-base";
-import HyperLink from "../components/HyperLink";
-import { HomeRoute } from '../app/app_route';
-import * as firebase from 'firebase';
-import * as api_firebase from './../api/api_firebase';
-import ErrorMessage from "../components/ErrorMessage";
-import { Formik } from 'formik';
-import * as Yup from 'yup';
+import React, { useState } from "react";
 import axios from "axios";
-import * as api_default from './../api/api_default';
+import * as Yup from 'yup';
+import HyperLink from "../components/HyperLink";
+import { Formik } from 'formik';
+import ErrorMessage from "../components/ErrorMessage";
+import { HomeRoute } from '../app/app_route';
+import GoogleConnect from "../components/GoogleConnect";
 import AnimatedLoader from "react-native-animated-loader";
-import * as Google from 'expo-auth-session/providers/google';
-import Expo from 'expo';
+import * as api_default from './../api/api_default';
+import { Button, Container, Content, Icon, Form, Input, Item, Text, View } from "native-base";
+import TwitchConnect from "../components/TwitchConnect";
 
 const AuthScreen = ({ navigation }) => {
 
+    const [loading, setLoading] = useState(false);
     const [isSignIn, setSignIn] = useState(true);
 
-    const [request, response, promptAsync] = Google.useAuthRequest({
-        expoClientId: '817789782056-2i4ju976pjcs7nl9qur39ov6anl6leum.apps.googleusercontent.com',
-        androidClientId: '817789782056-50c858j1vr440iaoegqksn3442ql6ljr.apps.googleusercontent.com',
-        //redirectUri: "com.tiryboy.littleflight:/oauthredirect"
-    });
-
-    React.useEffect(() => {
-        console.log(request);
-    }, [request, response]);
-
     const Handling = {
-        postSign: () => navigation.navigate(HomeRoute.name),
-        signInWithGoogleAsync: () => {
-            console.log(request);
-            promptAsync()
-                .then((result) => console.log(result))
-                .catch((failure) => console.log(failure));
-        }
+        postSign: () => navigation.navigate(HomeRoute.name)
     };
 
     return (
@@ -43,21 +26,32 @@ const AuthScreen = ({ navigation }) => {
                      padder
                      contentContainerStyle={{ flex: 1, justifyContent: 'center', alignSelf: 'center' }}>
                 { isSignIn &&
-                    <SignIn setSignIn={ setSignIn }
-                            onPostSignIn={ Handling.postSign }
-                            onGooglePress={ Handling.signInWithGoogleAsync }
-                    />
+                    <SignIn loading={ loading }
+                            setSignIn={ setSignIn }
+                            setLoading={ setLoading }
+                            onPostSignIn={ Handling.postSign } />
                 }
                 { !isSignIn &&
-                    <SignUp setSignIn={ setSignIn }
+                    <SignUp loading={ loading }
+                            setSignIn={ setSignIn }
+                            setLoading={ setLoading }
                             onPostSignUp={ Handling.postSign } />
+                }
+                { loading &&
+                    <AnimatedLoader
+                        visible={ true }
+                        overlayColor="rgba(0,0,0,0.7)"
+                        source={ require("./../../assets/lottie/39655-loader-preloader-animation.json") }
+                        animationStyle={{ height: 250 }}
+                        speed={ 1 }
+                    />
                 }
             </Content>
         </Container>
     );
 };
 
-const SignIn = ({ setSignIn, onPostSignIn, onGooglePress }) => {
+const SignIn = ({ setLoading, setSignIn, onPostSignIn }) => {
 
     return (
         <Formik
@@ -99,22 +93,15 @@ const SignIn = ({ setSignIn, onPostSignIn, onGooglePress }) => {
 
                     <View style={{ marginTop: 50, alignItems: 'center' }}>
 
-                        <Button block light rounded iconLeft
+                        <Button block info rounded iconLeft
                                 onPress={ handleSubmit }>
                             <Icon name='log-in-outline' />
                             <Text>Login</Text>
                         </Button>
 
-                        <Button block danger rounded bordered iconLeft style={{ marginTop: 10 }}
-                                onPress={ () => onGooglePress() }>
-                            <Icon name='logo-google' />
-                            <Text>Log in with Google</Text>
-                        </Button>
+                        <GoogleConnect style={{ marginTop: 10 }} setLoading={ setLoading } />
 
-                        <Button block info rounded bordered iconLeft style={{ marginTop: 10 }}>
-                            <Icon name='logo-facebook' />
-                            <Text>Log in with Facebook</Text>
-                        </Button>
+                        <TwitchConnect style={{ marginTop: 10 }} setLoading={ setLoading } />
 
                         <Text style={{ marginTop: 30 }}>
                             Vous n'avez pas de compte ?
@@ -128,9 +115,7 @@ const SignIn = ({ setSignIn, onPostSignIn, onGooglePress }) => {
     );
 };
 
-const SignUp = ({ setSignIn, onPostSignUp }) => {
-
-    const [loading, setLoading] = useState(false);
+const SignUp = ({ setLoading, setSignIn, onPostSignUp }) => {
 
     const Api = {
         signUp: ({ email, password }) => {
@@ -149,21 +134,6 @@ const SignUp = ({ setSignIn, onPostSignUp }) => {
                         const { message, errors } = response.data;
                         console.log(message, errors);
                     }
-                })
-                .finally(() => {
-                    setLoading(false);
-                });
-        },
-        signInWithGoogle: () => {
-
-        },
-        signInWithFirebase: (token) => {
-            firebase.auth().signInWithCustomToken(token)
-                .then(({ user }) => {
-
-                })
-                .catch(({ code, message }) => {
-                    console.log(code, message);
                 })
                 .finally(() => {
                     setLoading(false);
@@ -205,24 +175,19 @@ const SignUp = ({ setSignIn, onPostSignUp }) => {
                     </Form>
 
                     <View style={{ marginTop: 50, alignItems: 'center' }}>
-                        <Button block light rounded iconLeft
+
+                        <Button block info rounded iconLeft
                                 onPress={ handleSubmit }>
                             <Icon name='log-in-outline' />
                             <Text>Sign Up</Text>
                         </Button>
+
                         <Text style={{ marginTop: 30 }}>
                             Vous avez déjà un compte ?
                         </Text>
+
                         <HyperLink onPress={ () => { setSignIn(true) } }>Connectez-vous !</HyperLink>
                     </View>
-
-                    {/*<AnimatedLoader
-                        visible={ loading }
-                        overlayColor="rgba(0,0,0,0.7)"
-                        source={ require("./../../assets/lottie/39655-loader-preloader-animation.json") }
-                        animationStyle={{ height: 250 }}
-                        speed={ 1 }
-                    />*/}
                 </View>
             )}
         </Formik>

@@ -4,7 +4,7 @@
     "slug": "LittleFlight",
     "version": "1.0.0",
     "scheme": "littleflight",
-    "orientation": "portrait",
+    "orientation": "default",
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
