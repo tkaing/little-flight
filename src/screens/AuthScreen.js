@@ -6,10 +6,10 @@ import { Formik } from 'formik';
 import ErrorMessage from "../components/ErrorMessage";
 import { HomeRoute } from '../app/app_route';
 import GoogleConnect from "../components/GoogleConnect";
+import TwitchConnect from "../components/TwitchConnect";
 import AnimatedLoader from "react-native-animated-loader";
 import * as api_default from './../api/api_default';
 import { Button, Container, Content, Icon, Form, Input, Item, Text, View } from "native-base";
-import TwitchConnect from "../components/TwitchConnect";
 
 const AuthScreen = ({ navigation }) => {
 
@@ -64,7 +64,7 @@ const SignIn = ({ setLoading, setSignIn, onPostSignIn }) => {
 
             }) }>
             { ({ errors, touched, handleBlur, handleChange, handleSubmit, values }) => (
-                <View>
+                <View style={{ width: 270 }}>
                     <Form>
                         <Item error={ (touched.email && errors.email) !== undefined }>
                             <Icon active name='person-circle-outline' />
@@ -77,7 +77,6 @@ const SignIn = ({ setLoading, setSignIn, onPostSignIn }) => {
                                 <ErrorMessage>{ errors.email }</ErrorMessage>
                             }
                         </Item>
-
                         <Item error={ (touched.password && errors.password) !== undefined } style={{ marginTop: 10 }}>
                             <Icon active name='key-outline' />
                             <Input placeholder='Password'
