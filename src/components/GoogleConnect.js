@@ -10,6 +10,11 @@ const GoogleConnect = ({ style, setLoading }) => {
         androidClientId: '817789782056-2i4ju976pjcs7nl9qur39ov6anl6leum.apps.googleusercontent.com',
     });
 
+    React.useEffect(() => {
+        console.log("GOOGLE REQUEST", request);
+        console.log("GOOGLE RESPONSE", response);
+    }, [request]);
+
     const Handling = {
         signInAsync: () => {
             setLoading(true);

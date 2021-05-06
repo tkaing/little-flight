@@ -89,7 +89,6 @@ const SignIn = ({ setLoading, setSignIn, onPostSignIn }) => {
                             }
                         </Item>
                     </Form>
-
                     <View style={{ marginTop: 50, alignItems: 'center' }}>
 
                         <Button block info rounded iconLeft
