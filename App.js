@@ -85,6 +85,10 @@ const App = () => {
         }
     };
 
+    /*useEffect(async () => {
+        await SecureStore.deleteItemAsync(api_secure_store.TOKEN);
+    }, []);*/
+
     useEffect(() => {
         Handling.responseCallback();
     }, [response]);

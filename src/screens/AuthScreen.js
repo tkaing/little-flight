@@ -38,6 +38,11 @@ const AuthScreen = (
     }, []);
 
     useEffect(() => {
+        if (currentUser)
+            Handling.redirectToHome();
+    }, [currentUser]);
+
+    useEffect(() => {
         return navigation.addListener('focus', () => {
             if (currentUser)
                 Handling.redirectToHome();
@@ -184,8 +189,21 @@ const SignUp = (
                 const apiToken = apiResponse.data.jwt;
                 await SecureStore.setItemAsync(api_secure_store.TOKEN, apiToken);
                 setLoading(false);
-                //loadCurrentUser();
+                loadCurrentUser();
             } catch (failure) {
+                if (failure.response) {
+                    // client received an error response (5xx, 4xx)
+                    const apiResponse = failure.response;
+                    Handling.showToast(apiResponse.data);
+                } else if (failure.request) {
+                    // client never received a response, or request never left
+                    const apiRequest = failure.request;
+                    Handling.showToast('Sign Up failed');
+                    console.log(apiRequest);
+                } else {
+                    // anything else
+                    Handling.showToast('Sign Up failed');
+                }
                 setLoading(false);
             }
         }
