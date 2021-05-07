@@ -3,26 +3,26 @@ import { Button, Icon, Text } from "native-base";
 import * as Facebook from 'expo-auth-session/providers/facebook';
 import { ResponseType } from 'expo-auth-session';
 
-const TwitchConnect = ({ style, setLoading }) => {
+const FacebookConnect = ({ style, setLoading }) => {
 
     const [request, response, promptAsync] = Facebook.useAuthRequest({
         clientId: '1875589772595925',
         iosClientId: '1875589772595925',
         androidClientId: '1875589772595925',
-        responseType: ResponseType.Code,
+        responseType: ResponseType.Code
     });
 
     React.useEffect(() => {
-        console.log("FB REQUEST", request);
-        console.log("FB RESPONSE", response);
+        /*console.log("FB REQUEST", request);
+        console.log("FB RESPONSE", response);*/
     }, [request, response]);
 
     const Handling = {
         signInAsync: () => {
             setLoading(true);
             promptAsync()
-                .then((result) => console.log(result))
-                .catch((failure) => console.log(failure))
+                .then((result) => console.log("result"))
+                .catch((failure) => console.log("failure"))
                 .finally(() => setLoading(false));
         }
     };
@@ -37,4 +37,4 @@ const TwitchConnect = ({ style, setLoading }) => {
 };
 
 
-export default TwitchConnect;
+export default FacebookConnect;
