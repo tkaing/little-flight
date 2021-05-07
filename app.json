@@ -3,7 +3,8 @@
     "name": "LittleFlight",
     "slug": "LittleFlight",
     "version": "1.0.0",
-    "orientation": "portrait",
+    "scheme": "littleflight",
+    "orientation": "default",
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
@@ -17,13 +18,15 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.tiryboy.littleflight"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.tiryboy.littleflight"
     },
     "web": {
       "favicon": "./assets/favicon.png"
