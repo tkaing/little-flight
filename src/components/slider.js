@@ -92,7 +92,7 @@ export class MyCarousel extends Component {
 
 
     render () {
-        const example1 = this.mainExample(1, 'Default layout | Loop | Autoplay | Parallax | Scale | Opacity | Pagination with tappable dots');
+        const example1 = this.mainExample(1, 'You can connect yout drone now.');
 
         return (
                 <View style={styles.container}>

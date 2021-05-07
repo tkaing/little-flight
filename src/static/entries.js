@@ -1,33 +1,18 @@
 export const ENTRIES1 = [
     {
-        title: 'Beautiful and dramatic Antelope Canyon',
-        subtitle: 'Lorem ipsum dolor sit amet et nuncat mergitur',
-        illustration: 'https://i.imgur.com/UYiroysl.jpg'
+        title: 'Remote controlling Drone',
+        subtitle: 'You can controlling a drone, with the FPV on the app through the buttons',
+        illustration: 'https://cdn.pixabay.com/photo/2016/11/29/02/07/drone-1866742_1280.jpg'
     },
     {
-        title: 'Earlier this morning, NYC',
+        title: 'Live feature',
+        subtitle: 'You can share your experience with social media',
+        illustration: 'https://image.shutterstock.com/image-vector/template-colorful-multimedia-frame-mockup-600w-1642324960.jpg'
+    },
+    {
+        title: 'Controlling drone with PS4 controller',
         subtitle: 'Lorem ipsum dolor sit amet',
-        illustration: 'https://i.imgur.com/UPrs1EWl.jpg'
-    },
-    {
-        title: 'White Pocket Sunset',
-        subtitle: 'Lorem ipsum dolor sit amet et nuncat ',
-        illustration: 'https://i.imgur.com/MABUbpDl.jpg'
-    },
-    {
-        title: 'Acrocorinth, Greece',
-        subtitle: 'Lorem ipsum dolor sit amet et nuncat mergitur',
-        illustration: 'https://i.imgur.com/KZsmUi2l.jpg'
-    },
-    {
-        title: 'The lone tree, majestic landscape of New Zealand',
-        subtitle: 'Lorem ipsum dolor sit amet',
-        illustration: 'https://i.imgur.com/2nCt3Sbl.jpg'
-    },
-    {
-        title: 'Middle Earth, Germany',
-        subtitle: 'Lorem ipsum dolor sit amet',
-        illustration: 'https://i.imgur.com/lceHsT6l.jpg'
+        illustration: 'https://cdn.pixabay.com/photo/2017/08/10/07/29/sony-2619483_1280.jpg'
     }
 ];
 
