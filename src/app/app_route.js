@@ -24,6 +24,7 @@ const HomeRoute = {
     name: 'home',
     options: {
         title: 'My Home',
+        headerShown: false,
         cardStyleInterpolator: forFade
     }
 };

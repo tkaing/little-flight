@@ -13,6 +13,7 @@ import { Button, Container, Content, Icon, Form, Input, Item, Text, View, Toast 
 
 import * as api_default from './../api/api_default';
 import * as api_secure_store from "../api/api_secure_store";
+import {lockAsync, OrientationLock} from "expo-screen-orientation";
 
 const AuthScreen = (
     {
@@ -35,19 +36,21 @@ const AuthScreen = (
     useEffect(() => {
         if (currentUser)
             Handling.redirectToHome();
+        lockAsync(OrientationLock.PORTRAIT);
     }, []);
-
-    useEffect(() => {
-        if (currentUser)
-            Handling.redirectToHome();
-    }, [currentUser]);
 
     useEffect(() => {
         return navigation.addListener('focus', () => {
             if (currentUser)
                 Handling.redirectToHome();
+            lockAsync(OrientationLock.PORTRAIT);
         });
     }, [navigation]);
+
+    useEffect(() => {
+        if (currentUser)
+            Handling.redirectToHome();
+    }, [currentUser]);
 
     return (
         <Container>
