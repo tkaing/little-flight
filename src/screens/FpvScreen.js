@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import AxisPad from 'react-native-axis-pad';
 import { TouchableHighlight } from 'react-native';
 import { OrientationLock, lockAsync } from "expo-screen-orientation";
-import { Container, Icon, Text, View } from "native-base";
+import {Button, Container, Icon, Text, View} from "native-base";
 
 const FpvScreen = (
     { navigation }
@@ -66,14 +66,19 @@ const FpvScreen = (
 
                     </View>
 
-                    <View style={{ ...styles.gamepadLine, flex: 1,
-                        backgroundColor: '#CCCCFF' }}>
+                    <View style={{ ...styles.gamepadLine, flex: 1 }}>
 
-                        <View style={{ ...styles.centeredItem }}>
-
+                        <View style={{ ...styles.actionWrapper, flex: 2 }}>
+                            <Button style={{ ...styles.actionButton }}
+                                    onPress={ () => {} } block primary rounded>
+                                <Text>Start / Stop</Text>
+                            </Button>
                         </View>
-                        <View style={{ ...styles.centeredItem }}>
-
+                        <View style={{ ...styles.actionWrapper, flex: 1 }}>
+                            <Button style={{ ...styles.actionButton }}
+                                    onPress={ () => {} } block info rounded>
+                                <Icon name="information-outline" />
+                            </Button>
                         </View>
 
                     </View>
@@ -188,6 +193,12 @@ const styles = {
     },
     directionalIcon: {
         fontSize: 15
+    },
+    actionButton: {
+        marginHorizontal: 5
+    },
+    actionWrapper: {
+        justifyContent: 'center'
     }
 };
 
