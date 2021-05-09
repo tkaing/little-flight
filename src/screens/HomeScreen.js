@@ -1,10 +1,10 @@
 import React, { cloneElement, useEffect, useState } from "react";
-import { StyleSheet } from 'react-native'
+
 import { lockAsync, OrientationLock } from "expo-screen-orientation";
 import { Button, Container, Icon, Text, Footer, FooterTab } from "native-base";
 
 import * as app_home from '../app/screen/app_home';
-import { capitalize } from "../app/utils/app_text";
+import { capitalize } from "../app/utils/app_string";
 
 const HomeScreen = ({ navigation }) => {
 
