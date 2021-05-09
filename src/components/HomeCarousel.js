@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, ScrollView, StatusBar } from 'react-native'
+import SliderEntry from './HomeCarousel/SliderEntry';
+import styles, { colors } from './HomeCarousel/slider.style';
+import { ENTRIES1 } from './HomeCarousel/entries';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
-import { ENTRIES1, ENTRIES2 } from '../static/entries';
-import styles, { colors } from '../style/slider.style';
-import SliderEntry from './SliderEntry';
-import { sliderWidth, itemWidth } from '../style/SliderEntry.style';
-
+import { sliderWidth, itemWidth } from './HomeCarousel/SliderEntry.style';
+import { View, Text, ScrollView, StatusBar } from 'react-native'
 
 const SLIDER_1_FIRST_ITEM = 1;
 
-export class MyCarousel extends Component {
+export class HomeCarousel extends Component {
 
     constructor (props) {
         super(props);
@@ -37,6 +36,7 @@ export class MyCarousel extends Component {
     }
 
     _renderItemWithParallax ({item, index}, parallaxProps) {
+
         return (
             <SliderEntry
               data={item}
@@ -48,6 +48,7 @@ export class MyCarousel extends Component {
     }
 
     mainExample (number, title) {
+
         const { slider1ActiveSlide } = this.state;
 
         return (
@@ -92,6 +93,7 @@ export class MyCarousel extends Component {
 
 
     render () {
+
         const example1 = this.mainExample(1, 'You can connect yout drone now.');
 
         return (
@@ -114,4 +116,4 @@ export class MyCarousel extends Component {
     }
 }
 
-export default MyCarousel
+export default HomeCarousel;

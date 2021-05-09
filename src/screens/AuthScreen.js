@@ -1,64 +1,69 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
+
 import axios from "axios";
 import * as Yup from 'yup';
-import HyperLink from "../components/HyperLink";
 import { Formik } from 'formik';
-import MainLoader from "../components/MainLoader";
-import ErrorMessage from "../components/ErrorMessage";
-import { HomeRoute } from '../app/app_route';
-import GoogleConnect from "../components/GoogleConnect";
-import FacebookConnect from "../components/FacebookConnect";
 import * as SecureStore from "expo-secure-store";
+import { lockAsync, OrientationLock } from "expo-screen-orientation";
 import { Button, Container, Content, Icon, Form, Input, Item, Text, View, Toast } from "native-base";
 
+import HyperLink from "../components/core/HyperLink";
+import MainLoader from "../components/core/MainLoader";
+import ErrorMessage from "../components/core/ErrorMessage";
+import GoogleConnect from "../components/GoogleConnect";
+import FacebookConnect from "../components/FacebookConnect";
+
+import { HomeRoute } from '../app/app_route';
 import * as api_default from './../api/api_default';
 import * as api_secure_store from "../api/api_secure_store";
 
 const AuthScreen = (
     {
-        navigation,
-        googlePromptAsync,
         loading,
         setLoading,
+        navigation,
         currentUser,
-        loadCurrentUser
+        loadCurrentUser,
+        googlePromptAsync
     }
 ) => {
 
     const [isSignIn, setSignIn] = useState(true);
 
-    const Handling = {
-        redirectToHome: () => navigation.navigate(HomeRoute.name),
-        signInWithGoogle: () => googlePromptAsync()
+    const on = {
+        RedirectToHome: () => navigation.navigate(HomeRoute.name),
+        SignInWithGoogle: () => googlePromptAsync()
     };
 
     useEffect(() => {
         if (currentUser)
-            Handling.redirectToHome();
+            on.RedirectToHome();
+        lockAsync(OrientationLock.PORTRAIT);
     }, []);
-
-    useEffect(() => {
-        if (currentUser)
-            Handling.redirectToHome();
-    }, [currentUser]);
 
     useEffect(() => {
         return navigation.addListener('focus', () => {
             if (currentUser)
-                Handling.redirectToHome();
+                on.RedirectToHome();
+            lockAsync(OrientationLock.PORTRAIT);
         });
     }, [navigation]);
+
+    useEffect(() => {
+        if (currentUser)
+            on.RedirectToHome();
+    }, [currentUser]);
 
     return (
         <Container>
             <Content style={{ flexDirection: 'column' }}
                      padder
-                     contentContainerStyle={{ flex: 1, justifyContent: 'center', alignSelf: 'center' }}>
+                     contentContainerStyle={{ ...styles.content }}>
                 { isSignIn &&
                     <SignIn setSignIn={ setSignIn }
                             setLoading={ setLoading }
                             loadCurrentUser={ loadCurrentUser }
-                            signInWithGoogle={ Handling.signInWithGoogle } />
+                            signInWithGoogle={ on.SignInWithGoogle } />
                 }
                 { !isSignIn &&
                     <SignUp setSignIn={ setSignIn }
@@ -72,18 +77,11 @@ const AuthScreen = (
 };
 
 const SignIn = (
-    { setLoading, setSignIn, loadCurrentUser, signInWithGoogle }
+    { setLoading, setSignIn, signInWithGoogle, loadCurrentUser }
 ) => {
 
-    const Handling = {
-        showToast: (message) => {
-            Toast.show({
-                text: message,
-                type: 'danger',
-                duration: 10000
-            });
-        },
-        signIn: async ({ email, password }) => {
+    const on = {
+        SignIn: async ({ email, password }) => {
             try {
                 setLoading(true);
                 const apiResponse = await axios.post(api_default.person.sign_in(), {
@@ -98,15 +96,15 @@ const SignIn = (
                 if (failure.response) {
                     // client received an error response (5xx, 4xx)
                     const apiResponse = failure.response;
-                    Handling.showToast(apiResponse.data);
+                    _showToast(apiResponse.data);
                 } else if (failure.request) {
                     // client never received a response, or request never left
                     const apiRequest = failure.request;
-                    Handling.showToast('Login failed');
+                    _showToast('Login failed');
                     console.log(apiRequest);
                 } else {
                     // anything else
-                    Handling.showToast('Login failed');
+                    _showToast('Login failed');
                 }
                 setLoading(false);
             }
@@ -115,58 +113,40 @@ const SignIn = (
 
     return (
         <Formik
-            validationSchema={ SignInSchema }
-            initialValues={{
-                email: "",
-                password: ""
-            }}
-            onSubmit={ (values => Handling.signIn(values)) }>
-            { ({ errors, touched, handleBlur, handleChange, handleSubmit, values }) => (
-                <View style={{ width: 270 }}>
+            onSubmit={ (values => on.SignIn(values)) }
+            initialValues={{ email: "", password: "" }}
+            validationSchema={ schema.SignIn }>
+
+            { ({ errors, touched, values, handleBlur, handleChange, handleSubmit }) => (
+                <View style={{ ...styles.formWrapper }}>
                     <Form>
-                        <Item error={ (touched.email && errors.email) !== undefined }>
+                        <Item error={ _isNotValid(touched, errors, 'email') }>
                             <Icon active name='at-outline' />
                             <Input placeholder='Email'
                                    keyboardType='email-address'
                                    value={ values.email }
                                    onBlur={ handleBlur('email') }
                                    onChangeText={ handleChange('email') } />
-                            { touched.email && errors.email &&
-                                <ErrorMessage>{ errors.email }</ErrorMessage>
-                            }
+                            { _showDangerText(touched, errors, 'email') }
                         </Item>
-                        <Item error={ (touched.password && errors.password) !== undefined } style={{ marginTop: 10 }}>
+                        <Item error={ _isNotValid(touched, errors, 'password') } style={{ ...styles.formItem }}>
                             <Icon active name='key-outline' />
                             <Input placeholder='Password'
                                    secureTextEntry
                                    value={ values.password }
                                    onBlur={ handleBlur('password') }
                                    onChangeText={ handleChange('password') } />
-                            { touched.password && errors.password &&
-                                <ErrorMessage>{ errors.password }</ErrorMessage>
-                            }
+                            { _showDangerText(touched, errors, 'password') }
                         </Item>
                     </Form>
-                    <View style={{ marginTop: 50, alignItems: 'center' }}>
-
-                        <Button block info rounded iconLeft
-                                onPress={ handleSubmit }>
-                            <Icon name='log-in-outline' />
-                            <Text>Login</Text>
-                        </Button>
-
-                        <GoogleConnect style={{ marginTop: 10 }}
-                                       setLoading={ setLoading }
-                                       signInWithGoogle={ signInWithGoogle } />
-
-                        <FacebookConnect style={{ marginTop: 10 }}
-                                         setLoading={ setLoading } />
-
-                        <Text style={{ marginTop: 30 }}>
-                            Vous n'avez pas de compte ?
-                        </Text>
-                        <HyperLink onPress={ () => { setSignIn(false) } }>Créez-en un</HyperLink>
-                    </View>
+                    <Footer
+                        text="Vous n'avez pas de compte ?"
+                        link="Créez un compte !"
+                        button={{ icon: 'log-in-outline', text: 'Login' }}
+                        setLoading={ setLoading }
+                        onLinkPress={ () => setSignIn(false) }
+                        handleSubmit={ handleSubmit }
+                        googleConnect={{ signIn: signInWithGoogle }} />
                 </View>
             )}
         </Formik>
@@ -177,8 +157,8 @@ const SignUp = (
     { setLoading, setSignIn, loadCurrentUser }
 ) => {
 
-    const Handling = {
-        signUp: async ({ email, password, username }) => {
+    const on = {
+        SignUp: async ({ email, password, username }) => {
             try {
                 setLoading(true);
                 const apiResponse = await axios.post(api_default.person.sign_up(), {
@@ -194,15 +174,15 @@ const SignUp = (
                 if (failure.response) {
                     // client received an error response (5xx, 4xx)
                     const apiResponse = failure.response;
-                    Handling.showToast(apiResponse.data);
+                    _showToast(apiResponse.data);
                 } else if (failure.request) {
                     // client never received a response, or request never left
                     const apiRequest = failure.request;
-                    Handling.showToast('Sign Up failed');
+                    _showToast('Sign Up failed');
                     console.log(apiRequest);
                 } else {
                     // anything else
-                    Handling.showToast('Sign Up failed');
+                    _showToast('Sign Up failed');
                 }
                 setLoading(false);
             }
@@ -211,75 +191,129 @@ const SignUp = (
 
     return (
         <Formik
-            validationSchema={ SignUpSchema }
+            onSubmit={ (values => on.SignUp(values)) }
             initialValues={{ email: "", password: "", username: "" }}
-            onSubmit={ (values => Handling.signUp(values)) }>
-            { ({ errors, touched, handleBlur, handleChange, handleSubmit, values }) => (
-                <View style={{ width: 270 }}>
+            validationSchema={ schema.SignUp }>
+
+            { ({ errors, touched, values, handleBlur, handleChange, handleSubmit }) => (
+                <View style={{ ...styles.formWrapper }}>
                     <Form>
-                        <Item error={ (touched.email && errors.email) !== undefined }>
+                        <Item error={ _isNotValid(touched, errors, 'email') }>
                             <Icon active name='at-outline' />
                             <Input placeholder='Email'
                                    keyboardType='email-address'
                                    value={ values.email }
                                    onBlur={ handleBlur('email') }
                                    onChangeText={ handleChange('email') } />
-                            { touched.email && errors.email &&
-                                <ErrorMessage>{ errors.email }</ErrorMessage>
-                            }
+                            { _showDangerText(touched, errors, 'email') }
                         </Item>
-                        <Item error={ (touched.password && errors.password) !== undefined } style={{ marginTop: 10 }}>
+                        <Item error={ _isNotValid(touched, errors, 'password') } style={{ ...styles.formItem }}>
                             <Icon active name='key-outline' />
-                            <Input placeholder='Password'
-                                   secureTextEntry
-                                   value={ values.password }
+                            <Input value={ values.password }
                                    onBlur={ handleBlur('password') }
-                                   onChangeText={ handleChange('password') } />
-                            { touched.password && errors.password &&
-                                <ErrorMessage>{ errors.password }</ErrorMessage>
-                            }
+                                   placeholder='Password'
+                                   onChangeText={ handleChange('password') }
+                                   secureTextEntry />
+                            { _showDangerText(touched, errors, 'password') }
                         </Item>
-                        <Item error={ (touched.username && errors.username) !== undefined } style={{ marginTop: 10 }}>
+                        <Item error={ _isNotValid(touched, errors, 'username') } style={{ ...styles.formItem }}>
                             <Icon active name='language-outline' />
-                            <Input placeholder='Pseudonym'
-                                   value={ values.username }
+                            <Input value={ values.username }
                                    onBlur={ handleBlur('username') }
+                                   placeholder='Pseudonym'
                                    onChangeText={ handleChange('username') } />
-                            { touched.username && errors.username &&
-                                <ErrorMessage>{ errors.username }</ErrorMessage>
-                            }
+                            { _showDangerText(touched, errors, 'username') }
                         </Item>
                     </Form>
-
-                    <View style={{ marginTop: 50, alignItems: 'center' }}>
-
-                        <Button block info rounded iconLeft
-                                onPress={ handleSubmit }>
-                            <Icon name='log-in-outline' />
-                            <Text>Sign Up</Text>
-                        </Button>
-
-                        <Text style={{ marginTop: 30 }}>
-                            Vous avez déjà un compte ?
-                        </Text>
-
-                        <HyperLink onPress={ () => { setSignIn(true) } }>Connectez-vous !</HyperLink>
-                    </View>
+                    <Footer
+                        text="Vous avez déjà un compte ?"
+                        link="Connectez-vous !"
+                        button={{ icon: 'log-in-outline', text: 'Sign Up' }}
+                        setLoading={ setLoading }
+                        onLinkPress={ () => setSignIn(true) }
+                        handleSubmit={ handleSubmit } />
                 </View>
             )}
         </Formik>
     );
 };
 
-const SignInSchema = Yup.object().shape({
-    email: Yup.string().email('Invalid email').required('Required'),
-    password: Yup.string().min(4, 'Too Short!').required('Required'),
-});
+const Footer = (
+    { text, link, button, setSignIn, setLoading,
+        handleSubmit, googleConnect, facebookConnect }
+) => {
 
-const SignUpSchema = Yup.object().shape({
-    email: Yup.string().email('Invalid email').required('Required'),
-    password: Yup.string().min(4, 'Too Short!').required('Required'),
-    username: Yup.string().required('Required'),
-});
+    return (
+        <View style={{ ...styles.footer }}>
+
+            <Button onPress={ handleSubmit } block info rounded iconLeft>
+                <Icon name={ button.icon } />
+                <Text>{ button.text }</Text>
+            </Button>
+
+            { googleConnect &&
+                <GoogleConnect style={{ ...styles.footerConnect }}
+                               setLoading={ setLoading }
+                               signInWithGoogle={ googleConnect.signIn } />
+            }
+
+            { facebookConnect &&
+                <FacebookConnect style={{ ...styles.footerConnect }}
+                                 setLoading={ setLoading } />
+            }
+
+            <Text style={{ ...styles.footerText }}>{ text }</Text>
+            <HyperLink style={{ ...styles.footerLink }} onPress={ setSignIn }>{ link }</HyperLink>
+        </View>
+    )
+};
+
+const _showToast = (message) => {
+    Toast.show({
+        text: message,
+        type: 'danger',
+        duration: 10000
+    });
+};
+
+const _isNotValid = (touched, errors, property) => {
+    return (touched[property] && errors[property]) !== undefined;
+}
+
+const _showDangerText = (touched, errors, property) => {
+    return _isNotValid(touched, errors, property) ? <ErrorMessage>{ errors[property] }</ErrorMessage> : "";
+};
+
+const schema = {
+    SignIn: Yup.object().shape({
+        email: Yup.string().email('Invalid email').required('Required'),
+        password: Yup.string().min(4, 'Too Short!').required('Required'),
+    }),
+    SignUp: Yup.object().shape({
+        email: Yup.string().email('Invalid email').required('Required'),
+        password: Yup.string().min(4, 'Too Short!').required('Required'),
+        username: Yup.string().required('Required'),
+    })
+};
+
+const styles = {
+    // Screen
+    content: {
+        flex: 1,
+        alignSelf: 'center',
+        justifyContent: 'center'
+    },
+    // Form
+    formItem: { marginTop: 10 },
+    formWrapper: { width: 270 },
+    // Footer
+    footer: {
+        marginTop: 50,
+        alignItems: 'center'
+    },
+    footerText: { marginTop: 30 },
+    footerLink: { marginTop: 10 },
+    footerConnect: { marginTop: 10 },
+};
 
 export default AuthScreen;

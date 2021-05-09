@@ -1,60 +1,52 @@
-import React, {useState} from "react";
-import {Button, Container, Content, Icon, Text, Footer, FooterTab} from "native-base";
-import { StyleSheet} from 'react-native'
+import React, { cloneElement, useEffect, useState } from "react";
 
-import { FpvRoute } from "../app/app_route";
-import MyCarousel from "../components/slider";
+import { lockAsync, OrientationLock } from "expo-screen-orientation";
+import { Button, Container, Icon, Text, Footer, FooterTab } from "native-base";
+
+import * as app_home from '../app/screen/app_home';
+import { capitalize } from "../app/utils/app_string";
 
 const HomeScreen = ({ navigation }) => {
 
-    const [currentTab, setCurrentTab] = useState(true);
-    const Handling = {
-        switchTab: (tabName) => setCurrentTab(tabName)
+    const [tabIndex, setTabIndex] = useState(0);
+
+    const On = {
+        TabSwitch: (tab) => setTabIndex(tab)
     };
+
+    useEffect(() => {
+        lockAsync(OrientationLock.DEFAULT);
+    }, []);
+
+    useEffect(() => {
+        return navigation.addListener('focus', () => {
+            lockAsync(OrientationLock.DEFAULT);
+        });
+    }, [navigation]);
+
+    const currentTab = app_home.listOfTabs[tabIndex];
 
     return (
         <Container>
-            <Content style={{ flexDirection: 'column' }}
-                     padder
-                     contentContainerStyle={{ flex: 1, justifyContent: 'center', alignSelf: 'center' }}>
-                <MyCarousel/>
-                <Button block success rounded iconLeft
-                        onPress={ () => navigation.navigate(FpvRoute.name) }>
-                    <Icon name='videocam-outline' />
-                    <Text>Go to FPV !</Text>
-                </Button>
-            </Content>
+            { cloneElement(
+                currentTab.content, { navigation: navigation }
+            )}
             <Footer>
-                <FooterTab style={styles.footer}>
-                <Button vertical onPress={ () => Handling.switchTab("history")}>
-                    <Icon name="analytics-outline" />
-                    <Text>History</Text>
-                </Button>
-                <Button vertical onPress={ () => Handling.switchTab("recordings")}>
-                    <Icon name="film"/>
-                    <Text style={{fontSize:9}}>Recordings</Text>
-                </Button>
-                <Button vertical onPress={ () => Handling.switchTab("settings")}>
-                    <Icon name="settings" />
-                    <Text>Settings</Text>
-                </Button>
-                <Button vertical onPress={ () => Handling.switchTab("user")}>
-                    <Icon name="person" />
-                    <Text>Profile</Text>
-                </Button>
+                <FooterTab>
+                    { app_home.listOfTabs.map((it, index) =>
+                        <Button key={ it.name }
+                                active={ tabIndex === index }
+                                onPress={ () => On.TabSwitch(index) }>
+                            <Icon name={ it.icon } />
+                            <Text style={ it.style } numberOfLines={ 1 }>
+                                { capitalize(it.name) }
+                            </Text>
+                        </Button>
+                    )}
                 </FooterTab>
             </Footer>
         </Container>
     );
 };
-
-const styles = StyleSheet.create({
-    main_container: {
-      height: 190
-    },
-    footer: {
-      backgroundColor: '#705c82'
-    }
-  })
 
 export default HomeScreen;

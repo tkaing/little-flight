@@ -28,7 +28,7 @@ const App = () => {
     const [loading, setLoading] = useState(false);
     const [currentUser, setCurrentUser] = useState();
 
-    const [, response, promptAsync] = Google.useAuthRequest({
+    const [,response, promptAsync] = Google.useAuthRequest({
         iosClientId: '817789782056-kkqgj9ec0sl5lhae82gg3cu7f1q8ebjo.apps.googleusercontent.com',
         expoClientId: '817789782056-50c858j1vr440iaoegqksn3442ql6ljr.apps.googleusercontent.com',
         androidClientId: '817789782056-2i4ju976pjcs7nl9qur39ov6anl6leum.apps.googleusercontent.com',
@@ -71,11 +71,11 @@ const App = () => {
                 if (response.type === 'success') {
                     try {
                         const accessToken = response.params.access_token;
-                        //const googleApiResponse = await axios.get(api_google.person.get_info(accessToken));
                         const defaultApiResponse = await axios.post(api_default.person.sign_in_with_google(accessToken));
                         const defaultApiToken = defaultApiResponse.data.jwt;
                         await SecureStore.setItemAsync(api_secure_store.TOKEN, defaultApiToken);
                         setLoading(false);
+                        await Handling.loadCurrentUser();
                     } catch (failure) {
                         Handling.showToast('Unable to connect to Google');
                         setLoading(false);
@@ -115,6 +115,11 @@ const App = () => {
                 <NavigationContainer theme={ DarkTheme }>
                     <Stack.Navigator>
                         <Stack.Screen
+                            name={ FpvRoute.name }
+                            options={ FpvRoute.options }
+                            component={ FpvScreen }
+                        />
+                        <Stack.Screen
                             name={ AuthRoute.name }
                             options={ AuthRoute.options }>
                             { (props) => (
@@ -130,11 +135,6 @@ const App = () => {
                             name={ HomeRoute.name }
                             options={ HomeRoute.options }
                             component={ HomeScreen }
-                        />
-                        <Stack.Screen
-                            name={ FpvRoute.name }
-                            options={ FpvRoute.options }
-                            component={ FpvScreen }
                         />
                     </Stack.Navigator>
                 </NavigationContainer>
