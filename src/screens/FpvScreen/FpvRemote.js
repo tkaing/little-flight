@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
-import {Button, Icon, Text, View} from "native-base";
-import AxisPad from "react-native-axis-pad";
-import {TouchableHighlight} from "react-native";
+
 import axios from "axios";
+import AxisPad from "react-native-axis-pad";
+import { TouchableHighlight } from "react-native";
+import { Button, Icon, Text, View } from "native-base";
+
 import * as api_default from "../../api/api_default";
 
 const FpvRemote = ({ xxx }) => {

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+
 import axios from "axios";
 import getTheme from './native-base-theme/components';
 import Platform from './native-base-theme/variables/platform';
@@ -115,11 +116,6 @@ const App = () => {
                 <NavigationContainer theme={ DarkTheme }>
                     <Stack.Navigator>
                         <Stack.Screen
-                            name={ FpvRoute.name }
-                            options={ FpvRoute.options }
-                            component={ FpvScreen }
-                        />
-                        <Stack.Screen
                             name={ AuthRoute.name }
                             options={ AuthRoute.options }>
                             { (props) => (
@@ -135,6 +131,11 @@ const App = () => {
                             name={ HomeRoute.name }
                             options={ HomeRoute.options }
                             component={ HomeScreen }
+                        />
+                        <Stack.Screen
+                            name={ FpvRoute.name }
+                            options={ FpvRoute.options }
+                            component={ FpvScreen }
                         />
                     </Stack.Navigator>
                 </NavigationContainer>
