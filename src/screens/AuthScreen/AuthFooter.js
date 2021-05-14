@@ -6,7 +6,7 @@ import FacebookConnect from "../../components/FacebookConnect";
 import { Button, Icon, Text, View } from "native-base";
 
 const AuthFooter = (
-    { text, link, button, setSignIn, setLoading,
+    { text, link, button, onLinkPress, setLoading,
         handleSubmit, googleConnect, facebookConnect }
 ) => {
 
@@ -19,18 +19,18 @@ const AuthFooter = (
             </Button>
 
             { googleConnect &&
-            <GoogleConnect style={{ ...styles.footerConnect }}
-                           setLoading={ setLoading }
-                           signInWithGoogle={ googleConnect.signIn } />
+                <GoogleConnect style={{ ...styles.footerConnect }}
+                               setLoading={ setLoading }
+                               signInWithGoogle={ googleConnect.signIn } />
             }
 
             { facebookConnect &&
-            <FacebookConnect style={{ ...styles.footerConnect }}
-                             setLoading={ setLoading } />
+                <FacebookConnect style={{ ...styles.footerConnect }}
+                                 setLoading={ setLoading } />
             }
 
             <Text style={{ ...styles.footerText }}>{ text }</Text>
-            <HyperLink style={{ ...styles.footerLink }} onPress={ setSignIn }>{ link }</HyperLink>
+            <HyperLink style={{ ...styles.footerLink }} onPress={ onLinkPress }>{ link }</HyperLink>
         </View>
     )
 };

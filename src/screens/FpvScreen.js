@@ -1,11 +1,22 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { Container, Text, View } from "native-base";
 import FpvRemote from "./FpvScreen/FpvRemote";
+import { lockAsync, OrientationLock } from "expo-screen-orientation";
 
 const FpvScreen = (
     { navigation }
 ) => {
+
+    useEffect(() => {
+        lockAsync(OrientationLock.LANDSCAPE_LEFT);
+    }, []);
+
+    useEffect(() => {
+        return navigation.addListener('focus', () => {
+            lockAsync(OrientationLock.LANDSCAPE_LEFT);
+        });
+    }, [navigation]);
 
     return (
         <Container>
