@@ -1,12 +1,15 @@
-import React, { useEffect } from "react";
-
+import React, { useEffect, useState } from "react";
 import { Container, Text, View } from "native-base";
 import FpvRemote from "./FpvScreen/FpvRemote";
 import { lockAsync, OrientationLock } from "expo-screen-orientation";
+import Gamepad from "./GamepadScreen/Gamepad";
 
 const FpvScreen = (
     { navigation }
 ) => {
+
+    const [isGamepadView, setGamepadView] = useState(false);
+    const [isFpvRemoteView, setFpvRemoteView] = useState(false);
 
     useEffect(() => {
         lockAsync(OrientationLock.LANDSCAPE_LEFT);
@@ -22,14 +25,21 @@ const FpvScreen = (
         <Container>
             <View style={{ ...styles.content }}>
 
-                <View style={{ ...styles.streamView }}>
-                    <Text>xxx</Text>
-                </View>
+                { isGamepadView &&
+                    <Gamepad useFpvRemote={{ isFpvRemoteView: isFpvRemoteView, setFpvRemoteView: setFpvRemoteView }}/>
+                }
 
-                <View style={{ ...styles.remoteView }}>
-                    <FpvRemote />
-                </View>
+                { !isGamepadView &&
+                    <View style={{ ...styles.padView }}>
+                        <View style={{ ...styles.streamView }}>
+                            <Text>xxx</Text>
+                        </View>
 
+                        <View style={{ ...styles.remoteView }}>
+                            <FpvRemote useGamepadView={{ isGamepadView: isGamepadView, setGamepadView: setGamepadView }} />
+                        </View>
+                    </View>
+                }
             </View>
         </Container>
     );
@@ -37,6 +47,9 @@ const FpvScreen = (
 
 const styles = {
     content: {
+        flex: 1
+    },
+    padView: {
         flex: 1,
         flexDirection: 'row'
     },

@@ -3,16 +3,20 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import AxisPad from "react-native-axis-pad";
 import { TouchableHighlight } from "react-native";
-import { Button, Icon, Text, View } from "native-base";
+import { Button, Icon, Text, View, Fab, Container, Header } from "native-base";
 
 import * as api_default from "../../api/api_default";
 
-const FpvRemote = ({ xxx }) => {
+const FpvRemote = ({ navigation, useGamepadView }) => {
 
     const [started, setStarted] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [fabActive, setFabActive] = useState(false);
+
+    const { isGamepadView, setGamepadView } = useGamepadView;   
 
     const on = {
+        SwitchScreen: async () => setGamepadView(!isGamepadView),
         StartAndStopPress: async () => {
             const updatedStarted = !started;
             if (updatedStarted) {
@@ -39,6 +43,10 @@ const FpvRemote = ({ xxx }) => {
             setStarted(updatedStarted);
         }
     };
+
+    useEffect(() => {
+        setFabActive(false);
+    }, []);     
 
     return (
         <View style={{ ...styles.gamepadView, flex: 1 }}>
@@ -77,7 +85,6 @@ const FpvRemote = ({ xxx }) => {
                         leftOptions={{ icon: 'caret-down-sharp' }}
                         rightOptions={{ icon: 'caret-up-sharp' }} />
                 </View>
-
             </View>
 
             <View style={{ ...styles.gamepadLine, flex: 1 }}>
@@ -98,13 +105,36 @@ const FpvRemote = ({ xxx }) => {
                     </Button>
                     }
                 </View>
-                <View style={{ ...styles.actionWrapper, flex: 1 }}>
+                {/*<View style={{ ...styles.actionWrapper, flex: 1 }}>
                     <Button style={{ ...styles.actionButton }}
                             onPress={ () => {} } block info rounded>
                         <Icon name="information-outline" />
                     </Button>
-                </View>
-
+                </View>*/}
+                    <View style={{...styles.actionWrapper, flex: 1 }}>
+                        <Fab
+                            active={fabActive}
+                            direction="up"
+                            containerStyle={{ }}
+                            style={{ ...styles.actionButton, backgroundColor: '#5067FF', marginTop: 100 }}
+                            position="bottomRight"
+                            onPress={() => setFabActive(!fabActive)} block info rounded>
+                                <Icon name="share" />
+                            <Button style={{ backgroundColor: '#5067FF' }}>
+                                <Icon name="information-circle-outline" />
+                            </Button>
+                            <Button style={{ backgroundColor: '#5067FF' }}
+                                    onPress={ () => {
+                                        setFabActive(false);
+                                        on.SwitchScreen(); 
+                                    }}>
+                                <Icon name="game-controller" />
+                            </Button>
+                            <Button disabled style={{ backgroundColor: '#5067FF' }}>
+                                <Icon name="camera-reverse-outline" />
+                            </Button>
+                        </Fab>
+                    </View>
             </View>
         </View>
     );
