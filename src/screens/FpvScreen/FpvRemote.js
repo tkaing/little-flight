@@ -7,16 +7,13 @@ import { Button, Icon, Text, View, Fab, Container, Header } from "native-base";
 
 import * as api_default from "../../api/api_default";
 
-const FpvRemote = ({ navigation, useGamepadView }) => {
+const FpvRemote = ({ navigation, setFpvRemoteView }) => {
 
     const [started, setStarted] = useState(false);
     const [loading, setLoading] = useState(false);
     const [fabActive, setFabActive] = useState(false);
 
-    const { isGamepadView, setGamepadView } = useGamepadView;   
-
     const on = {
-        SwitchScreen: async () => setGamepadView(!isGamepadView),
         StartAndStopPress: async () => {
             const updatedStarted = !started;
             if (updatedStarted) {
@@ -121,17 +118,17 @@ const FpvRemote = ({ navigation, useGamepadView }) => {
                             onPress={() => setFabActive(!fabActive)} block info rounded>
                                 <Icon name="share" />
                             <Button style={{ backgroundColor: '#5067FF' }}>
-                                <Icon name="information-circle-outline" />
+                                <Icon name="ios-settings"/>
                             </Button>
                             <Button style={{ backgroundColor: '#5067FF' }}
                                     onPress={ () => {
                                         setFabActive(false);
-                                        on.SwitchScreen(); 
+                                        setFpvRemoteView(false);
                                     }}>
                                 <Icon name="game-controller" />
                             </Button>
                             <Button disabled style={{ backgroundColor: '#5067FF' }}>
-                                <Icon name="camera-reverse-outline" />
+                                <Icon name="videocam" />
                             </Button>
                         </Fab>
                     </View>

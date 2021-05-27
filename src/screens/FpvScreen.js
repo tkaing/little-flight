@@ -8,8 +8,7 @@ const FpvScreen = (
     { navigation }
 ) => {
 
-    const [isGamepadView, setGamepadView] = useState(false);
-    const [isFpvRemoteView, setFpvRemoteView] = useState(false);
+    const [isFpvRemoteView, setFpvRemoteView] = useState(true);
 
     useEffect(() => {
         lockAsync(OrientationLock.LANDSCAPE_LEFT);
@@ -25,20 +24,20 @@ const FpvScreen = (
         <Container>
             <View style={{ ...styles.content }}>
 
-                { isGamepadView &&
-                    <Gamepad useFpvRemote={{ isFpvRemoteView: isFpvRemoteView, setFpvRemoteView: setFpvRemoteView }}/>
-                }
-
-                { !isGamepadView &&
+                { isFpvRemoteView &&
                     <View style={{ ...styles.padView }}>
                         <View style={{ ...styles.streamView }}>
                             <Text>xxx</Text>
                         </View>
 
                         <View style={{ ...styles.remoteView }}>
-                            <FpvRemote useGamepadView={{ isGamepadView: isGamepadView, setGamepadView: setGamepadView }} />
+                            <FpvRemote setFpvRemoteView={ setFpvRemoteView } />
                         </View>
                     </View>
+                }
+
+                { !isFpvRemoteView && 
+                    <Gamepad setFpvRemoteView={ setFpvRemoteView } />
                 }
             </View>
         </Container>

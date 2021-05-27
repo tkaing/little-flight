@@ -7,7 +7,7 @@ const forFade = ({ current }) => ({
 const FpvRoute = {
     name: 'fpv',
     options: {
-        title: 'My Fpv',
+        title: 'My FPV Screen',
         cardStyleInterpolator: forFade
     }
 };

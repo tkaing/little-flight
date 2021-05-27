@@ -4,16 +4,12 @@ import { Container, Text, View, Fab, Icon, Button } from "native-base";
 import { lockAsync, OrientationLock } from "expo-screen-orientation";
 
 const Gamepad = (
-    { useFpvRemote }
+    { setFpvRemoteView }
 ) => {
     
     const [fabActive, setFabActive] = useState(false);
 
-    const { isFpvRemoteView, setFpvRemoteView } = useFpvRemote;
-
-    const on = {
-        SwitchScreen: async () => setFpvRemoteView(!isFpvRemoteView),
-    };
+    const on = {};
 
     useEffect(() => {
         setFabActive(false);
@@ -25,7 +21,7 @@ const Gamepad = (
             <View style={{ ...styles.content }}>
 
                 <View style={{ ...styles.streamView }}>
-                    <Text>xxx</Text>
+                    <Text>xxxxx</Text>
                     <Fab
                         style={{ ...styles.actionButton, backgroundColor: '#5067FF' }}
                         active={ fabActive }
@@ -35,22 +31,21 @@ const Gamepad = (
                         onPress={ () => setFabActive(!fabActive) }>
                         <Icon name="share" />
                         <Button style={{ backgroundColor: '#5067FF' }}>
-                            <Icon name="information-circle-outline" />
+                            <Icon name="ios-settings"/>
                         </Button>
                         <Button style={{ backgroundColor: '#5067FF' }}
                             onPress={ () => {
                                 console.log("lalaal");
                                 setFabActive(false);
-                                on.SwitchScreen(); 
+                                setFpvRemoteView(true);
                             }}>
-                            <Icon name="game-controller" />
+                            <Icon name="ios-phone-landscape-sharp" />
                         </Button>
                         <Button disabled style={{ backgroundColor: '#5067FF' }}>
-                            <Icon name="camera-reverse-outline" />
+                            <Icon name="videocam" />
                         </Button>
                     </Fab>
                 </View>
-
             </View>
         </Container>
     );
