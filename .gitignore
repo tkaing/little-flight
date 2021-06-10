@@ -82,3 +82,6 @@ buck-out/
 web-build/
 
 # @end expo-cli
+
+# Jetbrains
+.idea/*
