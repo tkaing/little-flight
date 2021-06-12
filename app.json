@@ -1,7 +1,8 @@
 {
   "expo": {
     "name": "LittleFlight",
-    "slug": "LittleFlight",
+    "slug": "little-flight",
+    "owner": "kenmav",
     "version": "1.0.0",
     "scheme": "littleflight",
     "orientation": "default",
