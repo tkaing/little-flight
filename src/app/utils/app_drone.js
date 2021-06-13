@@ -15,6 +15,7 @@ const run = (command) => {
         console.log(command);
         socket.send(command, undefined, undefined, 8889, '192.168.10.1', (err) => {
             if (err) throw err
+            //socket.close();
         });
     });
 };

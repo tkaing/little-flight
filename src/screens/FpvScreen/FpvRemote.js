@@ -63,7 +63,7 @@ const FpvRemote = ({ navigation, setFpvRemoteView }) => {
 
                 <View style={{ ...styles.actionWrapper, flex: 2 }}>
                     <Button style={{ ...styles.actionButton }}
-                            onPress={ () => app_drone.run('takeoff') }
+                            onPress={ () => app_drone.run('streamon') }
                             disabled={ loading }
                             block danger rounded>
                         <Text>Décoller</Text>

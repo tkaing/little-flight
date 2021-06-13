@@ -55,10 +55,10 @@ const App = () => {
                     setCurrentUser({ email: email, username: username });
                     setLoading(false);
                 } catch (failure) {
+                    setLoading(false);
                     Handling.showToast('Invalid/Expired token');
                     await SecureStore.deleteItemAsync(api_secure_store.TOKEN);
                     setCurrentUser(undefined);
-                    setLoading(false);
                 }
             }
         },
