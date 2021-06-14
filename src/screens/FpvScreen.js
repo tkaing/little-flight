@@ -44,9 +44,9 @@ const FpvScreen = (
         },
         input: () => {
             //let input = `file://${ RNFS.DownloadDirectoryPath }/sample-mp4-file.mp4`;
-            //let input = `file://${ RNFS.DownloadDirectoryPath }/sample-video.mp4`;
+            let input = `file://${ RNFS.DownloadDirectoryPath }/sample-video.mp4`;
             //let input = "udp://0.0.0.0:11111"; // ???
-            let input = "udp://127.0.0.1:11111"; // OK
+            //let input = "udp://127.0.0.1:11111"; // OK
             //let input = "udp://192.168.10.1:11111"; // ???
             return input;
         },
@@ -90,13 +90,13 @@ const FpvScreen = (
                 const socket = dgram.createSocket({type: 'udp4', debug: true});
                 const command = `-i ${ffmpeg.input()} -q:v 4 -r 1 -update 1 ${ffmpeg.output()}`;
 
-                socket.bind(8001);
+                /*socket.bind(8001);
                 socket.on('close', (msg, info) => {
                     console.log('Close', msg);
                     setOpenStream(false);
                 });
                 socket.on('message', (msg, info) => console.log('Message', msg));
-                socket.once('listening', () => {
+                socket.once('listening', () => {*/
                     ffmpeg.config();
                     RNFFmpeg.executeAsync(command, (execution) => {
                         console.log(execution);
@@ -111,7 +111,7 @@ const FpvScreen = (
                             setOpenStream(false);
                         })
                     ;
-                });
+                //});
             }
         },
         toggleFrame: () => {
@@ -135,7 +135,7 @@ const FpvScreen = (
 
     useEffect(() => {
         if (openStream) {
-            setCurrentInterval(setInterval(ffmpeg.toggleFrame, 1500));
+            setCurrentInterval(setInterval(ffmpeg.toggleFrame, 500));
         } else {
             setCurrentFrame(null);
             clearInterval(currentInterval);
@@ -162,13 +162,13 @@ const FpvScreen = (
 
                             <Button onPress={ () => ffmpeg.close() }
                                     block danger rounded>
-                                <Text>Close FFMPEG</Text>
+                                <Teàxt>Close FFMPEG</Teàxt>
                             </Button>
 
                             { openStream && currentFrame &&
                                 <Thumbnail square large source={{ uri: currentFrame }}
-                                           style={{ width: 300, height: 200 }}
-                                           fadeDuration={ 0 } />
+                                           fadeDuration={ 0.5 }
+                                           style={{ width: 300, height: 200 }} />
                             }
                         </View>
                         <View style={{ ...styles.remoteView }}>
