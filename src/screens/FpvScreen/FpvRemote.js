@@ -1,49 +1,24 @@
 import React, { useEffect, useState } from "react";
 
-import axios from "axios";
 import AxisPad from "react-native-axis-pad";
 import { TouchableHighlight } from "react-native";
-import { Button, Icon, Text, View, Fab, Container, Header } from "native-base";
-
-import * as api_default from "../../api/api_default";
+import { Button, Icon, Text, View, Fab } from "native-base";
+import * as app_drone from './.././../app/utils/app_drone';
 
 const FpvRemote = ({ navigation, setFpvRemoteView }) => {
 
+    const [bind, setBind] = useState(false);
     const [started, setStarted] = useState(false);
     const [loading, setLoading] = useState(false);
     const [fabActive, setFabActive] = useState(false);
 
-    const on = {
-        StartAndStopPress: async () => {
-            const updatedStarted = !started;
-            if (updatedStarted) {
-                try {
-                    setLoading(true);
-                    const apiResponse = await axios.get(api_default.drone.command());
-                    const apiResponseBis = await axios.get(api_default.drone.takeoff());
-                    setLoading(false);
-                } catch (failure) {
-                    setLoading(false);
-                    console.log(failure);
-                }
-            } else {
-                try {
-                    setLoading(true);
-                    const apiResponse = await axios.get(api_default.drone.command());
-                    const apiResponseBis = await axios.get(api_default.drone.land());
-                    setLoading(false);
-                } catch (failure) {
-                    setLoading(false);
-                    console.log(failure);
-                }
-            }
-            setStarted(updatedStarted);
-        }
-    };
-
     useEffect(() => {
         setFabActive(false);
-    }, []);     
+    }, []);
+
+    const use = {
+        Bind: { bind: bind, setBind: setBind }
+    }
 
     return (
         <View style={{ ...styles.gamepadView, flex: 1 }}>
@@ -73,41 +48,34 @@ const FpvRemote = ({ navigation, setFpvRemoteView }) => {
                 <View style={{ ...styles.centeredItem }}>
                     <DirectionalBox
                         options={{ icon: 'sync-outline' }}
-                        leftOptions={{ icon: 'caret-back-sharp' }}
-                        rightOptions={{ icon: 'caret-forward-sharp' }} />
+                        leftOptions={{ icon: 'caret-back-sharp', onPress: () => app_drone.run('ccw 100') }}
+                        rightOptions={{ icon: 'caret-forward-sharp', onPress: () => app_drone.run('cw 100') }} />
                 </View>
                 <View style={{ ...styles.centeredItem }}>
                     <DirectionalBox
                         options={{ icon: 'swap-vertical-sharp' }}
-                        leftOptions={{ icon: 'caret-down-sharp' }}
-                        rightOptions={{ icon: 'caret-up-sharp' }} />
+                        leftOptions={{ icon: 'caret-down-sharp', onPress: () => app_drone.run('down 100') }}
+                        rightOptions={{ icon: 'caret-up-sharp', onPress: () => app_drone.run('up 100') }} />
                 </View>
             </View>
 
             <View style={{ ...styles.gamepadLine, flex: 1 }}>
 
                 <View style={{ ...styles.actionWrapper, flex: 2 }}>
-                    { started &&
                     <Button style={{ ...styles.actionButton }}
+                            onPress={ () => app_drone.run('streamon') }
                             disabled={ loading }
-                            onPress={ on.StartAndStopPress } block danger rounded>
-                        <Text>Stop</Text>
+                            block danger rounded>
+                        <Text>Décoller</Text>
                     </Button>
-                    }
-                    { !started &&
-                    <Button style={{ ...styles.actionButton }}
-                            disabled={ loading }
-                            onPress={ on.StartAndStopPress } block primary rounded>
-                        <Text>Start</Text>
-                    </Button>
-                    }
                 </View>
-                {/*<View style={{ ...styles.actionWrapper, flex: 1 }}>
+                <View style={{ ...styles.actionWrapper, flex: 1 }}>
                     <Button style={{ ...styles.actionButton }}
-                            onPress={ () => {} } block info rounded>
+                            onPress={ () => app_drone.run('command') }
+                            block info rounded>
                         <Icon name="information-outline" />
                     </Button>
-                </View>*/}
+                </View>
                     <View style={{...styles.actionWrapper, flex: 1 }}>
                         <Fab
                             active={fabActive}
@@ -148,6 +116,7 @@ const DirectionalBox = (
         LeftBtnPressed: () => {
             setLPressed(true);
             console.log('L pressed !');
+            leftOptions.onPress();
         },
         LeftBtnUnPressed: () => {
             setLPressed(false);
@@ -156,6 +125,7 @@ const DirectionalBox = (
         RightPressed: () => {
             setRPressed(true);
             console.log('R pressed !');
+            rightOptions.onPress();
         },
         RightUnPressed: () => {
             setRPressed(false);

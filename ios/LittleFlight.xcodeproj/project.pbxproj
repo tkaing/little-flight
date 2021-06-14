@@ -33,6 +33,7 @@
 		F952A35FCD614F80878C5DDC /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0338650BF49F44409FE88895 /* EvilIcons.ttf */; };
 		FE1CEC01B08640749C71BB7A /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 79AE61944E9A4A74B9293760 /* Feather.ttf */; };
 		FFE4095394F34BB0A373C813 /* Roboto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 01668DA24C144473951AE2E4 /* Roboto.ttf */; };
+		62C5F11B09BF442C99E1DC65 /* libRCTHttpServer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1EE8F81E55B5430EB45174B8 /* libRCTHttpServer.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -70,6 +71,8 @@
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 		EEA5C9B006A243AA954362B4 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/native-base/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		F8BE1DEEB3E543CEB8D871B1 /* Roboto_medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = Roboto_medium.ttf; path = "../node_modules/native-base/Fonts/Roboto_medium.ttf"; sourceTree = "<group>"; };
+		99360D7FD4C54619A65F13DA /* RCTHttpServer.xcodeproj */ = {isa = PBXFileReference; name = "RCTHttpServer.xcodeproj"; path = "../node_modules/react-native-http-bridge/ios/RCTHttpServer.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		1EE8F81E55B5430EB45174B8 /* libRCTHttpServer.a */ = {isa = PBXFileReference; name = "libRCTHttpServer.a"; path = "libRCTHttpServer.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +81,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				96905EF65AED1B983A6B3ABC /* libPods-LittleFlight.a in Frameworks */,
+				62C5F11B09BF442C99E1DC65 /* libRCTHttpServer.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -113,6 +117,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				99360D7FD4C54619A65F13DA /* RCTHttpServer.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -406,6 +411,14 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/littleflight\"",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../node_modules/react-native-http-bridge/**",
+				);
 			};
 			name = Debug;
 		};
@@ -431,6 +444,14 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/littleflight\"",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../node_modules/react-native-http-bridge/**",
+				);
 			};
 			name = Release;
 		};
