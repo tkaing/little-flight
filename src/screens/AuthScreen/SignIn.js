@@ -22,24 +22,22 @@ const SignIn = (
                 const apiResponse = await axios.post(api_default.person.sign_in(), {
                     email: email,
                     password: password,
-                });
+                }, { timeout: 5000 });
                 const apiToken = apiResponse.data.jwt;
                 await SecureStore.setItemAsync(api_secure_store.TOKEN, apiToken);
                 setLoading(false);
                 loadCurrentUser();
             } catch (failure) {
-                if (failure.response) {
-                    // client received an error response (5xx, 4xx)
+                if (failure.code === 'ECONNABORTED') {
+                    // timeout
+                    app_form.showToast(`Unable to connect to Api.`);
+                } else if (failure.response) {
+                    // an error response (5xx, 4xx)
                     const apiResponse = failure.response;
-                    app_form.showToast(apiResponse.data);
-                } else if (failure.request) {
-                    // client never received a response, or request never left
-                    const apiRequest = failure.request;
-                    app_form.showToast('Login failed');
-                    console.log(apiRequest);
+                    console.log(apiResponse.data);
                 } else {
                     // anything else
-                    app_form.showToast('Login failed');
+                    app_form.showToast('Login failed.');
                 }
                 setLoading(false);
             }

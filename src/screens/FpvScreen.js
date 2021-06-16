@@ -12,10 +12,10 @@ const FpvScreen = (
     { navigation }
 ) => {
 
+    const [newFrame, setNewFrame] = useState();
     const [openStream, setOpenStream] = useState(false);
-    const [currentFrame, setCurrentFrame] = useState(null);
+    const [listOfFrames, setListOfFrames] = useState([]);
     const [isFpvRemoteView, setFpvRemoteView] = useState(true);
-    const [currentInterval, setCurrentInterval] = useState(null);
 
     const ffmpeg = {
         core: async () => {
@@ -43,8 +43,8 @@ const FpvScreen = (
             setOpenStream(false);
         },
         input: () => {
-            //let input = `file://${ RNFS.DownloadDirectoryPath }/sample-mp4-file.mp4`;
             let input = `file://${ RNFS.DownloadDirectoryPath }/sample-video.mp4`;
+            //let input = `file://${ RNFS.DownloadDirectoryPath }/sample-mp4-file.mp4`;
             //let input = "udp://0.0.0.0:11111"; // ???
             //let input = "udp://127.0.0.1:11111"; // OK
             //let input = "udp://192.168.10.1:11111"; // ???
@@ -61,11 +61,15 @@ const FpvScreen = (
                 }
             );
             RNFFmpegConfig.enableStatisticsCallback(
-                (statistics) => {
-                    //console.log("Statistics; XXX", statistics);
-                    //setListOfFrames([...listOfFrames]);
+                async (statistics) => {
+                    try {
+                        const number = statistics.videoFrameNumber;
+                        const base64 = await RNFS.readFile(ffmpeg.output(), 'base64');
+                        setNewFrame({ number: number, base64: base64 });
+                    } catch (failure) {
+                        console.log('Cannot convert local file to base64.');
+                    }
                     //console.log(`Statistics; executionId: ${statistics.executionId}, video frame number: ${statistics.videoFrameNumber}, video fps: ${statistics.videoFps}, video quality: ${statistics.videoQuality}, size: ${statistics.size}, time: ${statistics.time}, bitrate: ${statistics.bitrate}, speed: ${statistics.speed}`);
-
                 }
             );
         },
@@ -84,7 +88,9 @@ const FpvScreen = (
             const exists = await RNFS.exists(ffmpeg.output());
 
             if (exists) {
+
                 console.log('Supprimer fichier d\'abord.');
+
             } else {
 
                 const socket = dgram.createSocket({type: 'udp4', debug: true});
@@ -114,16 +120,16 @@ const FpvScreen = (
                 //});
             }
         },
-        toggleFrame: () => {
-            setCurrentFrame(ffmpeg.output() + '?' + Date.now());
-        }
+        toggleFrame: () => {}
     };
 
     useEffect(() => {
         lockAsync(OrientationLock.LANDSCAPE_LEFT);
+        setNewFrame();
+        setListOfFrames([]);
         return () => {
-            clearInterval(currentInterval);
-            setCurrentInterval(null);
+            setNewFrame();
+            setListOfFrames([]);
         }
     }, []);
 
@@ -134,18 +140,42 @@ const FpvScreen = (
     }, [navigation]);
 
     useEffect(() => {
-        if (openStream) {
-            setCurrentInterval(setInterval(ffmpeg.toggleFrame, 500));
-        } else {
-            setCurrentFrame(null);
-            clearInterval(currentInterval);
-            setCurrentInterval(null);
+        if (newFrame) {
+            switch (listOfFrames.length) {
+                case 0:
+                    setListOfFrames([newFrame]);
+                    break;
+                case 1:
+                    if (listOfFrames[0].number === newFrame.number)
+                        setListOfFrames([newFrame]);
+                    else
+                        setListOfFrames([listOfFrames[0], newFrame]);
+                    break;
+                case 2:
+                    if (listOfFrames[1].number === newFrame.number)
+                        setListOfFrames([listOfFrames[0], newFrame]);
+                    else
+                        setListOfFrames([listOfFrames[1], newFrame]);
+                    break;
+            }
+        }
+    }, [newFrame]);
+
+    useEffect(() => {
+        if (!openStream) {
+            setNewFrame();
+            setListOfFrames([]);
         }
     }, [openStream]);
 
     useEffect(() => {
-        console.log('CURRENT FRAME', currentFrame);
-    }, [currentFrame]);
+        if (listOfFrames.length === 0)
+            console.log([]);
+        else
+            console.log(
+                listOfFrames.map(_it => _it.base64.substr(0, 100))
+            );
+    }, [listOfFrames]);
 
     return (
         <Container>
@@ -162,14 +192,22 @@ const FpvScreen = (
 
                             <Button onPress={ () => ffmpeg.close() }
                                     block danger rounded>
-                                <Teàxt>Close FFMPEG</Teàxt>
+                                <Text>Close FFMPEG</Text>
                             </Button>
 
-                            { openStream && currentFrame &&
-                                <Thumbnail square large source={{ uri: currentFrame }}
-                                           fadeDuration={ 0.5 }
-                                           style={{ width: 300, height: 200 }} />
+                            { openStream &&
+                                <View style={[ styles.frameView ]}>
+                                    { listOfFrames.map(_it => (
+                                        <Thumbnail /*fadeDuration={ 1 }*/
+                                            source={{ uri: `data:image/png;base64,${ _it.base64 }` }}
+                                            square
+                                            style={[ styles.frame ]}
+                                            large
+                                            key={ _it.number } />
+                                    ))}
+                                </View>
                             }
+
                         </View>
                         <View style={{ ...styles.remoteView }}>
                             <FpvRemote setFpvRemoteView={ setFpvRemoteView } />
@@ -177,7 +215,7 @@ const FpvScreen = (
                     </View>
                 }
 
-                { !isFpvRemoteView && 
+                { !isFpvRemoteView &&
                     <Gamepad setFpvRemoteView={ setFpvRemoteView } />
                 }
             </View>
@@ -195,6 +233,17 @@ const styles = {
     },
     streamView: { flex: 2 },
     remoteView: { flex: 1 },
+    frame: {
+        width: '100%',
+        height: '100%',
+        bottom: 0,
+        position: 'absolute',
+        resizeMode: "contain"
+    },
+    frameView: {
+        width: '100%',
+        height: '100%',
+    }
 };
 
 export default FpvScreen;
