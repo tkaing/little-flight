@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Container, Text, View, Thumbnail } from "native-base";
+import {Button, Container, Text, View, Thumbnail, Icon} from "native-base";
 import FpvRemote from "./FpvScreen/FpvRemote";
 import { lockAsync, OrientationLock } from "expo-screen-orientation";
 import Gamepad from "./GamepadScreen/Gamepad";
@@ -7,6 +7,7 @@ import * as RNFS from "react-native-fs";
 import { RNFFmpeg, RNFFmpegConfig } from "react-native-ffmpeg";
 import { PermissionsAndroid } from "react-native";
 import dgram from "react-native-udp";
+import * as app_drone from "../app/utils/app_drone";
 
 const FpvScreen = (
     { navigation }
@@ -61,11 +62,11 @@ const FpvScreen = (
                 }
             );
             RNFFmpegConfig.enableStatisticsCallback(
-                async (statistics) => {
+                (statistics) => {
                     try {
+                        const now = Date.now();
                         const number = statistics.videoFrameNumber;
-                        const base64 = await RNFS.readFile(ffmpeg.output(), 'base64');
-                        setNewFrame({ number: number, base64: base64 });
+                        setNewFrame({ number: now, uri: ffmpeg.output() + `?${ now }` });
                     } catch (failure) {
                         console.log('Cannot convert local file to base64.');
                     }
@@ -146,16 +147,10 @@ const FpvScreen = (
                     setListOfFrames([newFrame]);
                     break;
                 case 1:
-                    if (listOfFrames[0].number === newFrame.number)
-                        setListOfFrames([newFrame]);
-                    else
-                        setListOfFrames([listOfFrames[0], newFrame]);
+                    setListOfFrames([listOfFrames[0], newFrame]);
                     break;
                 case 2:
-                    if (listOfFrames[1].number === newFrame.number)
-                        setListOfFrames([listOfFrames[0], newFrame]);
-                    else
-                        setListOfFrames([listOfFrames[1], newFrame]);
+                    setListOfFrames([listOfFrames[1], newFrame]);
                     break;
             }
         }
@@ -173,7 +168,7 @@ const FpvScreen = (
             console.log([]);
         else
             console.log(
-                listOfFrames.map(_it => _it.base64.substr(0, 100))
+                listOfFrames.map(_it => _it.uri.substr(0, 100))
             );
     }, [listOfFrames]);
 
@@ -185,21 +180,30 @@ const FpvScreen = (
                     <View style={{ ...styles.padView }}>
                         <View style={{ ...styles.streamView }}>
 
-                            <Button onPress={ async () => await ffmpeg.core() }
-                                    block danger rounded>
-                                <Text>Run FFMPEG</Text>
-                            </Button>
-
-                            <Button onPress={ () => ffmpeg.close() }
-                                    block danger rounded>
-                                <Text>Close FFMPEG</Text>
-                            </Button>
+                            {/* Command Drone / Stream / FFMPEG */}
+                            <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                                <Button onPress={ () => app_drone.run('command') } block primary rounded>
+                                    <Icon name="airplane-outline" />
+                                </Button>
+                                <Button onPress={ () => app_drone.run('streamon') } block primary rounded>
+                                    <Icon name="videocam-outline" />
+                                </Button>
+                                <Button onPress={ () => app_drone.run('battery') } block primary rounded>
+                                    <Icon name="battery-full-outline" />
+                                </Button>
+                                <Button onPress={ ffmpeg.core } block danger rounded>
+                                    <Text>Lancer stream</Text>
+                                </Button>
+                                <Button onPress={ ffmpeg.close } block danger rounded>
+                                    <Text>Stopper stream</Text>
+                                </Button>
+                            </View>
 
                             { openStream &&
                                 <View style={[ styles.frameView ]}>
                                     { listOfFrames.map(_it => (
                                         <Thumbnail fadeDuration={ 0 }
-                                            source={{ uri: `data:image/png;base64,${ _it.base64 }` }}
+                                            source={{ uri: _it.uri }}
                                             square
                                             style={[ styles.frame ]}
                                             large
@@ -231,7 +235,10 @@ const styles = {
         flex: 1,
         flexDirection: 'row'
     },
-    streamView: { flex: 2 },
+    streamView: {
+        flex: 2,
+        flexDirection: 'column'
+    },
     remoteView: { flex: 1 },
     frame: {
         width: '100%',
