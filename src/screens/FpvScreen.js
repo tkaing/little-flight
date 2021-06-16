@@ -43,10 +43,10 @@ const FpvScreen = (
             setOpenStream(false);
         },
         input: () => {
-            let input = `file://${ RNFS.DownloadDirectoryPath }/sample-video.mp4`;
+            //let input = `file://${ RNFS.DownloadDirectoryPath }/sample-video.mp4`;
             //let input = `file://${ RNFS.DownloadDirectoryPath }/sample-mp4-file.mp4`;
             //let input = "udp://0.0.0.0:11111"; // ???
-            //let input = "udp://127.0.0.1:11111"; // OK
+            let input = "udp://127.0.0.1:11111"; // OK
             //let input = "udp://192.168.10.1:11111"; // ???
             return input;
         },
@@ -96,13 +96,13 @@ const FpvScreen = (
                 const socket = dgram.createSocket({type: 'udp4', debug: true});
                 const command = `-i ${ffmpeg.input()} -q:v 4 -r 1 -update 1 ${ffmpeg.output()}`;
 
-                /*socket.bind(8001);
+                socket.bind(8001);
                 socket.on('close', (msg, info) => {
                     console.log('Close', msg);
                     setOpenStream(false);
                 });
                 socket.on('message', (msg, info) => console.log('Message', msg));
-                socket.once('listening', () => {*/
+                socket.once('listening', () => {
                     ffmpeg.config();
                     RNFFmpeg.executeAsync(command, (execution) => {
                         console.log(execution);
@@ -117,7 +117,7 @@ const FpvScreen = (
                             setOpenStream(false);
                         })
                     ;
-                //});
+                });
             }
         },
         toggleFrame: () => {}
@@ -198,7 +198,7 @@ const FpvScreen = (
                             { openStream &&
                                 <View style={[ styles.frameView ]}>
                                     { listOfFrames.map(_it => (
-                                        <Thumbnail /*fadeDuration={ 1 }*/
+                                        <Thumbnail fadeDuration={ 0 }
                                             source={{ uri: `data:image/png;base64,${ _it.base64 }` }}
                                             square
                                             style={[ styles.frame ]}
