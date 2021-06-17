@@ -30,16 +30,16 @@ const FpvRemote = ({ navigation, setFpvRemoteView }) => {
                 <View style={{ ...styles.centeredItem, flexDirection: 'row' }}>
                     { [{
                         icon: 'caret-back-sharp',
-                        onPress: () => app_drone.run('left 100')
+                        onPress: () => app_drone.run('left 60')
                     }, {
                         icon: 'caret-down-sharp',
-                        onPress: () => app_drone.run('back 100')
+                        onPress: () => app_drone.run('back 60')
                     }, {
                         icon: 'caret-up-sharp',
-                        onPress: () => app_drone.run('forward 100')
+                        onPress: () => app_drone.run('forward 60')
                     }, {
                         icon: 'caret-forward-sharp',
-                        onPress: () => app_drone.run('right 100')
+                        onPress: () => app_drone.run('right 60')
                     }].map(_it => (
                         <TouchableHighlight
                             onPress={ _it.onPress } style={ { ...styles.directionalBtn } }>
@@ -70,11 +70,11 @@ const FpvRemote = ({ navigation, setFpvRemoteView }) => {
                         options={{ icon: 'swap-vertical-sharp' }}
                         leftOptions={{
                             icon: 'caret-down-sharp',
-                            onPress: () => app_drone.run('down 100')
+                            onPress: () => app_drone.run('down 60')
                         }}
                         rightOptions={{
                             icon: 'caret-up-sharp',
-                            onPress: () => app_drone.run('up 100')
+                            onPress: () => app_drone.run('up 60')
                         }} />
                 </View>
             </View>
@@ -92,20 +92,13 @@ const FpvRemote = ({ navigation, setFpvRemoteView }) => {
                         <Text>{ takeoff ? 'Attérir' : 'Décoller' }</Text>
                     </Button>
                 </View>
-                <View style={{ ...styles.actionWrapper, flex: 1 }}>
-                    <Button style={{ ...styles.actionButton }}
-                            onPress={ () => {} }
-                            block info rounded>
-                        <Icon name="information-outline" />
-                    </Button>
-                </View>
                     <View style={{...styles.actionWrapper, flex: 1 }}>
                         <Fab
                             active={fabActive}
                             direction="up"
                             containerStyle={{ }}
                             style={{ ...styles.actionButton, backgroundColor: '#5067FF', marginTop: 100 }}
-                            position="bottomLeft"
+                            position="bottomRight"
                             onPress={() => setFabActive(!fabActive)} block info rounded>
                                 <Icon name="share" />
                             <Button style={{ backgroundColor: '#5067FF' }}>

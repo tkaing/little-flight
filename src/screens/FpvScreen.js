@@ -191,11 +191,14 @@ const FpvScreen = (
                                 <Button onPress={ () => app_drone.run('battery') } block primary rounded>
                                     <Icon name="battery-full-outline" />
                                 </Button>
-                                <Button onPress={ ffmpeg.core } block danger rounded>
-                                    <Text>Lancer stream</Text>
-                                </Button>
-                                <Button onPress={ ffmpeg.close } block danger rounded>
-                                    <Text>Stopper stream</Text>
+                                <Button onPress={ async () => {
+                                    if (openStream) {
+                                        ffmpeg.close();
+                                    } else {
+                                        await ffmpeg.core();
+                                    }
+                                }} block danger rounded>
+                                    <Text>{ openStream ? 'Stopper' : 'Lancer' } le stream</Text>
                                 </Button>
                             </View>
 
