@@ -8,7 +8,6 @@ const Profile = ({ navigation }) => {
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={styles.titleBar}>
                     <Ionicons name="ios-arrow-back" size={24} color="#52575D"></Ionicons>
-                    <Ionicons name="md-more" size={24} color="#52575D"></Ionicons>
                 </View>
 
                 <View style={{ alignSelf: "center" }}>
@@ -53,7 +52,7 @@ const Profile = ({ navigation }) => {
                             <Entypo name="youtube" size={24} color="white" />
                         </View>
                         <View style={styles.infoContainer}>
-                            <FontAwesome5 name="twitch" size={24} color="white" />
+                            <FontAwesome5 name="facebook" size={24} color="white" />
                         </View>
                     </View>
                 </View>
