@@ -19,9 +19,9 @@ import FpvScreen from "./src/screens/FpvScreen.js";
 import HomeScreen from "./src/screens/HomeScreen.js";
 import AuthScreen from "./src/screens/AuthScreen.js";
 
-import { FpvRoute, AuthRoute, HomeRoute } from "./src/App/Route";
-
+import * as app_route from "./src/App/Route";
 import * as app_service from "./src/App/Service";
+
 import * as api_node_js from "./src/Api/Nodejs";
 import * as api_firebase from "./src/Api/Firebase";
 import * as api_secure_store from "./src/Api/SecureStore";
@@ -139,8 +139,8 @@ const App = () => {
                 <NavigationContainer theme={ DarkTheme }>
                     <Stack.Navigator>
                         <Stack.Screen
-                            name={ AuthRoute.name }
-                            options={ AuthRoute.options }>
+                            name={ app_route.auth.name }
+                            options={ app_route.auth.options }>
                             { (props) => (
                                 <AuthScreen { ...props }
                                             loading={ loading }
@@ -151,13 +151,13 @@ const App = () => {
                             ) }
                         </Stack.Screen>
                         <Stack.Screen
-                            name={ HomeRoute.name }
-                            options={ HomeRoute.options }
+                            name={ app_route.home.name }
+                            options={ app_route.home.options }
                             component={ HomeScreen }
                         />
                         <Stack.Screen
-                            name={ FpvRoute.name }
-                            options={ FpvRoute.options }
+                            name={ app_route.fpv.name }
+                            options={ app_route.fpv.options }
                             component={ FpvScreen }
                         />
                     </Stack.Navigator>

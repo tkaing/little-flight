@@ -4,7 +4,7 @@ const forFade = ({ current }) => ({
     }
 });
 
-const FpvRoute = {
+const fpv = {
     name: 'fpv',
     options: {
         title: 'My FPV Screen',
@@ -12,7 +12,7 @@ const FpvRoute = {
     }
 };
 
-const AuthRoute = {
+const auth = {
     name: 'auth',
     options: {
         headerShown: false,
@@ -20,7 +20,7 @@ const AuthRoute = {
     }
 };
 
-const HomeRoute = {
+const home = {
     name: 'home',
     options: {
         title: 'My Home',
@@ -30,7 +30,7 @@ const HomeRoute = {
 };
 
 export {
-    FpvRoute,
-    AuthRoute,
-    HomeRoute,
+    fpv,
+    auth,
+    home,
 };

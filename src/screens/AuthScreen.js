@@ -5,7 +5,7 @@ import { Container, Content } from "native-base";
 import { lockAsync, OrientationLock } from "expo-screen-orientation";
 
 import { SignIn, SignUp, styles } from "./Auth";
-import { HomeRoute } from '../App/Route';
+import * as app_route from '../App/Route';
 
 const AuthScreen = (
     {
@@ -21,7 +21,7 @@ const AuthScreen = (
     const [isSignIn, setSignIn] = useState(true);
 
     const on = {
-        RedirectToHome: () => navigation.navigate(HomeRoute.name),
+        RedirectToHome: () => navigation.navigate(app_route.home.name),
         SignInWithGoogle: () => googlePromptAsync()
     };
 
@@ -46,7 +46,7 @@ const AuthScreen = (
 
     return (
         <Container>
-            <Content style={{ flexDirection: 'column' }}
+            <Content style={[ { flexDirection: 'column' } ]}
                      padder
                      contentContainerStyle={[ styles.content ]}>
                 { isSignIn &&
