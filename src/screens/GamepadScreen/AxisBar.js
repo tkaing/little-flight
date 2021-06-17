@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, WebView } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 export default class AxisBar extends React.Component {
 	render() {
@@ -29,4 +29,4 @@ const styles = StyleSheet.create({
     }
   })
 
-export default AxisBar;
+//export default AxisBar;

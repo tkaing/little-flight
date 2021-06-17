@@ -1,12 +1,12 @@
 import React from "react";
 import { Content, Text } from "native-base";
 
-const Recordings = ({ navigation }) => {
+const Settings = ({ navigation }) => {
     return (
         <Content>
-            <Text>Recordings</Text>
+            <Text>Settings</Text>
         </Content>
     )
 };
 
-export default Recordings;
+export default Settings;
