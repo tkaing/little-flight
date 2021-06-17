@@ -7,10 +7,10 @@ export const ENTRIES1 = [
     {
         title: 'Live feature',
         subtitle: 'You can share your experience with social media',
-        illustration: 'https://image.shutterstock.com/image-vector/template-colorful-multimedia-frame-mockup-600w-1642324960.jpg'
+        illustration: 'https://images.radio-canada.ca/q_auto,w_960/v1/ici-info/16x9/youtube-facebook-twitter-logo-app-appli-icone-icones.jpg'
     },
     {
-        title: 'Controlling drone with PS4 controller',
+        title: 'Controlling drone with a controller',
         subtitle: 'Lorem ipsum dolor sit amet',
         illustration: 'https://cdn.pixabay.com/photo/2017/08/10/07/29/sony-2619483_1280.jpg'
     }
