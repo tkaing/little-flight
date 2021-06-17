@@ -35,7 +35,7 @@ const App = () => {
         androidClientId: '817789782056-2i4ju976pjcs7nl9qur39ov6anl6leum.apps.googleusercontent.com',
     });
 
-    const Handling = {
+    const on = {
         showToast: (message) => {
             Toast.show({
                 text: message,
@@ -45,20 +45,28 @@ const App = () => {
         },
         loadCurrentUser: async () => {
             const currentToken = await SecureStore.getItemAsync(api_secure_store.TOKEN);
-            if (currentToken && !currentUser) {
-                try {
-                    setLoading(true);
-                    const defaultApiResponse = await axios.get(api_default.person.find_by_token(), {
-                        headers: { 'Authorization': `Bearer ${ currentToken }` }
-                    });
-                    const { email, username } = defaultApiResponse.data;
-                    setCurrentUser({ email: email, username: username });
+            if (currentToken) {
+                if (currentUser) {
                     setLoading(false);
-                } catch (failure) {
-                    setLoading(false);
-                    Handling.showToast('Invalid/Expired token');
-                    await SecureStore.deleteItemAsync(api_secure_store.TOKEN);
-                    setCurrentUser(undefined);
+                } else {
+                    try {
+                        setLoading(true);
+                        const defaultApiResponse = await axios.get(api_default.person.find_by_token(), {
+                            headers: {'Authorization': `Bearer ${currentToken}`}, timeout: 5000
+                        });
+                        const {email, username} = defaultApiResponse.data;
+                        setLoading(false);
+                        setCurrentUser({email: email, username: username});
+                    } catch (failure) {
+                        setLoading(false);
+                        on.showToast(
+                            failure.code === 'ECONNABORTED'
+                                ? `Unable to connect to Api.`
+                                : `Session expired. Please try to sign in again.`
+                        );
+                        await SecureStore.deleteItemAsync(api_secure_store.TOKEN);
+                        setCurrentUser(undefined);
+                    }
                 }
             }
         },
@@ -66,20 +74,25 @@ const App = () => {
             if (response) {
                 setLoading(true);
                 if (response.type === 'error') {
-                    Handling.showToast('Unable to connect to Google');
                     setLoading(false);
+                    on.showToast('Unable to connect to Google');
                 }
                 if (response.type === 'success') {
                     try {
                         const accessToken = response.params.access_token;
-                        const defaultApiResponse = await axios.post(api_default.person.sign_in_with_google(accessToken));
+                        const defaultApiResponse = await axios.post(api_default.person.sign_in_with_google(accessToken), {},
+                            { timeout: 5000 }
+                        );
                         const defaultApiToken = defaultApiResponse.data.jwt;
                         await SecureStore.setItemAsync(api_secure_store.TOKEN, defaultApiToken);
-                        setLoading(false);
-                        await Handling.loadCurrentUser();
+                        await on.loadCurrentUser();
                     } catch (failure) {
-                        Handling.showToast('Unable to connect to Google');
                         setLoading(false);
+                        on.showToast(
+                            failure.code === 'ECONNABORTED' || failure.message === 'Network Error'
+                                ? `Unable to connect to Api.`
+                                : `Unable to connect to Google.`
+                        );
                     }
                 }
             }
@@ -91,11 +104,11 @@ const App = () => {
     }, []);*/
 
     useEffect(() => {
-        Handling.responseCallback();
+        on.responseCallback();
     }, [response]);
 
     useEffect(() => {
-        Handling.loadCurrentUser();
+        on.loadCurrentUser();
     }, [currentUser]);
 
     const [fontsLoaded] = useFonts({
@@ -123,7 +136,7 @@ const App = () => {
                                             loading={ loading }
                                             setLoading={ setLoading }
                                             currentUser={ currentUser }
-                                            loadCurrentUser={ Handling.loadCurrentUser }
+                                            loadCurrentUser={ on.loadCurrentUser }
                                             googlePromptAsync={ promptAsync } />
                             ) }
                         </Stack.Screen>

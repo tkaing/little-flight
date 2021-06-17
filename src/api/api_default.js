@@ -1,4 +1,4 @@
-const baseUrl = 'http://10.33.1.205:3000';
+const baseUrl = 'http://192.168.1.42:3000';
 
 const droneUrl = `${ baseUrl }/drone`;
 const personUrl = `${ baseUrl }/person`;
@@ -6,7 +6,7 @@ const personUrl = `${ baseUrl }/person`;
 const drone = {
     land: () => `${ droneUrl }/land`,
     takeoff: () => `${ droneUrl }/takeoff`,
-    command: () => `${ droneUrl }/command`
+    command: () => `${ droneUrl }/command`,
 };
 
 const person = {
