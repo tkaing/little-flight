@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 
-import SignIn from "./AuthScreen/SignIn";
-import SignUp from "./AuthScreen/SignUp";
-import MainLoader from "../components/core/MainLoader";
+import { MainLoader } from "../core";
 import { Container, Content } from "native-base";
 import { lockAsync, OrientationLock } from "expo-screen-orientation";
 
-import { HomeRoute } from '../app/app_route';
+import { SignIn, SignUp, styles } from "./Auth";
+import { HomeRoute } from '../App/Route';
 
 const AuthScreen = (
     {
@@ -49,7 +48,7 @@ const AuthScreen = (
         <Container>
             <Content style={{ flexDirection: 'column' }}
                      padder
-                     contentContainerStyle={{ ...styles.content }}>
+                     contentContainerStyle={[ styles.content ]}>
                 { isSignIn &&
                     <SignIn setSignIn={ setSignIn }
                             setLoading={ setLoading }
@@ -67,12 +66,4 @@ const AuthScreen = (
     );
 };
 
-const styles = {
-    content: {
-        flex: 1,
-        alignSelf: 'center',
-        justifyContent: 'center'
-    }
-};
-
-export default AuthScreen;
+export default AuthScreen

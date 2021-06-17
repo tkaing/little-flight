@@ -3,7 +3,7 @@ import { Button, Icon, Text } from "native-base";
 
 const GoogleConnect = ({ style, setLoading, signInWithGoogle }) => {
 
-    const Handling = {
+    const on = {
         signInWithGoogle: () => {
             setLoading(true);
             signInWithGoogle()
@@ -12,12 +12,12 @@ const GoogleConnect = ({ style, setLoading, signInWithGoogle }) => {
     };
 
     return (
-        <Button block danger rounded iconLeft style={{ ...style }}
-                onPress={ () => Handling.signInWithGoogle() }>
+        <Button block danger rounded iconLeft style={[ ...style ]}
+                onPress={ () => on.signInWithGoogle() }>
             <Icon name='logo-google' />
             <Text>Log in with Google</Text>
         </Button>
     )
 };
 
-export default GoogleConnect;
+export default GoogleConnect

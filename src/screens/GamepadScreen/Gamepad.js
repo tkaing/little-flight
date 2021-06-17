@@ -6,7 +6,7 @@ import { lockAsync, OrientationLock } from "expo-screen-orientation";
 const Gamepad = (
     { setFpvRemoteView }
 ) => {
-    
+
     const [fabActive, setFabActive] = useState(false);
 
     const on = {};
@@ -18,16 +18,16 @@ const Gamepad = (
 
     return (
         <Container>
-            <View style={{ ...styles.content }}>
+            <View style={[ styles.content ]}>
 
-                <View style={{ ...styles.streamView }}>
+                <View style={[ styles.streamView ]}>
                     <Text>xxxxx</Text>
                     <Fab
-                        style={{ ...styles.actionButton, backgroundColor: '#5067FF' }}
+                        style={[ styles.actionButton, { backgroundColor: '#5067FF' } ]}
                         active={ fabActive }
                         position="bottomRight"
                         direction="up"
-                        block info rounded 
+                        block info rounded
                         onPress={ () => setFabActive(!fabActive) }>
                         <Icon name="share" />
                         <Button style={{ backgroundColor: '#5067FF' }}>
@@ -59,4 +59,4 @@ const styles = {
     streamView: { flex: 1},
 };
 
-export default Gamepad;
+export default Gamepad

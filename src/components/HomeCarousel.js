@@ -52,9 +52,9 @@ export class HomeCarousel extends Component {
         const { slider1ActiveSlide } = this.state;
 
         return (
-            <View style={styles.exampleContainer}>
-                <Text style={styles.title}>{`Little Flight Project`}</Text>
-                <Text style={styles.subtitle}>{title}</Text>
+            <View style={[ styles.exampleContainer ]}>
+                <Text style={[ styles.title ]}>{`Little Flight Project`}</Text>
+                <Text style={[ styles.subtitle ]}>{ title }</Text>
                 <Carousel
                   ref={c => this._slider1Ref = c}
                   data={ENTRIES1}
@@ -97,7 +97,7 @@ export class HomeCarousel extends Component {
         const example1 = this.mainExample(1, 'You can connect yout drone now.');
 
         return (
-                <View style={styles.container}>
+                <View style={[ styles.container ]}>
                     <StatusBar
                       translucent={true}
                       backgroundColor={'rgba(0, 0, 0, 0.3)'}
@@ -105,9 +105,9 @@ export class HomeCarousel extends Component {
                     />
                     { this.gradient }
                     <ScrollView
-                      style={styles.scrollview}
-                      scrollEventThrottle={200}
-                      directionalLockEnabled={true}
+                      style={[ styles.scrollview ]}
+                      scrollEventThrottle={ 200 }
+                      directionalLockEnabled={ true }
                     >
                         { example1 }
                     </ScrollView>
@@ -116,4 +116,4 @@ export class HomeCarousel extends Component {
     }
 }
 
-export default HomeCarousel;
+export default HomeCarousel
