@@ -3,14 +3,14 @@ import React, { cloneElement, useEffect, useState } from "react";
 import { lockAsync, OrientationLock } from "expo-screen-orientation";
 import { Button, Container, Icon, Text, Footer, FooterTab } from "native-base";
 
-import * as app_home from '../app/screen/app_home';
-import { capitalize } from "../app/utils/app_string";
+import * as app_screen from '../App/Screen';
+import * as app_service from "../App/Service";
 
 const HomeScreen = ({ navigation }) => {
 
     const [tabIndex, setTabIndex] = useState(0);
 
-    const On = {
+    const on = {
         TabSwitch: (tab) => setTabIndex(tab)
     };
 
@@ -19,12 +19,12 @@ const HomeScreen = ({ navigation }) => {
     }, []);
 
     useEffect(() => {
-        return navigation.addListener('focus', () => {
-            lockAsync(OrientationLock.DEFAULT);
-        });
+        return navigation.addListener(
+            'focus', () => lockAsync(OrientationLock.DEFAULT)
+        );
     }, [navigation]);
 
-    const currentTab = app_home.listOfTabs[tabIndex];
+    const currentTab = app_screen.Home.listOfTabs[tabIndex];
 
     return (
         <Container>
@@ -33,13 +33,13 @@ const HomeScreen = ({ navigation }) => {
             )}
             <Footer>
                 <FooterTab>
-                    { app_home.listOfTabs.map((it, index) =>
+                    { app_screen.Home.listOfTabs.map((it, index) =>
                         <Button key={ it.name }
                                 active={ tabIndex === index }
-                                onPress={ () => On.TabSwitch(index) }>
+                                onPress={ () => on.TabSwitch(index) }>
                             <Icon name={ it.icon } />
                             <Text style={ it.style } numberOfLines={ 1 }>
-                                { capitalize(it.name) }
+                                { app_service.capitalize(it.name) }
                             </Text>
                         </Button>
                     )}
@@ -49,4 +49,4 @@ const HomeScreen = ({ navigation }) => {
     );
 };
 
-export default HomeScreen;
+export default HomeScreen
