@@ -32,9 +32,9 @@ const ffmpeg = {
     },
     input: () => {
         //let input = `file://${ RNFS.DownloadDirectoryPath }/sample-video.mp4`;
-        //let input = `file://${ RNFS.DownloadDirectoryPath }/sample-mp4-file.mp4`;
+        let input = `file://${ RNFS.DownloadDirectoryPath }/sample-mp4-file.mp4`;
         //let input = "udp://0.0.0.0:11111"; // ???
-        let input = "udp://127.0.0.1:11111"; // OK
+        //let input = "udp://127.0.0.1:11111"; // OK
         //let input = "udp://192.168.10.1:11111"; // ???
         return input;
     },
@@ -82,18 +82,31 @@ const ffmpeg = {
         } else {
 
             const socket = dgram.createSocket({ type: 'udp4', debug: true });
-            const command = `-i ${ ffmpeg.input() } -q:v 4 -r 1 -update 1 ${ ffmpeg.output() }`;
 
-            socket.bind(8001);
+            /*socket.bind(8001);
             socket.on('close', (msg) => {
                 console.log('Close', msg);
                 setOpenStream(false);
             });
             socket.on('message', (msg) => console.log('Message', msg));
-            socket.once('listening', () => {
+            socket.once('listening', () => {*/
 
                 ffmpeg.config(setNewFrame);
-                RNFFmpeg.executeAsync(command, (execution) => {
+
+                RNFFmpeg.executeAsync(`-i ${ ffmpeg.input() } -q:v 4 -r 1 -update 1 ${ ffmpeg.output() }`, (execution) => {
+                    console.log(execution);
+                    setOpenStream(false);
+                })
+                    .then(executionId => {
+                        console.log(`Async FFmpeg process started with executionId ${executionId}.`);
+                        setOpenStream(true);
+                    })
+                    .catch(reason => {
+                        console.log(reason);
+                        setOpenStream(false);
+                    })
+                ;
+                RNFFmpeg.executeAsync(`-i ${ ffmpeg.input() } megavideo.mp4`, (execution) => {
                     console.log(execution);
                     setOpenStream(false);
                 })
@@ -107,7 +120,7 @@ const ffmpeg = {
                     })
                 ;
 
-            });
+            //});
         }
     }
 };
