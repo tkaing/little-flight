@@ -130,8 +130,13 @@ const App = () => {
                         <Stack.Screen
                             name={ HomeRoute.name }
                             options={ HomeRoute.options }
-                            component={ HomeScreen }
-                        />
+                        >
+                            { (props) => (
+                                <HomeScreen { ...props }
+                                    currentUser={ currentUser }
+                                />
+                            ) }
+                        </Stack.Screen>
                         <Stack.Screen
                             name={ FpvRoute.name }
                             options={ FpvRoute.options }

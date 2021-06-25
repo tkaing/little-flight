@@ -1,13 +1,16 @@
 import React from "react";
 import { Text, View, SafeAreaView, Image, ScrollView } from "react-native";
 import { Ionicons, MaterialIcons, AntDesign, Entypo, FontAwesome5} from "@expo/vector-icons";
+import SearchBar from "../../components/searchBar";
 
-const Profile = ({ navigation }) => {
+const Profile = ({ navigation, currentUser }) => {
+    console.log(currentUser);
+
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={styles.titleBar}>
-                    <Ionicons name="ios-arrow-back" size={24} color="#52575D"></Ionicons>
+                    <SearchBar/>
                 </View>
 
                 <View style={{ alignSelf: "center" }}>

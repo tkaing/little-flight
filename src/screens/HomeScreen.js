@@ -6,7 +6,7 @@ import { Button, Container, Icon, Text, Footer, FooterTab } from "native-base";
 import * as app_home from '../app/screen/app_home';
 import { capitalize } from "../app/utils/app_string";
 
-const HomeScreen = ({ navigation }) => {
+const HomeScreen = ({ navigation, currentUser }) => {
 
     const [tabIndex, setTabIndex] = useState(0);
 
@@ -29,7 +29,7 @@ const HomeScreen = ({ navigation }) => {
     return (
         <Container>
             { cloneElement(
-                currentTab.content, { navigation: navigation }
+                currentTab.content, { navigation: navigation, currentUser: currentUser }
             )}
             <Footer>
                 <FooterTab>
