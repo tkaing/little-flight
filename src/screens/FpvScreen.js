@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import { Container, View } from "native-base";
 import { lockAsync, OrientationLock } from "expo-screen-orientation";
-import { styles, StreamView, RemoteView } from "./Fpv";
+import {styles, StreamView, RemoteViewLeft, RemoteViewRight} from "./Fpv";
 
 import Gamepad from "./GamepadScreen/Gamepad";
 
@@ -24,20 +24,18 @@ const FpvScreen = ({ navigation }) => {
         <Container>
             <View style={[ styles.content ]}>
 
-                { isFpvRemoteView &&
-                    <View style={[ styles.padView ]}>
-                        <View style={[ styles.streamView ]}>
-                            <StreamView />
-                        </View>
-                        <View style={[ styles.remoteView ]}>
-                            <RemoteView setFpvRemoteView={ setFpvRemoteView } />
-                        </View>
-                    </View>
-                }
+                <View style={[ styles.remote ]}>
+                    <RemoteViewLeft />
+                </View>
 
-                { !isFpvRemoteView &&
-                    <Gamepad setFpvRemoteView={ setFpvRemoteView } />
-                }
+                <View style={[ styles.stream ]}>
+                    <StreamView />
+                </View>
+
+                <View style={[ styles.remote ]}>
+                    <RemoteViewRight />
+                </View>
+
             </View>
         </Container>
     );

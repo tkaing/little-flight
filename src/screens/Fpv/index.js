@@ -1,9 +1,12 @@
 import styles from './styles';
 import StreamView from './StreamView';
-import RemoteView from './RemoteView';
+import RemoteViewRight from './RemoteViewRight';
+import RemoteViewLeft from './RemoteViewLeft';
+
 
 export {
     styles,
     StreamView,
-    RemoteView,
+    RemoteViewRight,
+    RemoteViewLeft
 };

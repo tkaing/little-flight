@@ -1,18 +1,29 @@
 import React, { useState } from "react";
 
-import { Icon, View } from "native-base";
+import {Button, Icon, Text, View} from "native-base";
 import { TouchableHighlight } from "react-native";
-import { styles, direction, box, Box, Footer } from './Remote';
+import {styles, direction, box, Box, Footer, classes} from './Remote';
 
-const RemoteView = ({ setFpvRemoteView }) => {
+const RemoteViewLeft = ({ setFpvRemoteView }) => {
 
     const [takeoff, setTakeoff] = useState(false);
     const [loading, setLoading] = useState(false);
 
     return (
-        <View style={[ styles.gamepadView, { flex: 1 } ]}>
+        <View>
+            <View style={[ classes.startAndStop ]}>
+                <Button onPress={() => {} } block info rounded iconLeft>
+                    <Text> START / STOP </Text>
+                </Button>
+            </View>
 
-            {/* SECTION = 4 DIRECTIONS */}
+            <View style={[ classes.rotation ]}>
+                <View style={[ classes.circle ]} />
+            </View>
+        </View>
+
+        /*<View style={[ styles.gamepadView, { flex: 1 } ]}>
+
             <View style={[ styles.gamepadLine, { flex: 2, backgroundColor: '#40E0D0' } ]}>
                 <View style={[ styles.centeredItem, { flexDirection: 'row' } ]}>
                     { direction.list.map(_it => (
@@ -24,7 +35,6 @@ const RemoteView = ({ setFpvRemoteView }) => {
                 </View>
             </View>
 
-            {/* SECTION = ROTATE AND UP/DOWN */}
             <View style={[ styles.gamepadLine, { flex: 2, backgroundColor: '#DE3163' } ]}>
                 <View style={[ styles.centeredItem ]}>
                     <Box { ...box.rotationProps } />
@@ -34,15 +44,14 @@ const RemoteView = ({ setFpvRemoteView }) => {
                 </View>
             </View>
 
-            {/* SECTION = FOOTER */}
             <View style={[ styles.gamepadLine, { flex: 1 } ]}>
                 <Footer loading={ loading }
                         takeoff={ takeoff }
                         setTakeoff={ setTakeoff }
                         setFpvRemoteView={ setFpvRemoteView } />
             </View>
-        </View>
+        </View>*/
     );
 };
 
-export default RemoteView
+export default RemoteViewLeft

@@ -56,24 +56,24 @@ const StreamView = ({}) => {
         <>
             {/* Command Drone / Stream / FFMPEG */}
             <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly' }}>
-                <Button onPress={ () => app_drone.run('command') }
+{/*                <Button onPress={ () => app_drone.run('command') }
                         block primary rounded>
                     <Icon name="airplane-outline" />
-                </Button>
-                <Button onPress={ () => app_drone.run('streamon') }
+                </Button>*/}
+{/*                <Button onPress={ () => app_drone.run('streamon') }
                         block primary rounded>
                     <Icon name="videocam-outline" />
-                </Button>
-                <Button onPress={ () => app_drone.run('battery') }
+                </Button>*/}
+{/*                <Button onPress={ () => app_drone.run('battery') }
                         block primary rounded>
                     <Icon name="battery-full-outline" />
-                </Button>
-                <Button onPress={ async () => openStream
+                </Button>*/}
+{/*                <Button onPress={ async () => openStream
                     ? ffmpeg.close(setOpenStream)
                     : await ffmpeg.core(setOpenStream, setNewFrame)
                 } block danger rounded>
                     <Text>{ openStream ? 'Stopper' : 'Lancer' } le stream</Text>
-                </Button>
+                </Button>*/}
             </View>
 
             {/* Stream Preview */}
