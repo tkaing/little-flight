@@ -4,6 +4,7 @@ import { HomeCarousel } from "../../components";
 import { Button, Content, Icon, Text } from "native-base";
 
 import * as app_route from "../../App/Route";
+import BarConnect from "../../components/BarConnect";
 
 const HomeView = ({ navigation }) => {
 
@@ -13,6 +14,8 @@ const HomeView = ({ navigation }) => {
                  contentContainerStyle={
                      { flex: 1, justifyContent: 'center', alignSelf: 'center' }
                  }>
+            <BarConnect/>
+            
             <HomeCarousel />
 
             <Button block success rounded iconLeft

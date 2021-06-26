@@ -1,13 +1,13 @@
 import React from "react";
 
-import { Content, Text } from "native-base";
+import { Content, Text, View } from "native-base";
 
 const RecordingsView = ({ navigation }) => {
     return (
-        <Content>
-            <Text>Recordings</Text>
-        </Content>
-    );
+        <View style={{height: 100, backgroundColor: "red"}}>
+            <text>hi</text>
+        </View>
+    )
 };
 
-export default RecordingsView
+export default SettingsView
