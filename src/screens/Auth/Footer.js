@@ -1,36 +1,50 @@
 import React from 'react';
+import styles from "./Styles.Footer";
 
-import { styles } from "./Sign";
-import { HyperLink } from "../../core";
+import DefaultProps from "../../App/DefaultProps";
 import { GoogleConnect } from "../../components";
-import { Button, Icon, Text, View } from "native-base";
+import { Button, Center, Column, Icon, Link, Text } from "native-base";
 
 const Footer = (
-    { text, link, button, onLinkPress, setLoading,
-        handleSubmit, googleConnect }
+    {
+        text,
+        link,
+        button,
+        setLoading,
+        onLinkPress,
+        handleSubmit,
+        googleConnect
+    }
 ) => {
 
     return (
-        <View style={[ styles.footer ]}>
+        <Column style={[ styles.container ]}>
 
-            <Button onPress={ handleSubmit } block info rounded iconLeft>
-                <Icon name={ button.icon } />
+            <Button
+                width="70%"
+                variant="blue"
+                onPress={ handleSubmit }
+                startIcon={ <Icon { ...DefaultProps.Icon.forButton } name={ button.icon } /> }>
                 <Text>{ button.text }</Text>
             </Button>
 
             { googleConnect &&
-                <GoogleConnect style={[ styles.footerConnect ]}
-                               setLoading={ setLoading }
-                               signInWithGoogle={ googleConnect.signIn } />
+                <GoogleConnect
+                    setLoading={ setLoading }
+                    signInWithGoogle={ googleConnect.signIn } />
             }
 
-            <Text style={[ styles.footerText ]}>{ text }</Text>
+            <Center>
+                <Text style={[ styles._text ]}
+                      children={ text } />
+                <Link { ...DefaultProps.Link }
+                      style={[ styles._link ]}
+                      onPress={ onLinkPress }
+                      children={ link } />
+            </Center>
 
-            <HyperLink style={[ styles.footerLink ]}
-                       onPress={ onLinkPress }>{ link }</HyperLink>
-
-        </View>
-    )
+        </Column>
+    );
 };
 
 export default Footer

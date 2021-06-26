@@ -1,10 +1,8 @@
-import { Toast } from "native-base";
-
-const toast = (type, message, duration = 10000) => {
-    Toast.show({
-        type: type, // danger, warning, success
-        text: message,
-        duration: duration
+const toast = (_toast, _type, _message, _duration = 10000) => {
+    _toast.show({
+        title: _message,
+        status: _type, // (danger, warning, success)
+        duration: _duration
     });
 };
 

@@ -1,6 +1,6 @@
 import React from "react";
+import styles from "./Styles.History";
 
-import { styles } from './History';
 import { Text, View } from "native-base";
 import { ScrollView } from "react-native";
 

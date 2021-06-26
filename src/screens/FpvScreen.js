@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
+import styles from "./Fpv/Styles";
 
 import { Container, View } from "native-base";
 import { lockAsync, OrientationLock } from "expo-screen-orientation";
-import { styles, StreamView, RemoteView } from "./Fpv";
+import { StreamView, RemoteView } from "./Fpv";
 
 import Gamepad from "./GamepadScreen/Gamepad";
 

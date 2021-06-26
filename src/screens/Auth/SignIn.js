@@ -2,54 +2,73 @@ import React from 'react';
 
 import { Formik } from "formik";
 import { Footer } from "../Auth";
-import { styles, _in } from "./Sign";
-import { Form, Icon, Input, Item, View } from "native-base";
+import { FormControl, Icon, Input } from "native-base";
 
-import * as app_form from "../../App/Form";
+import DefaultProps from "../../App/DefaultProps";
+
+import { on, schema } from "./../../tools";
 
 const SignIn = (
-    { setLoading, setSignIn, loadCurrentUser,
-        signInWithGoogle }
+    {
+        state: {
+            toast,
+            appUser, setAppUser,
+            loading, setLoading,
+            isSignIn, setSignIn,
+            googlePromptAsync,
+        }
+    }
 ) => {
-
-    const { on, schema } = _in;
 
     return (
         <Formik
-            onSubmit={
-                values => on.submit(values, {
-                    setLoading,
-                    loadCurrentUser
-                })
-            }
+            onSubmit={ values => on.auth.signInSubmit(values, {
+                toast,
+                appUser, setAppUser,
+                loading, setLoading,
+            }) }
             initialValues={{ email: "", password: "" }}
-            validationSchema={ schema }>
+            validationSchema={ schema.signInForm }>
 
-            { ({ errors, touched, values,
-                   handleBlur, handleChange, handleSubmit }) => (
+            { ({
+                   errors,
+                   values,
+                   handleBlur,
+                   handleChange,
+                   handleSubmit,
+            }) => (
 
-                <View style={[ styles.formWrapper ]}>
+                <>
 
-                    <Form>
-                        <Item error={ app_form.is_not_valid(touched, errors, 'email') }>
-                            <Icon active name='at-outline' />
-                            <Input placeholder='Email'
-                                   keyboardType='email-address'
-                                   value={ values.email }
-                                   onBlur={ handleBlur('email') }
-                                   onChangeText={ handleChange('email') } />
-                            { app_form.display_error(touched, errors, 'email') }
-                        </Item>
-                        <Item error={ app_form.is_not_valid(touched, errors, 'password') } style={[ styles.formItem ]}>
-                            <Icon active name='key-outline' />
-                            <Input placeholder='Password'
-                                   secureTextEntry
-                                   value={ values.password }
-                                   onBlur={ handleBlur('password') }
-                                   onChangeText={ handleChange('password') } />
-                            { app_form.display_error(touched, errors, 'password') }
-                        </Item>
-                    </Form>
+                    <FormControl isRequired isInvalid={ 'email' in errors }>
+                        <Input placeholder='Email'
+                               keyboardType='email-address'
+                               value={ values.email }
+                               onBlur={ handleBlur('email') }
+                               onChangeText={ handleChange('email') }
+                               InputLeftElement={
+                                   <Icon { ...DefaultProps.Icon.forInput } name='at-outline' />
+                               }
+                        />
+                        <FormControl.ErrorMessage>
+                            { errors.email }
+                        </FormControl.ErrorMessage>
+                    </FormControl>
+
+                    <FormControl isRequired isInvalid={ 'password' in errors } style={[ { marginTop: 20 } ]}>
+                        <Input placeholder='Password'
+                               secureTextEntry
+                               value={ values.password }
+                               onBlur={ handleBlur('password') }
+                               onChangeText={ handleChange('password') }
+                               InputLeftElement={
+                                   <Icon { ...DefaultProps.Icon.forInput } name='key-outline' />
+                               }
+                        />
+                        <FormControl.ErrorMessage>
+                            { errors.password }
+                        </FormControl.ErrorMessage>
+                    </FormControl>
 
                     <Footer
                         text="Vous n'avez pas de compte ?"
@@ -58,9 +77,9 @@ const SignIn = (
                         setLoading={ setLoading }
                         onLinkPress={ () => setSignIn(false) }
                         handleSubmit={ handleSubmit }
-                        googleConnect={{ signIn: signInWithGoogle }} />
+                        googleConnect={{ signIn: () => on.auth.signInWithGoogle(googlePromptAsync) }} />
 
-                </View>
+                </>
             )}
         </Formik>
     );

@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
+import styles from "./Styles.Stream";
 
-import { styles, ffmpeg } from "./Stream";
-import { Button, Icon, Text, Thumbnail, View } from "native-base";
+import { Button, Icon, Image, Text, View } from "native-base";
 
 import * as app_drone from "../../App/Drone";
 
-const StreamView = ({}) => {
+import { ffmpeg } from "./../../tools";
+
+const StreamView = ({ xxx }) => {
 
     const [newFrame, setNewFrame] = useState();
     const [openStream, setOpenStream] = useState(false);
@@ -80,12 +82,12 @@ const StreamView = ({}) => {
             { openStream &&
                 <View style={[ styles.frameView ]}>
                     { listOfFrames.map(_it => (
-                        <Thumbnail fadeDuration={ 0 }
-                                   source={{ uri: _it.uri }}
-                                   square
-                                   style={[ styles.frame ]}
-                                   large
-                                   key={ _it.number } />
+                        <Image fadeDuration={ 0 }
+                               source={{ uri: _it.uri }}
+                               square
+                               style={[ styles.frame ]}
+                               large
+                               key={ _it.number } />
                     ))}
                 </View>
             }

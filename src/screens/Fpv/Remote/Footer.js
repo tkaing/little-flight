@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
+import styles from "../Styles.Remote";
 
-import { styles } from "../Remote";
 import { Button, Fab, Icon, Text, View } from "native-base";
 
 import * as app_drone from "../../../App/Drone";

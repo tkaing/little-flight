@@ -1,12 +1,13 @@
 import React from "react";
+import styles from "./Styles.Recordings";
 
-import { Content, Text } from "native-base";
+import { Center, Text } from "native-base";
 
 const RecordingsView = ({ navigation }) => {
     return (
-        <Content>
+        <Center flex={ 1 }>
             <Text>Recordings</Text>
-        </Content>
+        </Center>
     );
 };
 

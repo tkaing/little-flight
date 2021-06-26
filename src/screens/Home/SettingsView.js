@@ -1,12 +1,13 @@
 import React from "react";
+import styles from "./Styles.Settings";
 
-import { Content, Text } from "native-base";
+import { Center, Text } from "native-base";
 
 const SettingsView = ({ navigation }) => {
     return (
-        <Content>
+        <Center flex={ 1 }>
             <Text>Settings</Text>
-        </Content>
+        </Center>
     )
 };
 

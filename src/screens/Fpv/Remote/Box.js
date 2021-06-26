@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
+import styles from "../Styles.Remote";
 
-import { styles } from "../Remote";
 import { Icon, View } from "native-base";
 import { TouchableHighlight } from "react-native";
 

@@ -1,23 +1,28 @@
 import React from "react";
-import { Button, Icon, Text } from "native-base";
 
-const GoogleConnect = ({ style, setLoading, signInWithGoogle }) => {
+import { Button, Icon, Text } from "native-base";
+import DefaultProps from "../App/DefaultProps";
+
+const GoogleConnect = ({ setLoading, signInWithGoogle }) => {
 
     const on = {
         signInWithGoogle: () => {
             setLoading(true);
             signInWithGoogle()
-                .finally(() => setLoading(false));
+                .finally( () => setLoading(false) );
         }
     };
 
     return (
-        <Button block danger rounded iconLeft style={[ ...style ]}
-                onPress={ () => on.signInWithGoogle() }>
-            <Icon name='logo-google' />
+        <Button
+            width="70%"
+            variant="red"
+            marginTop={ 5 }
+            onPress={ () => on.signInWithGoogle() }
+            startIcon={ <Icon { ...DefaultProps.Icon.forButton } name='logo-google' /> }>
             <Text>Log in with Google</Text>
         </Button>
-    )
+    );
 };
 
 export default GoogleConnect

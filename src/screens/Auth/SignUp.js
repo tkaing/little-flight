@@ -2,61 +2,85 @@ import React from 'react';
 
 import { Formik } from "formik";
 import { Footer } from "../Auth";
-import { styles, _up } from "./Sign";
-import { Form, Icon, Input, Item, View } from "native-base";
+import { FormControl, Icon, Input } from "native-base";
 
-import * as app_form from "../../App/Form";
+import { on, schema } from "./../../tools";
+import DefaultProps from "../../App/DefaultProps";
 
 const SignUp = (
-    { setLoading, setSignIn, loadCurrentUser }
+    {
+        state: {
+            toast,
+            appUser, setAppUser,
+            loading, setLoading,
+            isSignIn, setSignIn,
+        }
+    }
 ) => {
-
-    const { on, schema } = _up;
 
     return (
         <Formik
-            onSubmit={
-                values => on.submit(values, {
-                    setLoading,
-                    loadCurrentUser
-                })
-            }
+            onSubmit={ values => on.auth.signUpSubmit(values, {
+                toast,
+                appUser, setAppUser,
+                loading, setLoading,
+            }) }
             initialValues={{ email: "", password: "", username: "" }}
-            validationSchema={ schema }>
+            validationSchema={ schema.signUpForm }>
 
-            { ({ errors, touched, values,
-                   handleBlur, handleChange, handleSubmit }) => (
+            { ({
+                   errors,
+                   values,
+                   handleBlur,
+                   handleChange,
+                   handleSubmit,
+            }) => (
 
-                <View style={[ styles.formWrapper ]}>
+                <>
 
-                    <Form>
-                        <Item error={ app_form.is_not_valid(touched, errors, 'email') }>
-                            <Icon active name='at-outline' />
-                            <Input placeholder='Email'
-                                   keyboardType='email-address'
-                                   value={ values.email }
-                                   onBlur={ handleBlur('email') }
-                                   onChangeText={ handleChange('email') } />
-                            { app_form.display_error(touched, errors, 'email') }
-                        </Item>
-                        <Item error={ app_form.is_not_valid(touched, errors, 'password') } style={[ styles.formItem ]}>
-                            <Icon active name='key-outline' />
-                            <Input value={ values.password }
-                                   onBlur={ handleBlur('password') }
-                                   placeholder='Password'
-                                   onChangeText={ handleChange('password') }
-                                   secureTextEntry />
-                            { app_form.display_error(touched, errors, 'password') }
-                        </Item>
-                        <Item error={ app_form.is_not_valid(touched, errors, 'username') } style={[ styles.formItem ]}>
-                            <Icon active name='language-outline' />
-                            <Input value={ values.username }
-                                   onBlur={ handleBlur('username') }
-                                   placeholder='Pseudonym'
-                                   onChangeText={ handleChange('username') } />
-                            { app_form.display_error(touched, errors, 'username') }
-                        </Item>
-                    </Form>
+                    <FormControl isRequired isInvalid={ 'email' in errors }>
+                        <Input placeholder='Email'
+                               keyboardType='email-address'
+                               value={ values.email }
+                               onBlur={ handleBlur('email') }
+                               onChangeText={ handleChange('email') }
+                               InputLeftElement={
+                                   <Icon { ...DefaultProps.Icon.forInput } name='at-outline' />
+                               }
+                        />
+                        <FormControl.ErrorMessage>
+                            { errors.email }
+                        </FormControl.ErrorMessage>
+                    </FormControl>
+
+                    <FormControl isRequired isInvalid={ 'password' in errors } style={[ { marginTop: 20 } ]}>
+                        <Input value={ values.password }
+                               onBlur={ handleBlur('password') }
+                               placeholder='Password'
+                               onChangeText={ handleChange('password') }
+                               secureTextEntry
+                               InputLeftElement={
+                                   <Icon { ...DefaultProps.Icon.forInput } name='key-outline' />
+                               }
+                        />
+                        <FormControl.ErrorMessage>
+                            { errors.password }
+                        </FormControl.ErrorMessage>
+                    </FormControl>
+
+                    <FormControl isRequired isInvalid={ 'username' in errors } style={[ { marginTop: 20 } ]}>
+                        <Input value={ values.username }
+                               onBlur={ handleBlur('username') }
+                               placeholder='Pseudonym'
+                               onChangeText={ handleChange('username') }
+                               InputLeftElement={
+                                   <Icon { ...DefaultProps.Icon.forInput } name='language-outline' />
+                               }
+                        />
+                        <FormControl.ErrorMessage>
+                            { errors.username }
+                        </FormControl.ErrorMessage>
+                    </FormControl>
 
                     <Footer
                         text="Vous avez déjà un compte ?"
@@ -66,7 +90,7 @@ const SignUp = (
                         onLinkPress={ () => setSignIn(true) }
                         handleSubmit={ handleSubmit } />
 
-                </View>
+                </>
             )}
         </Formik>
     );

@@ -1,18 +1,22 @@
-import React, { cloneElement, useEffect, useState } from "react";
+import React, { useEffect, useState, cloneElement } from "react";
 
+import { Ionicons } from "@expo/vector-icons";
 import { lockAsync, OrientationLock } from "expo-screen-orientation";
-import { Button, Container, Icon, Text, Footer, FooterTab } from "native-base";
+import { Icon, Text, Row, Pressable, Center, Box } from "native-base";
 
 import * as app_screen from '../App/Screen';
 import * as app_service from "../App/Service";
 
+import { on } from "./../tools";
+import DefaultProps from "../App/DefaultProps";
+
 const HomeScreen = ({ navigation }) => {
+
+    // == useState ===
 
     const [tabIndex, setTabIndex] = useState(0);
 
-    const on = {
-        TabSwitch: (tab) => setTabIndex(tab)
-    };
+    // === useEffect ===
 
     useEffect(() => {
         lockAsync(OrientationLock.DEFAULT);
@@ -27,25 +31,30 @@ const HomeScreen = ({ navigation }) => {
     const currentTab = app_screen.Home.listOfTabs[tabIndex];
 
     return (
-        <Container>
+        <Box flex={ 1 } variant="black" safeAreaBottom>
+
             { cloneElement(
                 currentTab.content, { navigation: navigation }
             )}
-            <Footer>
-                <FooterTab>
-                    { app_screen.Home.listOfTabs.map((it, index) =>
-                        <Button key={ it.name }
-                                active={ tabIndex === index }
-                                onPress={ () => on.TabSwitch(index) }>
-                            <Icon name={ it.icon } />
-                            <Text style={ it.style } numberOfLines={ 1 }>
-                                { app_service.capitalize(it.name) }
+
+            <Row bg="rose.900" alignItems="center" safeAreaBottom shadow={ 6 }>
+                { app_screen.Home.listOfTabs.map((_it, index) =>
+                    <Pressable
+                        py={ 2 }
+                        flex={ 1 }
+                        opacity={ tabIndex === index ? 1 : 0.5 }
+                        onPress={ () => on.home.tabChange({ index },{ setTabIndex }) }>
+                        <Center>
+                            <Icon { ...DefaultProps.Icon.forFooterTab } name={ _it.icon } />
+                            <Text { ...DefaultProps.Text.forFooterTab } numberOfLines={ 1 }>
+                                { app_service.capitalize(_it.name) }
                             </Text>
-                        </Button>
-                    )}
-                </FooterTab>
-            </Footer>
-        </Container>
+                        </Center>
+                    </Pressable>
+                ) }
+            </Row>
+
+        </Box>
     );
 };
 

@@ -1,68 +1,68 @@
 import React, { useEffect, useState } from "react";
+import styles from "./Auth/Styles"
 
 import { MainLoader } from "../core";
-import { Container, Content } from "native-base";
+import { Column } from "native-base";
 import { lockAsync, OrientationLock } from "expo-screen-orientation";
 
-import { SignIn, SignUp, styles } from "./Auth";
-import * as app_route from '../App/Route';
+import { SignIn, SignUp } from "./Auth";
+
+import { redirectTo } from "./../tools";
 
 const AuthScreen = (
     {
-        loading,
-        setLoading,
+        state: {
+            toast,
+            appUser, setAppUser,
+            loading, setLoading,
+            googlePromptAsync,
+        },
         navigation,
-        currentUser,
-        loadCurrentUser,
-        googlePromptAsync
     }
 ) => {
 
+    // == useState ===
+
     const [isSignIn, setSignIn] = useState(true);
 
-    const on = {
-        RedirectToHome: () => navigation.navigate(app_route.home.name),
-        SignInWithGoogle: () => googlePromptAsync()
-    };
+    // == useEffect ===
 
     useEffect(() => {
-        if (currentUser)
-            on.RedirectToHome();
+        if (appUser)
+            redirectTo.Home(navigation);
         lockAsync(OrientationLock.PORTRAIT);
     }, []);
 
     useEffect(() => {
+        if (appUser)
+            redirectTo.Home(navigation);
+    }, [appUser]);
+
+    useEffect(() => {
         return navigation.addListener('focus', () => {
-            if (currentUser)
-                on.RedirectToHome();
+            if (appUser)
+                redirectTo.Home(navigation);
             lockAsync(OrientationLock.PORTRAIT);
         });
     }, [navigation]);
 
-    useEffect(() => {
-        if (currentUser)
-            on.RedirectToHome();
-    }, [currentUser]);
+    const signState = {
+        toast,
+        appUser, setAppUser,
+        loading, setLoading,
+        isSignIn, setSignIn,
+    };
 
     return (
-        <Container>
-            <Content style={[ { flexDirection: 'column' } ]}
-                     padder
-                     contentContainerStyle={[ styles.content ]}>
-                { isSignIn &&
-                    <SignIn setSignIn={ setSignIn }
-                            setLoading={ setLoading }
-                            loadCurrentUser={ loadCurrentUser }
-                            signInWithGoogle={ on.SignInWithGoogle } />
-                }
-                { !isSignIn &&
-                    <SignUp setSignIn={ setSignIn }
-                            setLoading={ setLoading }
-                            loadCurrentUser={ loadCurrentUser } />
-                }
-                { loading && <MainLoader /> }
-            </Content>
-        </Container>
+        <Column style={[ styles.container ]}>
+            { isSignIn &&
+                <SignIn state={{ ...signState, googlePromptAsync }} />
+            }
+            { !isSignIn &&
+                <SignUp state={{ ...signState }} />
+            }
+            { loading && <MainLoader /> }
+        </Column>
     );
 };
 

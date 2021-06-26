@@ -1,6 +1,6 @@
 import React from "react";
+import styles from "./Styles.Profile";
 
-import { styles } from './Profile';
 import { Text, View, SafeAreaView, Image, ScrollView } from "react-native";
 import { Ionicons, MaterialIcons, AntDesign, Entypo, FontAwesome5 } from "@expo/vector-icons";
 

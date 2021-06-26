@@ -1,6 +1,6 @@
 import React from 'react';
 //import { View } from 'react-native';
-import { Text, View, Content} from "native-base";
+import { Text, View } from "native-base";
 import { WebView } from 'react-native-webview';
 
 const HTML = `
