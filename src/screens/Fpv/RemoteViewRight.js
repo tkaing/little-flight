@@ -24,14 +24,15 @@ const RemoteViewRight = ({ setFpvRemoteView }) => {
 
             <View style={[ classes.rotation ]}>
                 <View style={[ classes.circle2 ]} />
+                
             </View>
             <View style={[ classes.fab ]}>
                 <Fab
                     active={ fabActive }
-                    direction="left"
+                    direction="up"
                     containerStyle={{ }}
                     style={[ styles.actionButton, { backgroundColor: '#5067FF', marginTop: 100 } ]}
-                    position="bottomRight"
+                    position="bottomLeft"
                     onPress={() => setFabActive(!fabActive)} block info rounded>
                     <Icon name="share" />
                     <Button style={{ backgroundColor: '#5067FF' }}>

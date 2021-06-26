@@ -4,11 +4,13 @@ export default {
     },
     startAndStop:{
         marginLeft: 55,
+        marginTop: 10,
         alignItems: "center",
         justifyContent: "center"
     },
     recordingsButtons:{
         marginLeft: 0,
+        marginTop: 10,
         flexDirection: "row"
         //alignItems: "center",
         //justifyContent: "center"
@@ -32,5 +34,11 @@ export default {
     icon:{
         justifyContent: "center",
         alignItems: "center"
+    },
+    fab:{
+        marginTop: 80,
+        marginLeft: 80
+        //justifyContent: "center",
+        //alignItems: "center"
     },
 }
