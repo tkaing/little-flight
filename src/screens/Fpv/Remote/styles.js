@@ -29,7 +29,9 @@ export default {
         fontSize: 15
     },
     actionButton: {
-        marginHorizontal: 5
+        marginHorizontal: 5,
+        backgroundColor: '#5067FF', 
+        marginTop: 100
     },
     actionWrapper: {
         justifyContent: 'center'

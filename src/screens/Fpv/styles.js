@@ -9,6 +9,6 @@ export default {
     },
     remote: {
         flex: 1,
-        flexDirection: 'row'
+        flexDirection: 'row',
     }
 }

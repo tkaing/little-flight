@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 
-import {Button, Fab, Icon, Text, View} from "native-base";
+import {Button, Fab, Icon, View} from "native-base";
 import { TouchableHighlight } from "react-native";
 import {styles, direction, box, Box, Footer, classes} from './Remote';
+import DirectionalButton from '../../components/DirectionnalButton'
 
 const RemoteViewRight = ({ setFpvRemoteView }) => {
 
@@ -12,28 +13,24 @@ const RemoteViewRight = ({ setFpvRemoteView }) => {
 
 
     return (
-        <View style={{ flexDirection: 'column' }}>
+        <View style={{ flexDirection: 'column', backgroundColor: '#595758'}}>
             <View style={[ classes.recordingsButtons ]}>
-                <Button onPress={() => {} } block info rounded iconLeft>
+                <Button onPress={() => {} } block info rounded>
                     <Icon style={styles.icon} name="videocam" />
                 </Button>
-                <Button onPress={() => {} } block info rounded iconLeft>
+                <Button onPress={() => {} } block info rounded>
                     <Icon style={styles.icon} name="camera-outline" />
                 </Button>
             </View>
+                <DirectionalButton/>
 
-            <View style={[ classes.rotation ]}>
-                <View style={[ classes.circle2 ]} />
-                
-            </View>
             <View style={[ classes.fab ]}>
                 <Fab
                     active={ fabActive }
                     direction="up"
-                    containerStyle={{ }}
-                    style={[ styles.actionButton, { backgroundColor: '#5067FF', marginTop: 100 } ]}
-                    position="bottomLeft"
-                    onPress={() => setFabActive(!fabActive)} block info rounded>
+                    style={[ styles.actionButton ]}
+                    position="bottomRight"
+                    onPress={() => setFabActive(fabActive), console.log(fabActive)} block info rounded>
                     <Icon name="share" />
                     <Button style={{ backgroundColor: '#5067FF' }}>
                         <Icon name="ios-settings"/>

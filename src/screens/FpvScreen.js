@@ -31,7 +31,6 @@ const FpvScreen = ({ navigation }) => {
                 <View style={[ styles.stream ]}>
                     <StreamView />
                 </View>
-
                 <View style={[ styles.remote ]}>
                     <RemoteViewRight />
                 </View>

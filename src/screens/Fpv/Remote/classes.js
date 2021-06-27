@@ -1,44 +1,54 @@
 export default {
     rotation: {
-
+        flexDirection : 'column'
     },
     startAndStop:{
-        marginLeft: 55,
-        marginTop: 10,
-        alignItems: "center",
-        justifyContent: "center"
+        margin: 10,
+        width: 175
+        //alignItems: "center",
+        //justifyContent: "center"
     },
     recordingsButtons:{
-        marginLeft: 0,
-        marginTop: 10,
-        flexDirection: "row"
+        margin: 10,
+        flexDirection: "row",
+        justifyContent: 'space-between',
+        width: 175
         //alignItems: "center",
         //justifyContent: "center"
     },
     circle:{
         marginTop: 50,
         marginLeft: 75,
-        borderRadius: 125/2,
+        //borderRadius: 125/2,
         width: 125,
         height: 125,
         backgroundColor: "green"
     },
     circle2:{
-        marginTop: 50,
-        marginRight: 200,
-        borderRadius: 125/2,
-        width: 125,
-        height: 125,
-        backgroundColor: "green"
-    },
-    icon:{
-        justifyContent: "center",
-        alignItems: "center"
+        //marginTop: 50,
+        //marginRight: 200,
+        //borderRadius: 125/2,
+        //width: 125,
+        //height: 125,
+        //backgroundColor: "green",
+        flex: 1,
+        justifyContent: 'center',
+        marginHorizontal: 16,
     },
     fab:{
         marginTop: 80,
-        marginLeft: 80
-        //justifyContent: "center",
-        //alignItems: "center"
+        backgroundColor: '#595758',
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    fixToText: {
+        flexDirection: 'row',
+        //justifyContent: 'space-between',
+        backgroundColor: 'white',
+        padding: 100
+      },
+
+    button: {
+        flexDirection: "row"
     },
 }

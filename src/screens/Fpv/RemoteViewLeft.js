@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import {Button, Icon, Text, View} from "native-base";
 import { TouchableHighlight } from "react-native";
 import {styles, direction, box, Box, Footer, classes} from './Remote';
+import DirectionalButton from '../../components/DirectionnalButton'
+
 
 const RemoteViewLeft = ({ setFpvRemoteView }) => {
 
@@ -10,17 +12,19 @@ const RemoteViewLeft = ({ setFpvRemoteView }) => {
     const [loading, setLoading] = useState(false);
 
     return (
-        <View>
+        <View style={{ flexDirection: 'column', backgroundColor: '#595758' }}>
             <View style={[ classes.startAndStop ]}>
                 <Button onPress={() => {} } block info rounded iconLeft>
                     <Text> START / STOP </Text>
                 </Button>
             </View>
 
-            <View style={[ classes.rotation ]}>
-                <View style={[ classes.circle ]} />
+            <DirectionalButton/>
+            <View style={[ classes.fab ]}>
+                <Text style={{ marginBottom: 10}}>🔄 rotation 🔄</Text>
             </View>
         </View>
+        
 
         /*<View style={[ styles.gamepadView, { flex: 1 } ]}>
 
