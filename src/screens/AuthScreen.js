@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
-import styles from "./Auth/Styles"
 
 import { MainLoader } from "../core";
-import { Column } from "native-base";
+import { Column, useToast } from "native-base";
 import { lockAsync, OrientationLock } from "expo-screen-orientation";
 
 import { SignIn, SignUp } from "./Auth";
@@ -12,7 +11,6 @@ import { redirectTo } from "./../tools";
 const AuthScreen = (
     {
         state: {
-            toast,
             appUser, setAppUser,
             loading, setLoading,
             googlePromptAsync,
@@ -20,6 +18,8 @@ const AuthScreen = (
         navigation,
     }
 ) => {
+
+    const toast = useToast();
 
     // == useState ===
 
@@ -54,7 +54,7 @@ const AuthScreen = (
     };
 
     return (
-        <Column style={[ styles.container ]}>
+        <Column px={40} pt={80}>
             { isSignIn &&
                 <SignIn state={{ ...signState, googlePromptAsync }} />
             }

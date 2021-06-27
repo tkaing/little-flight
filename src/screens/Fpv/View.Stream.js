@@ -1,15 +1,17 @@
-import React, { useState, useEffect } from "react";
-import styles from "./Styles.Stream";
+import React, { useState, useEffect } from "react"
+import styles from "./Styles.Stream"
 
-import { Button, Icon, Image, Text, View } from "native-base";
+import { Image, View } from "native-base"
+import { Fab } from "."
 
 import * as app_drone from "../../App/Drone";
 
 import { ffmpeg } from "./../../tools";
 
-const StreamView = ({ xxx }) => {
+const Stream = ({ xxx }) => {
 
     const [newFrame, setNewFrame] = useState();
+    const [fabActive, setFabActive] = useState(false);
     const [openStream, setOpenStream] = useState(false);
     const [listOfFrames, setListOfFrames] = useState([]);
 
@@ -56,43 +58,22 @@ const StreamView = ({ xxx }) => {
 
     return (
         <>
-            {/* Command Drone / Stream / FFMPEG */}
-            <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly' }}>
-                <Button onPress={ () => app_drone.run('command') }
-                        block primary rounded>
-                    <Icon name="airplane-outline" />
-                </Button>
-                <Button onPress={ () => app_drone.run('streamon') }
-                        block primary rounded>
-                    <Icon name="videocam-outline" />
-                </Button>
-                <Button onPress={ () => app_drone.run('battery') }
-                        block primary rounded>
-                    <Icon name="battery-full-outline" />
-                </Button>
-                <Button onPress={ async () => openStream
-                    ? ffmpeg.close(setOpenStream)
-                    : await ffmpeg.core(setOpenStream, setNewFrame)
-                } block danger rounded>
-                    <Text>{ openStream ? 'Stopper' : 'Lancer' } le stream</Text>
-                </Button>
-            </View>
-
             {/* Stream Preview */}
             { openStream &&
                 <View style={[ styles.frameView ]}>
-                    { listOfFrames.map(_it => (
+                    { listOfFrames.map(_it =>
                         <Image fadeDuration={ 0 }
                                source={{ uri: _it.uri }}
                                square
-                               style={[ styles.frame ]}
+                               style={[ styles.frameImage ]}
                                large
                                key={ _it.number } />
-                    ))}
+                    )}
                 </View>
             }
+            {/*<Fab state={{ fabActive, setFabActive }} />*/}
         </>
     )
 };
 
-export default StreamView
+export default Stream

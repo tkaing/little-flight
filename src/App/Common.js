@@ -26,6 +26,10 @@ const Icon = {
         ...Default.Icon,
         size: 8
     },
+    forRemote: {
+        ...Default.Icon,
+        size: 6
+    },
     forFooterTab: {
         ...Default.Icon,
         mb: 1,
@@ -47,7 +51,7 @@ const Text = {
     forFooterTab: {
         ...Default.Text,
         w: "80%",
-        height: 5,
+        height: 4,
         fontSize: "xs",
         noOfLines: 1,
         isTruncated: true,
@@ -67,11 +71,14 @@ const Link = {
 const IconButton = {
     forItem: {
         ...Default.IconButton,
-        size: 5,
-        style: {
-            //height: 20
-        }
-    }
+        size: 5
+    },
+    forRemote: {
+        ...Default.IconButton,
+        bg: Color.blue,
+        size: "lg",
+        borderRadius: 50
+    },
 };
 
 export {

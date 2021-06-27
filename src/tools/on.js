@@ -31,6 +31,7 @@ export default {
                 setLoading(false);
 
                 await load.app.appUser({}, {
+                    toast,
                     appUser, setAppUser,
                     loading, setLoading,
                 });

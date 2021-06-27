@@ -17,7 +17,7 @@ const FooterTabs = (
 ) => {
 
     return (
-        <Row bg="rose.900" alignItems="center" safeAreaBottom shadow={ 6 } pt={ 1 }>
+        <Row bg="rose.900" alignItems="center" safeAreaBottom shadow={ 6 }>
             { app_screen.home.listOfTabs.map((_it, _index) =>
                 <Pressable
                     py={ 2 }

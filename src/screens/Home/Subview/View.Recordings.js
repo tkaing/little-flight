@@ -1,5 +1,4 @@
 import React from "react";
-import styles from "./Styles.Recordings";
 
 import { Center, Text } from "native-base";
 

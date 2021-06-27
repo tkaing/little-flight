@@ -1,10 +1,8 @@
-import React, {useState} from "react";
-import styles from "./Styles.History";
+import React, { useState } from "react";
 
-import {Item, ModalOverview, SectionHeader} from "./History";
-import {Box, Center, Column, Icon, Row, SectionList, Text} from "native-base";
+import { Item, SectionHeader, ModalOverview } from "./History";
+import { Box, SectionList } from "native-base";
 
-import * as app_common from './../../../App/Common';
 import Headline from "../../../core/Headline";
 
 const History = ({ navigation }) => {

@@ -1,15 +1,11 @@
-import React, { useEffect, useState } from "react";
-import styles from "./Fpv/Styles";
+import React, { useEffect } from "react";
 
-import { Container, View } from "native-base";
+import { Box, Row } from "native-base";
 import { lockAsync, OrientationLock } from "expo-screen-orientation";
-import { StreamView, RemoteView } from "./Fpv";
 
-import Gamepad from "./GamepadScreen/Gamepad";
+import { Stream, Remote } from "./Fpv";
 
 const FpvScreen = ({ navigation }) => {
-
-    const [isFpvRemoteView, setFpvRemoteView] = useState(true);
 
     useEffect(() => {
         lockAsync(OrientationLock.LANDSCAPE_LEFT);
@@ -22,25 +18,21 @@ const FpvScreen = ({ navigation }) => {
     }, [navigation]);
 
     return (
-        <Container>
-            <View style={[ styles.content ]}>
+        <Row flex={1} justifyContent="center">
 
-                { isFpvRemoteView &&
-                    <View style={[ styles.padView ]}>
-                        <View style={[ styles.streamView ]}>
-                            <StreamView />
-                        </View>
-                        <View style={[ styles.remoteView ]}>
-                            <RemoteView setFpvRemoteView={ setFpvRemoteView } />
-                        </View>
-                    </View>
-                }
+            <Box flex={1}>
+                <Remote.Left />
+            </Box>
 
-                { !isFpvRemoteView &&
-                    <Gamepad setFpvRemoteView={ setFpvRemoteView } />
-                }
-            </View>
-        </Container>
+            <Box flex={2}>
+                <Stream />
+            </Box>
+
+            <Box flex={1}>
+                <Remote.Right />
+            </Box>
+
+        </Row>
     );
 };
 

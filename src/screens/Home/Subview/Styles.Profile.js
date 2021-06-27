@@ -3,7 +3,6 @@ export default {
         flex: 1,
     },
     text: {
-        //fontFamily: "HelveticaNeue",
         color: "#e9eaec"
     },
     image: {

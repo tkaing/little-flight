@@ -1,4 +1,5 @@
 import { extendTheme } from "native-base";
+
 import Color from "./Color";
 
 export default extendTheme({
@@ -61,6 +62,6 @@ export default extendTheme({
                     };
                 },
             },
-        }
+        },
     },
 });

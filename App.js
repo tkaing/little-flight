@@ -19,12 +19,15 @@ import * as app_route from "./src/App/Route";
 import * as api_firebase from "./src/Api/Firebase";
 
 import { load } from "./src/tools";
-import {useToast} from "native-base";
+
 import Theme from "./src/App/Theme";
+import {useToast} from "native-base";
 
 const Stack = createStackNavigator();
 
 const App = () => {
+
+    const toast = useToast();
 
     // === useState ===
 
@@ -35,10 +38,6 @@ const App = () => {
         expoClientId: '817789782056-50c858j1vr440iaoegqksn3442ql6ljr.apps.googleusercontent.com',
         androidClientId: '817789782056-2i4ju976pjcs7nl9qur39ov6anl6leum.apps.googleusercontent.com',
     });
-
-    // === useToast ===
-
-    const toast = useToast();
 
     // === useFonts ===
 
@@ -65,6 +64,7 @@ const App = () => {
         load.app.googleAuthResponse(
             {},
             {
+                toast,
                 response,
                 appUser, setAppUser,
                 loading, setLoading,
@@ -88,7 +88,6 @@ const App = () => {
                         { props => (
                             <AuthScreen { ...props }
                                         state={{
-                                            toast,
                                             appUser, setAppUser,
                                             loading, setLoading,
                                             googlePromptAsync: promptAsync
