@@ -1,16 +1,16 @@
 import React from "react";
 import styles from "./Styles.Home";
 
-import { HomeCarousel } from "../../components";
-import {Box, Button, Center, Column, Icon, Row, Text} from "native-base";
+import { HomeCarousel } from "../../../components";
+import { Box, Button, Icon, Text } from "native-base";
 
-import * as app_route from "../../App/Route";
-import DefaultProps from "../../App/DefaultProps";
+import * as app_route from "../../../App/Route";
+import * as app_common from "../../../App/Common";
 
-const HomeView = ({ navigation }) => {
+const Home = ({ navigation }) => {
 
     return (
-        <Center flex={ 1 }>
+        <Box flex={ 1 }>
 
             <Box flex={ 3 }>
                 <HomeCarousel />
@@ -21,13 +21,13 @@ const HomeView = ({ navigation }) => {
                     px={ 10 }
                     variant="green"
                     onPress={ () => navigation.navigate(app_route.fpv.name) }
-                    startIcon={ <Icon { ...DefaultProps.Icon.forButton } name='videocam-outline' /> }>
+                    startIcon={ <Icon { ...app_common.Icon.forButton } name='videocam-outline' /> }>
                     <Text>Go FPV Screen</Text>
                 </Button>
             </Box>
 
-        </Center>
+        </Box>
     )
 };
 
-export default HomeView
+export default Home

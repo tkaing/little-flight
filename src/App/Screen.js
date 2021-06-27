@@ -1,5 +1,5 @@
-const Home = require('./screens/Home');
+const home = require('./../App/screens/Home');
 
 export {
-    Home
+    home
 }

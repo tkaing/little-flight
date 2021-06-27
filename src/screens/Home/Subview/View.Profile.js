@@ -4,7 +4,7 @@ import styles from "./Styles.Profile";
 import { Text, View, SafeAreaView, Image, ScrollView } from "react-native";
 import { Ionicons, MaterialIcons, AntDesign, Entypo, FontAwesome5 } from "@expo/vector-icons";
 
-const ProfileView = ({ navigation }) => {
+const Profile = ({ navigation }) => {
 
     return (
         <SafeAreaView style={[ styles.container ]}>
@@ -18,7 +18,7 @@ const ProfileView = ({ navigation }) => {
                     <View style={[ styles.profileImage ]}>
                         <Image
                             style={[ styles.image ]}
-                            source={ require("../../../assets/ken.jpeg") }
+                            source={ require("../../../../assets/ken.jpeg") }
                             resizeMode="center" />
                     </View>
                     <View style={[ styles.dm ]}>
@@ -79,4 +79,4 @@ const ProfileView = ({ navigation }) => {
     );
 }
 
-export default ProfileView
+export default Profile

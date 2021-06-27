@@ -1,9 +1,10 @@
 import React from 'react';
 import styles from "./Styles.Footer";
 
-import DefaultProps from "../../App/DefaultProps";
 import { GoogleConnect } from "../../components";
 import { Button, Center, Column, Icon, Link, Text } from "native-base";
+
+import * as app_common from "./../../App/Common";
 
 const Footer = (
     {
@@ -24,7 +25,7 @@ const Footer = (
                 width="70%"
                 variant="blue"
                 onPress={ handleSubmit }
-                startIcon={ <Icon { ...DefaultProps.Icon.forButton } name={ button.icon } /> }>
+                startIcon={ <Icon { ...app_common.Icon.forButton } name={ button.icon } /> }>
                 <Text>{ button.text }</Text>
             </Button>
 
@@ -37,7 +38,7 @@ const Footer = (
             <Center>
                 <Text style={[ styles._text ]}
                       children={ text } />
-                <Link { ...DefaultProps.Link }
+                <Link { ...app_common.Link._text }
                       style={[ styles._link ]}
                       onPress={ onLinkPress }
                       children={ link } />

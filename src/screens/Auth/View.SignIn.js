@@ -4,29 +4,31 @@ import { Formik } from "formik";
 import { Footer } from "../Auth";
 import { FormControl, Icon, Input } from "native-base";
 
-import { on, schema } from "./../../tools";
-import DefaultProps from "../../App/DefaultProps";
+import * as app_common from "../../App/Common";
 
-const SignUp = (
+import { on, schema } from "./../../tools";
+
+const SignIn = (
     {
         state: {
             toast,
             appUser, setAppUser,
             loading, setLoading,
             isSignIn, setSignIn,
+            googlePromptAsync,
         }
     }
 ) => {
 
     return (
         <Formik
-            onSubmit={ values => on.auth.signUpSubmit(values, {
+            onSubmit={ values => on.auth.signInSubmit(values, {
                 toast,
                 appUser, setAppUser,
                 loading, setLoading,
             }) }
-            initialValues={{ email: "", password: "", username: "" }}
-            validationSchema={ schema.signUpForm }>
+            initialValues={{ email: "", password: "" }}
+            validationSchema={ schema.signInForm }>
 
             { ({
                    errors,
@@ -45,7 +47,7 @@ const SignUp = (
                                onBlur={ handleBlur('email') }
                                onChangeText={ handleChange('email') }
                                InputLeftElement={
-                                   <Icon { ...DefaultProps.Icon.forInput } name='at-outline' />
+                                   <Icon { ...app_common.Icon.forInput } name='at-outline' />
                                }
                         />
                         <FormControl.ErrorMessage>
@@ -54,13 +56,13 @@ const SignUp = (
                     </FormControl>
 
                     <FormControl isRequired isInvalid={ 'password' in errors } style={[ { marginTop: 20 } ]}>
-                        <Input value={ values.password }
-                               onBlur={ handleBlur('password') }
-                               placeholder='Password'
-                               onChangeText={ handleChange('password') }
+                        <Input placeholder='Password'
                                secureTextEntry
+                               value={ values.password }
+                               onBlur={ handleBlur('password') }
+                               onChangeText={ handleChange('password') }
                                InputLeftElement={
-                                   <Icon { ...DefaultProps.Icon.forInput } name='key-outline' />
+                                   <Icon { ...app_common.Icon.forInput } name='key-outline' />
                                }
                         />
                         <FormControl.ErrorMessage>
@@ -68,27 +70,14 @@ const SignUp = (
                         </FormControl.ErrorMessage>
                     </FormControl>
 
-                    <FormControl isRequired isInvalid={ 'username' in errors } style={[ { marginTop: 20 } ]}>
-                        <Input value={ values.username }
-                               onBlur={ handleBlur('username') }
-                               placeholder='Pseudonym'
-                               onChangeText={ handleChange('username') }
-                               InputLeftElement={
-                                   <Icon { ...DefaultProps.Icon.forInput } name='language-outline' />
-                               }
-                        />
-                        <FormControl.ErrorMessage>
-                            { errors.username }
-                        </FormControl.ErrorMessage>
-                    </FormControl>
-
                     <Footer
-                        text="Vous avez déjà un compte ?"
-                        link="Connectez-vous !"
-                        button={{ icon: 'log-in-outline', text: 'Sign Up' }}
+                        text="Vous n'avez pas de compte ?"
+                        link="Créez un compte !"
+                        button={{ icon: 'log-in-outline', text: 'Login' }}
                         setLoading={ setLoading }
-                        onLinkPress={ () => setSignIn(true) }
-                        handleSubmit={ handleSubmit } />
+                        onLinkPress={ () => setSignIn(false) }
+                        handleSubmit={ handleSubmit }
+                        googleConnect={{ signIn: () => on.auth.signInWithGoogle(googlePromptAsync) }} />
 
                 </>
             )}
@@ -96,4 +85,4 @@ const SignUp = (
     );
 };
 
-export default SignUp
+export default SignIn

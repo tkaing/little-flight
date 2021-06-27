@@ -1,10 +1,11 @@
 import React from 'react';
+
 import {
-    HomeView,
-    HistoryView,
-    ProfileView,
-    SettingsView,
-    RecordingsView,
+    Home,
+    History,
+    Profile,
+    Settings,
+    Recordings
 } from "../../screens/Home";
 
 const listOfTabs = [
@@ -12,31 +13,31 @@ const listOfTabs = [
         name: 'home',
         icon: 'home-sharp',
         style: {},
-        content: <HomeView />
+        content: <Home />
     },
     {
         name: 'history',
         icon: 'analytics-outline',
         style: {},
-        content: <HistoryView />
+        content: <History />
     },
     {
         name: 'recordings',
         icon: 'film',
         style: { /*fontSize: 9*/ },
-        content: <RecordingsView />
+        content: <Recordings />
     },
     {
         name: 'settings',
         icon: 'settings',
         style: {},
-        content: <SettingsView />
+        content: <Settings />
     },
     {
         name: 'profile',
         icon: 'person',
         style: {},
-        content: <ProfileView />
+        content: <Profile />
     },
 ];
 

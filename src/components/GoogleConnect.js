@@ -1,7 +1,8 @@
 import React from "react";
 
 import { Button, Icon, Text } from "native-base";
-import DefaultProps from "../App/DefaultProps";
+
+import * as app_common from "./../App/Common";
 
 const GoogleConnect = ({ setLoading, signInWithGoogle }) => {
 
@@ -19,7 +20,7 @@ const GoogleConnect = ({ setLoading, signInWithGoogle }) => {
             variant="red"
             marginTop={ 5 }
             onPress={ () => on.signInWithGoogle() }
-            startIcon={ <Icon { ...DefaultProps.Icon.forButton } name='logo-google' /> }>
+            startIcon={ <Icon { ...app_common.Icon.forButton } name='logo-google' /> }>
             <Text>Log in with Google</Text>
         </Button>
     );

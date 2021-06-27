@@ -1,6 +1,6 @@
-import SignIn from "./SignIn";
-import SignUp from "./SignUp";
-import Footer from "./Footer";
+import SignIn from "./View.SignIn";
+import SignUp from "./View.SignUp";
+import Footer from "./View.Footer";
 
 export {
     SignIn,

@@ -3,7 +3,7 @@ import styles from "./Styles.Recordings";
 
 import { Center, Text } from "native-base";
 
-const RecordingsView = ({ navigation }) => {
+const Recordings = ({ navigation }) => {
     return (
         <Center flex={ 1 }>
             <Text>Recordings</Text>
@@ -11,4 +11,4 @@ const RecordingsView = ({ navigation }) => {
     );
 };
 
-export default RecordingsView
+export default Recordings

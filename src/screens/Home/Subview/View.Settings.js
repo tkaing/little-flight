@@ -3,7 +3,7 @@ import styles from "./Styles.Settings";
 
 import { Center, Text } from "native-base";
 
-const SettingsView = ({ navigation }) => {
+const Settings = ({ navigation }) => {
     return (
         <Center flex={ 1 }>
             <Text>Settings</Text>
@@ -11,4 +11,4 @@ const SettingsView = ({ navigation }) => {
     )
 };
 
-export default SettingsView
+export default Settings

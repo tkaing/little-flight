@@ -24,6 +24,15 @@ export default extendTheme({
         Text: {
             baseStyle: {
                 color: Color.white
+            },
+            variants: {
+                headline: {
+                    my: 10,
+                    fontSize: "2xl",
+                    style: {
+                        textTransform: 'capitalize'
+                    }
+                }
             }
         },
         Input: {
