@@ -54,7 +54,7 @@ const AuthScreen = (
     };
 
     return (
-        <Column px={40} pt={80}>
+        <Column px={10} pt={70}>
             { isSignIn &&
                 <SignIn state={{ ...signState, googlePromptAsync }} />
             }
