@@ -6,9 +6,10 @@ import DirectionalButton from '../../components/DirectionnalButton'
 
 import * as app_common from "./../../App/Common"
 
+import { drone } from "../../tools";
+
 const RemoteRight = ({  }) => {
 
-    const [takeoff, setTakeoff] = useState(false);
     const [loading, setLoading] = useState(false);
 
     return (
@@ -22,7 +23,12 @@ const RemoteRight = ({  }) => {
             </Row>
 
             <Center flex={ 3 }>
-                <DirectionalButton />
+                <DirectionalButton
+                    top={ () => drone.move('forward') }
+                    left={ () => drone.move('left') }
+                    right={ () => drone.move('right') }
+                    bottom={ () => drone.move('back') }
+                    />
             </Center>
 
             <Center mb={ 5 }>

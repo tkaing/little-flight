@@ -16,11 +16,9 @@ const Stream = ({ xxx }) => {
     const [listOfFrames, setListOfFrames] = useState([]);
 
     useEffect(() => {
-        setNewFrame();
-        setListOfFrames([]);
+        setOpenStream(true);
         return () => {
-            setNewFrame();
-            setListOfFrames([]);
+            setOpenStream(false);
         };
     }, []);
 
@@ -41,7 +39,10 @@ const Stream = ({ xxx }) => {
     }, [newFrame]);
 
     useEffect(() => {
-        if (!openStream) {
+        if (openStream) {
+            ffmpeg.core(setNewFrame);
+        } else {
+            ffmpeg.close();
             setNewFrame();
             setListOfFrames([]);
         }

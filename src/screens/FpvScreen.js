@@ -5,10 +5,16 @@ import { lockAsync, OrientationLock } from "expo-screen-orientation";
 
 import { Stream, Remote } from "./Fpv";
 
+import { drone } from "../tools";
+
 const FpvScreen = ({ navigation }) => {
 
     useEffect(() => {
+        drone.streamOnOrOff('on');
         lockAsync(OrientationLock.LANDSCAPE_LEFT);
+        return () => {
+            drone.streamOnOrOff('off');
+        };
     }, []);
 
     useEffect(() => {

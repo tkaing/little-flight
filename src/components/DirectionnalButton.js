@@ -1,16 +1,23 @@
 import React from 'react'
 
-import { StyleSheet, View, SafeAreaView, Alert } from 'react-native'
-import {Box, Button, Row} from 'native-base'
+import { View } from 'react-native'
+import { Box, Button, Row } from 'native-base'
 
-const DirectionalButton = () => (
+const DirectionalButton = (
+    {
+        top,
+        left,
+        right,
+        bottom
+    }
+) => (
 
     <Box flex={ 1 } justifyContent="center" alignItems="center">
 
         <Row justifyContent="center">
             <Button
                 color='#5067FF'
-                onPress={ () => Alert.alert('Cannot press this one') }>
+                onPress={ top }>
                 ▲
             </Button>
         </Row>
@@ -18,13 +25,13 @@ const DirectionalButton = () => (
         <Row>
             <Button
                 color='#5067FF'
-                onPress={ () => Alert.alert('Left button pressed') }>
+                onPress={ left }>
                 ◄
             </Button>
             <View width={35} height={20} />
             <Button
                 color='#5067FF'
-                onPress={ () => Alert.alert('Right button pressed') }>
+                onPress={ right }>
                 ►
             </Button>
         </Row>
@@ -32,7 +39,7 @@ const DirectionalButton = () => (
         <Row justifyContent="center">
             <Button
                 color='#5067FF'
-                onPress={() => Alert.alert('Cannot press this one')}>
+                onPress={ bottom }>
                 ▼
             </Button>
         </Row>

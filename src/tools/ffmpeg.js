@@ -6,7 +6,7 @@ import { PermissionsAndroid } from "react-native";
 import { RNFFmpeg, RNFFmpegConfig } from "react-native-ffmpeg";
 
 const ffmpeg = {
-    core: async (setOpenStream, setNewFrame) => {
+    core: async (setNewFrame) => {
         try {
             const granted = await PermissionsAndroid.request(
                 PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
@@ -15,10 +15,10 @@ const ffmpeg = {
                 console.log('=== FFMPEG ===');
                 RNFFmpeg.listExecutions().then(value => {
                     if (value.length === 0) {
-                        ffmpeg.instance(setOpenStream, setNewFrame);
+                        ffmpeg.instance(setNewFrame);
                     } else {
                         RNFFmpeg.cancel();
-                        ffmpeg.instance(setOpenStream, setNewFrame);
+                        ffmpeg.instance(setNewFrame);
                     }
                 });
             }
@@ -26,9 +26,8 @@ const ffmpeg = {
             console.log('Permission Denied.');
         }
     },
-    close: (setOpenStream) => {
+    close: () => {
         RNFFmpeg.cancel();
-        setOpenStream(false);
     },
     input: () => {
         //let input = `file://${ RNFS.DownloadDirectoryPath }/sample-video.mp4`;
@@ -61,7 +60,7 @@ const ffmpeg = {
             }
         );
     },
-    instance: async (setOpenStream, setNewFrame) => {
+    instance: async (setNewFrame) => {
 
         // Full command
         // = full cmd from api = '-r 30 -s 960x720 -codec:v mpeg1video -b:v 800k -f h264'
@@ -87,23 +86,20 @@ const ffmpeg = {
             socket.bind(8001);
             socket.on('close', (msg) => {
                 console.log('Close', msg);
-                setOpenStream(false);
             });
             socket.on('message', (msg) => console.log('Message', msg));
             socket.once('listening', () => {
 
                 ffmpeg.config(setNewFrame);
+
                 RNFFmpeg.executeAsync(command, (execution) => {
                     console.log(execution);
-                    setOpenStream(false);
                 })
                     .then(executionId => {
                         console.log(`Async FFmpeg process started with executionId ${executionId}.`);
-                        setOpenStream(true);
                     })
                     .catch(reason => {
                         console.log(reason);
-                        setOpenStream(false);
                     })
                 ;
 
