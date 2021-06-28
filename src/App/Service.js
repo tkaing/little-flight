@@ -7,10 +7,9 @@ import Color from "./Color";
 const toast = (_toast, _type, _message, _duration = 5000) => {
     _toast.show({
         title: _message,
-        //status: _type, // (danger, warning, success)
         duration: _duration,
         render: () => (
-            <Box bg={ Color.red } px={4} py={3} rounded="md" mb={5} mx={4}>
+            <Box bg={ _type === 'danger' ? Color.red : Color.green } px={4} py={3} mb={5} mx={4} rounded="md">
                 <Text>{ _message }</Text>
             </Box>
         )

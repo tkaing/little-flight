@@ -30,12 +30,6 @@ export default {
 
                 setLoading(false);
 
-                await load.app.appUser({}, {
-                    toast,
-                    appUser, setAppUser,
-                    loading, setLoading,
-                });
-
             } catch (failure) {
 
                 if (failure.code === 'ECONNABORTED' || failure.message === 'Network Error') {
@@ -43,14 +37,22 @@ export default {
                     app_service.toast(toast, 'danger', `Unable to connect to Api. (${ failure.message })`);
                 } else if (failure.response) {
                     // an error response (5xx, 4xx)
-                    const apiResponse = failure.response;
-                    console.log(apiResponse.data);
+                    const { data } = failure.response;
+                    app_service.toast(toast, 'danger', data);
                 } else {
                     // anything else
                     app_service.toast(toast, 'danger', `Login failed.`);
                 }
                 setLoading(false);
+
+                return;
             }
+
+            await load.app.appUser({}, {
+                toast,
+                appUser, setAppUser,
+                loading, setLoading,
+            });
         },
         signUpSubmit: async (
             { email, password, username }, {
@@ -86,8 +88,8 @@ export default {
                     app_service.toast(toast, 'danger', `Unable to connect to Api. (${ failure.message })`);
                 } else if (failure.response) {
                     // an error response (5xx, 4xx)
-                    const apiResponse = failure.response;
-                    console.log(apiResponse.data);
+                    const { data } = failure.response;
+                    app_service.toast(toast, 'danger', data);
                 } else {
                     // anything else
                     app_service.toast(toast, 'danger', `Sign up failed.`);

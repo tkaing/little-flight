@@ -24,6 +24,7 @@ export default {
                 } else {
 
                     try {
+
                         setLoading(true);
 
                         const { data } = await axios.get(

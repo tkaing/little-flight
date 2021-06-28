@@ -33,6 +33,7 @@ const App = () => {
 
     const [appUser, setAppUser] = useState();
     const [loading, setLoading] = useState(false);
+
     const [,response, promptAsync] = Google.useAuthRequest({
         iosClientId: '817789782056-kkqgj9ec0sl5lhae82gg3cu7f1q8ebjo.apps.googleusercontent.com',
         expoClientId: '817789782056-50c858j1vr440iaoegqksn3442ql6ljr.apps.googleusercontent.com',
