@@ -1,16 +1,104 @@
-import React from "react";
-import { Text, View, SafeAreaView, Image, ScrollView } from "react-native";
+import React, { useEffect, useState } from 'react'
+import { Text, View, SafeAreaView, Image, ScrollView, DatePickerAndroid } from "react-native";
 import { Ionicons, MaterialIcons, AntDesign, Entypo, FontAwesome5} from "@expo/vector-icons";
-import SearchBar from "../../components/searchBar";
+import SearchBar from "../../components/SearchBarComponent";
+import { Icon , Button, Toast} from "native-base";
+import Share from 'react-native-share';
+import * as SecureStore from "expo-secure-store";
+import * as api_default from "../../api/api_default";
+import * as api_secure_store from "../../api/api_secure_store";
+import axios from "axios";
+
 
 const Profile = ({ navigation, currentUser }) => {
-    console.log(currentUser);
+    console.log("lale");
+    const [username, setUsername] = useState();
+    const [errorManager, setErrorManager] = useState({});
+
+    const myCustomShare = async() => {
+        const shareOptions = {
+          message: 'Im a droner! See my profile on the new app : LittleFlght',
+          //url: files.appLogo,
+          // urls: [files.image1, files.image2]
+        }
+    
+        try {
+          const ShareResponse = await Share.open(shareOptions);
+          console.log(JSON.stringify(ShareResponse));
+        } catch(error) {
+          console.log('Error => ', error);
+        }
+      };
+
+    const on = {
+        Search: async ( username ) => {
+            try {
+                const currentToken = await SecureStore.getItemAsync(api_secure_store.TOKEN);
+                const apiResponse = await axios.post(api_default.person.add_friend(), {
+                    username: username
+                },
+                {
+                headers: {'Authorization': `Bearer ${ currentToken }`}, timeout: 5000
+                })
+                const _data = apiResponse.data;
+                console.log("=== DATA +++", _data);
+                //errorManager = _data;
+            } catch (failure) {
+                console.log("=== FAILURE ===", failure.response);
+                errorManager({addFriend: failure.response})
+            }
+        },
+        List: async ( ) => {
+            try {
+                const currentToken = await SecureStore.getItemAsync(api_secure_store.TOKEN);
+                const apiResponse = await axios.get(api_default.person.list_of_friends(), {
+                    headers: {'Authorization': `Bearer ${ currentToken }`}, timeout: 5000
+                });
+                const apiData = apiResponse.data;
+                console.log(apiData);
+            } catch (failure) {
+                console.log(failure);
+            }
+        }
+      };
 
     return (
-        <SafeAreaView style={styles.container}>
-            <ScrollView showsVerticalScrollIndicator={false}>
-                <View style={styles.titleBar}>
-                    <SearchBar/>
+        <SafeAreaView style={ styles.container }>
+            <ScrollView showsVerticalScrollIndicator={ false }>
+                <View style={ styles.titleBar }>
+                    <SearchBar state={{ username, setUsername }}/>
+                    <View style={ styles.search }>
+                        <Button 
+                            style={ styles.button } 
+                            onPress={() => {
+                                
+                                on.Search(username);
+
+                                /*switch (errorManager.addFriend) {
+                                    case "duplicate":
+                                        DatePickerAndroid;
+                                        case ""
+                                }*/
+
+                                if (errorManager.addFriend) {
+                                    Toast.show({
+                                        text: "Wrong job!",
+                                        textStyle: { color: "yellow" },
+                                        buttonText: `${username} doesn't exist`
+                                    });
+                                }
+                                else {
+                                    Toast.show({
+                                        text: "Good job!",
+                                        textStyle: { color: "green" },
+                                        buttonText: `Okay ${username} is added`
+                                    });
+                                }
+                            }}
+                        >
+                        <Icon name="person-add-outline"></Icon>
+                        </Button>
+                    </View>
                 </View>
 
                 <View style={{ alignSelf: "center" }}>
@@ -18,7 +106,12 @@ const Profile = ({ navigation, currentUser }) => {
                         <Image source={require("./ken.jpeg")} style={styles.image} resizeMode="center"></Image>
                     </View>
                     <View style={styles.dm}>
-                        <MaterialIcons name="chat" size={18} color="#DFD8C8"></MaterialIcons>
+                        <Ionicons 
+                            name="share-outline" 
+                            onPress={myCustomShare } 
+                            size={18} 
+                            color="#DFD8C8">
+                        </Ionicons>
                     </View>
                     {/* <View style={styles.active}></View> */}
                     <View style={styles.add}>
@@ -27,7 +120,7 @@ const Profile = ({ navigation, currentUser }) => {
                 </View>
 
                 <View style={styles.infoContainer}>
-                    <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>Ken</Text>
+                    <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>Kengg</Text>
                     <Text style={[styles.text, { color: "#AEB5BC", fontSize: 14 }]}>Dev</Text>
                 </View>
 
@@ -48,15 +141,7 @@ const Profile = ({ navigation, currentUser }) => {
 
                 <View style={{ alignItems: "center" }}>
                     <View style={styles.recentItem}>
-                        <View style={styles.infoContainer}>
-                            <AntDesign name="instagram" size={24}color="white" />
-                        </View>
-                        <View style={styles.infoContainer}>
-                            <Entypo name="youtube" size={24} color="white" />
-                        </View>
-                        <View style={styles.infoContainer}>
-                            <FontAwesome5 name="facebook" size={24} color="white" />
-                        </View>
+
                     </View>
                 </View>
             </ScrollView>
@@ -83,7 +168,7 @@ const styles = {
         flexDirection: "row",
         justifyContent: "space-between",
         marginTop: 24,
-        marginHorizontal: 16
+        //marginHorizontal: 16
     },
     subText: {
         fontSize: 12,
@@ -132,7 +217,7 @@ const styles = {
         //alignSelf: "center",
         flexDirection: "column",
         alignItems: "center",
-        marginTop: 25, 
+        //marginTop: 25, 
     },
     statsContainer: {
         flexDirection: "row",
@@ -184,6 +269,16 @@ const styles = {
         borderRadius: 6,
         marginTop: 3,
         marginRight: 20
-    }
+    },
+    search: {
+        alignItems: "center",
+        justifyContent: "center",
+        marginTop: 10,
+        //height:150
+    },
+    button: {
+        height:60,
+        marginLeft: 5
+    },
 };
 
