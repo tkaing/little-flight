@@ -69,6 +69,7 @@ const Link = {
 };
 
 const IconButton = {
+    default: Default.IconButton,
     forItem: {
         ...Default.IconButton,
         size: 5

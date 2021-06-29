@@ -105,5 +105,22 @@ export default {
                 }
             }
         }
+    },
+    home: {
+        profile: {
+            listOfFriends: async () => {
+                try {
+                    const _token = await SecureStore.getItemAsync(api_secure_store.TOKEN);
+                    const _response = await axios.get(
+                        api_default.person.list_of_friends(),
+                        { timeout: 5000, headers: { 'Authorization': `Bearer ${ _token }` } }
+                    );
+                    const _data = _response.data;
+                    console.log(_data);
+                } catch (failure) {
+                    console.log(failure);
+                }
+            }
+        }
     }
 }

@@ -100,6 +100,41 @@ export default {
         signInWithGoogle: (googlePromptAsync) => googlePromptAsync()
     },
     home: {
-        tabChange: ({ index }, { setTabIndex }) => setTabIndex(index)
+        tabChange: ({ index }, { setTabIndex }) => setTabIndex(index),
+        profile: {
+            share: async () => {
+                try {
+                    const _response = await Share.open({
+                        message: 'I\'m a droner! See my profile on the new app : LittleFlight',
+                        //url: files.appLogo,
+                        //urls: [files.image1, files.image2]
+                    });
+                    console.log('=== SHARE DATA ===', JSON.stringify(_response));
+
+                } catch (failure) {
+
+                    console.log('=== SHARE FAILURE ===', failure);
+                }
+            },
+            searchFriend: async ({}, { username, setErrorManager }) => {
+                try {
+                    const _token = await SecureStore.getItemAsync(api_secure_store.TOKEN);
+
+                    const _response = await axios.post(
+                        api_default.person.add_friend(),
+                        { username: username },
+                        { timeout: 5000, headers: { 'Authorization': `Bearer ${ _token }` } }
+                    );
+
+                    const _data = _response.data;
+                    console.log("=== SEARCH FRIEND DATA ===", _data);
+
+                } catch (failure) {
+
+                    console.log("=== SEARCH FRIEND FAILURE ===", failure.response);
+                    setErrorManager({ addFriend: failure.response });
+                }
+            },
+        }
     },
 }
