@@ -1,59 +1,57 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 
-import { Box, Icon, IconButton, Row } from 'native-base'
+import { Box, Icon, IconButton, Row, useToast } from 'native-base'
 
 import { SearchBar as RNSearchBar } from 'react-native-elements'
 
+import Color from "../App/Color";
+
 import * as app_common from "../App/Common"
+
+import { on } from './../tools'
+import {isLoading} from "expo-font";
 
 const SearchBar = (
     {
         state: {
-            username, setUsername
-        }
+            appUser, setAppUser,
+            username, setUsername,
+            loadingBtn, setLoadingBtn,
+        },
+        navigation
     }
 ) => {
 
-    useEffect(() => {
-        console.log(username);
-    }, [username]);
+    const toast = useToast();
 
     return (
-        <Row justifyContent="space-between" mt={24}>
+        <Row>
 
-            <Box flex={1} mt={10}>
+            <Box flex={1}>
                 <RNSearchBar
                     value={ username }
                     placeholder="Search a DRONER"
                     onChangeText={ _value => setUsername(_value) }
-                />
+                    />
             </Box>
 
-            <Box mt={10} justifyContent="center" alignItems="center">
+            <Box justifyContent="center" alignItems="center">
                 <IconButton { ...app_common.IconButton.default }
-                            ml={5}
-                            icon={ <Icon { ...app_common.Icon.default } name="videocam" /> }
-                            height={60}
-                            onPress={ () => {
-
-                                /*on.Search(username);
-
-                                if (errorManager.addFriend) {
-                                    Toast.show({
-                                        text: "Wrong job!",
-                                        textStyle: { color: "yellow" },
-                                        buttonText: `${username} doesn't exist`
-                                    });
-                                }
-                                else {
-                                    Toast.show({
-                                        text: "Good job!",
-                                        textStyle: { color: "green" },
-                                        buttonText: `Okay ${username} is added`
-                                    });
-                                }*/
-                            } }
-                />
+                            bg={ Color.blue }
+                            icon={ loadingBtn ? undefined : <Icon { ...app_common.Icon.default } name="person-add" size={6} /> }
+                            padding={5}
+                            marginLeft={2}
+                            alignSelf="center"
+                            alignItems="center"
+                            isLoading={ loadingBtn }
+                            onPress={ () => on.home.profile.searchFriend({
+                                navigation
+                            }, {
+                                toast, username,
+                                appUser, setAppUser,
+                                loadingBtn, setLoadingBtn,
+                            }) }
+                    />
             </Box>
 
         </Row>

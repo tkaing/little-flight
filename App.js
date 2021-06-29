@@ -97,9 +97,15 @@ const App = () => {
                     </Stack.Screen>
                     <Stack.Screen
                         name={ app_route.home.name }
-                        options={ app_route.home.options }
-                        component={ HomeScreen }
-                    />
+                        options={ app_route.home.options }>
+                        { props => (
+                            <HomeScreen { ...props }
+                                        state={{
+                                            appUser, setAppUser,
+                                            loading, setLoading,
+                                        }} />
+                        ) }
+                    </Stack.Screen>
                     <Stack.Screen
                         name={ app_route.fpv.name }
                         options={ app_route.fpv.options }

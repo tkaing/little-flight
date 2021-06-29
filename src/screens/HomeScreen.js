@@ -5,8 +5,17 @@ import { FooterTabs } from "./Home";
 import { lockAsync, OrientationLock } from "expo-screen-orientation";
 
 import * as app_screen from '../App/Screen';
+import {MainLoader} from "../core";
 
-const HomeScreen = ({ navigation }) => {
+const HomeScreen = (
+    {
+        state: {
+            appUser, setAppUser,
+            loading, setLoading,
+        },
+        navigation
+    }
+) => {
 
     // == useState ===
 
@@ -32,12 +41,18 @@ const HomeScreen = ({ navigation }) => {
             <Box flex={ 1 }>
                 { cloneElement(
                     subview.content, {
-                        navigation: navigation
+                        state: {
+                            loading, setLoading,
+                            appUser, setAppUser,
+                        },
+                        navigation
                     }
                 )}
             </Box>
 
             <FooterTabs state={{ tabIndex, setTabIndex }} />
+
+            { loading && <MainLoader /> }
 
         </Box>
     );

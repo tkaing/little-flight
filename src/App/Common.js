@@ -48,6 +48,9 @@ const Text = {
         fontWeight: "bold",
         fontSize: "3xl"
     },
+    forProfile: {
+
+    },
     forFooterTab: {
         ...Default.Text,
         w: "80%",
@@ -73,6 +76,10 @@ const IconButton = {
     forItem: {
         ...Default.IconButton,
         size: 5
+    },
+    forProfile: {
+        ...Default.IconButton,
+        borderRadius: 50
     },
     forRemote: {
         ...Default.IconButton,

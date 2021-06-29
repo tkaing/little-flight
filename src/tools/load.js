@@ -1,9 +1,13 @@
 import axios from "axios";
 
 import * as SecureStore from "expo-secure-store";
+
 import * as api_node_js from "../Api/Nodejs";
 import * as api_secure_store from "../Api/SecureStore";
+
 import * as app_service from "../App/Service";
+
+import { redirectTo } from './../tools'
 
 export default {
     app: {
@@ -108,17 +112,30 @@ export default {
     },
     home: {
         profile: {
-            listOfFriends: async () => {
+            listOfFriends: async ({ toast, navigation }, {
+                setAppUser,
+                setListOfFriends,
+            }) => {
                 try {
-                    const _token = await SecureStore.getItemAsync(api_secure_store.TOKEN);
                     const _response = await axios.get(
-                        api_default.person.list_of_friends(),
-                        { timeout: 5000, headers: { 'Authorization': `Bearer ${ _token }` } }
+                        api_node_js.PersonCall.list_of_friends(), await api_node_js.Config()
                     );
-                    const _data = _response.data;
-                    console.log(_data);
+                    if (_response) {
+                        const _data = _response.data;
+                        setListOfFriends(_data);
+                    }
                 } catch (failure) {
-                    console.log(failure);
+                    const _response = failure.response;
+                    if (_response) {
+                        const _data = _response.data;
+                        console.log(_data);
+                        switch (_data) {
+                            case 'Invalid token.':
+                                setAppUser();
+                                redirectTo.Auth(navigation);
+                                break;
+                        }
+                    }
                 }
             }
         }

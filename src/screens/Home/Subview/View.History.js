@@ -30,8 +30,8 @@ const History = ({ navigation }) => {
             <Box flex={ 5 } mx={ 5 }>
                 <SectionList
                     sections={ data }
-                    keyExtractor={ (item, index) => item + index }
                     renderItem={ ({ item }) => <Item item={ item } state={{ setShowModal, setModalContent }} /> }
+                    keyExtractor={ (item, index) => item + index }
                     renderSectionHeader={ ({ section: { title } }) => <SectionHeader title={ title } /> }
                 />
             </Box>

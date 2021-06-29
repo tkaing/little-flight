@@ -33,6 +33,9 @@ export default extendTheme({
                     style: {
                         textTransform: 'capitalize'
                     }
+                },
+                modal: {
+                    color: Color.blue
                 }
             }
         },
@@ -63,5 +66,24 @@ export default extendTheme({
                 },
             },
         },
+        IconButton: {
+            variants: {
+                red: ({ colorScheme }) => {
+                    return {
+                        bg: Color.red,
+                    };
+                },
+                blue: ({ colorScheme }) => {
+                    return {
+                        bg: Color.blue
+                    };
+                },
+                green: ({ colorScheme }) => {
+                    return {
+                        bg: Color.green
+                    };
+                },
+            },
+        }
     },
 });

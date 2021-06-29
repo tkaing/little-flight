@@ -1,11 +1,13 @@
 import axios from "axios";
+import Share from 'react-native-share';
+
+import * as SecureStore from "expo-secure-store";
 
 import * as api_node_js from "../Api/Nodejs";
-import * as SecureStore from "expo-secure-store";
-import * as api_secure_store from "../Api/SecureStore";
 import * as app_service from "../App/Service";
+import * as api_secure_store from "../Api/SecureStore";
 
-import { load } from ".";
+import { load, redirectTo } from ".";
 
 export default {
     auth: {
@@ -116,23 +118,135 @@ export default {
                     console.log('=== SHARE FAILURE ===', failure);
                 }
             },
-            searchFriend: async ({}, { username, setErrorManager }) => {
+            acceptFriend: async ({ friendId, navigation }, {
+                setAppUser,
+                loadingBtn,
+                setLoadingBtn,
+                setListOfFriends
+            }) => {
                 try {
+                    setLoadingBtn(true);
+
+                    const _response = await axios.patch(
+                        api_node_js.PersonCall.accept_friend(friendId), {}, await api_node_js.Config()
+                    );
+
+                    setLoadingBtn(false);
+
+                    if (_response) {
+                        const _data = _response.data;
+                        setListOfFriends(_data);
+                    }
+                } catch (failure) {
+
+                    setLoadingBtn(false);
+                    const _response = failure.response;
+
+                    if (_response) {
+                        const _data = _response.data;
+                        console.log("=== FJIOSJO ===", _data);
+                        switch (_data) {
+                            case 'Invalid token.':
+                                setAppUser();
+                                redirectTo.Auth(navigation);
+                                break;
+                            case 'Malformed token.':
+                                setAppUser();
+                                redirectTo.Auth(navigation);
+                                break;
+                        }
+                    }
+                }
+            },
+            rejectFriend: async ({ friendId, navigation }, {
+                setAppUser,
+                loadingBtn,
+                setLoadingBtn,
+                setListOfFriends
+            }) => {
+                try {
+                    setLoadingBtn(true);
+
+                    const _response = await axios.delete(
+                        api_node_js.PersonCall.reject_friend(friendId), await api_node_js.Config()
+                    );
+
+                    setLoadingBtn(false);
+
+                    if (_response) {
+                        const _data = _response.data;
+                        setListOfFriends(_data);
+                    }
+                } catch (failure) {
+
+                    setLoadingBtn(false);
+
+                    const _response = failure.response;
+
+                    if (_response) {
+                        const _data = _response.data;
+                        console.log(_data);
+                        switch (_data) {
+                            case 'Invalid token.':
+                                setAppUser();
+                                redirectTo.Auth(navigation);
+                                break;
+                        }
+                    }
+                }
+            },
+            searchFriend: async ({ navigation }, {
+                toast, username,
+                appUser, setAppUser,
+                loadingBtn, setLoadingBtn,
+            }) => {
+                try {
+                    setLoadingBtn(true);
+
                     const _token = await SecureStore.getItemAsync(api_secure_store.TOKEN);
 
                     const _response = await axios.post(
-                        api_default.person.add_friend(),
-                        { username: username },
-                        { timeout: 5000, headers: { 'Authorization': `Bearer ${ _token }` } }
+                        api_node_js.PersonCall.add_friend(),
+                        {username: username},
+                        {timeout: 5000, headers: {'Authorization': `Bearer ${_token}`}}
                     );
 
+                    setLoadingBtn(false);
+
                     const _data = _response.data;
+
                     console.log("=== SEARCH FRIEND DATA ===", _data);
+
+                    app_service.toast(toast, 'success', `Okay, ${username} is added !`);
 
                 } catch (failure) {
 
-                    console.log("=== SEARCH FRIEND FAILURE ===", failure.response);
-                    setErrorManager({ addFriend: failure.response });
+                    setLoadingBtn(false);
+
+                    const _response = failure.response;
+
+                    //console.log("=== SEARCH FRIEND FAILURE ===", _response);
+
+                    const _data = _response.data;
+
+                    switch (_data) {
+                        case 'MYSELF':
+                            app_service.toast(toast, 'danger', `${username} __MYSELF__`);
+                            break;
+                        case 'PENDING':
+                            app_service.toast(toast, 'danger', `${username} __PENDING__`);
+                            break;
+                        case 'ACCEPTED':
+                            app_service.toast(toast, 'danger', `${username} __ACCEPTED__`);
+                            break;
+                        case 'NOT FOUND':
+                            app_service.toast(toast, 'danger', `${username} doesn't exist`);
+                            break;
+                        case 'Invalid token.':
+                            setAppUser();
+                            redirectTo.Auth(navigation);
+                            break;
+                    }
                 }
             },
         }

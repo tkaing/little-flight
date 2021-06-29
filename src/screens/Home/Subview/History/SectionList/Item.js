@@ -1,8 +1,8 @@
 import React from "react";
 
-import {Box, Button, Icon, IconButton, Row, Text} from "native-base";
-import Color from "../../../../App/Color";
-import * as app_common from "../../../../App/Common";
+import { Box, Icon, IconButton, Row, Text } from "native-base";
+import Color from "../../../../../App/Color";
+import * as app_common from "../../../../../App/Common";
 
 const Item = (
     {
@@ -14,7 +14,7 @@ const Item = (
 ) => {
 
     const on = {
-        Press: () => {
+        OpenModal: () => {
             setShowModal(true);
             setModalContent({ text: text });
         }
@@ -57,7 +57,7 @@ const Item = (
                 <Text flex={ 4 } textAlign="left" fontWeight="bold">Vol de { item }</Text>
 
                 <IconButton
-                    flex={ 1 } onPress={ on.Press } opacity={ 80 } bg={ "#ADD8E6" }
+                    flex={ 1 } onPress={ on.OpenModal } opacity={ 80 } bg={ "#ADD8E6" }
                     icon={ <Icon { ...app_common.IconButton.forItem } name='arrow-forward' /> } />
             </Row>
 
