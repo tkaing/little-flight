@@ -39,6 +39,11 @@ export default {
                     }
                 }
             }
+        },
+        recordings: {
+            listOfFolders: () => {
+
+            }
         }
     },
     appUser: async ({ toast }, {

@@ -23,7 +23,7 @@ const FooterTabs = (
                     py={ 2 }
                     flex={ 1 }
                     opacity={ tabIndex === _index ? 1 : 0.5 }
-                    onPress={ () => on.home.tabChange({ index: _index },{ setTabIndex }) }>
+                    onPress={ () => on.home.footerTabChange({ index: _index },{ setTabIndex }) }>
                     <Center>
                         <Icon { ...app_common.Icon.forFooterTab } name={ _it.icon } />
                         <Text { ...app_common.Text.forFooterTab } numberOfLines={ 1 }>

@@ -12,6 +12,5 @@ export {
     History,
     Settings,
     Recordings,
-
     FooterTabs,
 }
