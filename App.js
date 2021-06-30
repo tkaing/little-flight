@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
-import * as Google from "expo-auth-session/providers/google";
 import * as firebase from "firebase";
 
 import AppLoading from "expo-app-loading/src/AppLoading";
@@ -15,13 +14,14 @@ import FpvScreen from "./src/screens/FpvScreen.js";
 import HomeScreen from "./src/screens/HomeScreen.js";
 import AuthScreen from "./src/screens/AuthScreen.js";
 
+import Theme from "./src/App/Theme";
+
 import * as app_route from "./src/App/Route";
 import * as api_firebase from "./src/Api/Firebase";
 
-import { load } from "./src/tools";
+import { useToast } from "native-base";
 
-import Theme from "./src/App/Theme";
-import {useToast} from "native-base";
+import { load } from "./src/tools";
 
 const Stack = createStackNavigator();
 
@@ -34,12 +34,6 @@ const App = () => {
     const [appUser, setAppUser] = useState();
     const [loading, setLoading] = useState(false);
 
-    const [,response, promptAsync] = Google.useAuthRequest({
-        iosClientId: '817789782056-kkqgj9ec0sl5lhae82gg3cu7f1q8ebjo.apps.googleusercontent.com',
-        expoClientId: '817789782056-50c858j1vr440iaoegqksn3442ql6ljr.apps.googleusercontent.com',
-        androidClientId: '817789782056-2i4ju976pjcs7nl9qur39ov6anl6leum.apps.googleusercontent.com',
-    });
-
     // === useFonts ===
 
     const [fontsLoaded] = useFonts({
@@ -49,29 +43,6 @@ const App = () => {
     });
 
     // === useEffect ===
-
-    useEffect(() => {
-        load.app.appUser(
-            {},
-            {
-                toast,
-                appUser, setAppUser,
-                loading, setLoading,
-            }
-        );
-    }, [appUser]);
-
-    useEffect(() => {
-        load.app.googleAuthResponse(
-            {},
-            {
-                toast,
-                response,
-                appUser, setAppUser,
-                loading, setLoading,
-            }
-        );
-    }, [response]);
 
     if (!firebase.apps.length)
         firebase.initializeApp(api_firebase.Config);
@@ -91,7 +62,6 @@ const App = () => {
                                         state={{
                                             appUser, setAppUser,
                                             loading, setLoading,
-                                            googlePromptAsync: promptAsync
                                         }} />
                         ) }
                     </Stack.Screen>
@@ -108,9 +78,15 @@ const App = () => {
                     </Stack.Screen>
                     <Stack.Screen
                         name={ app_route.fpv.name }
-                        options={ app_route.fpv.options }
-                        component={ FpvScreen }
-                    />
+                        options={ app_route.fpv.options }>
+                        { props => (
+                            <FpvScreen { ...props }
+                                        state={{
+                                            appUser, setAppUser,
+                                            loading, setLoading,
+                                        }} />
+                        ) }
+                    </Stack.Screen>
                     </Stack.Navigator>
             </NavigationContainer>
         </NativeBaseProvider>

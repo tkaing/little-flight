@@ -87,9 +87,13 @@ const SignUp = (
                         text="Vous avez déjà un compte ?"
                         link="Connectez-vous !"
                         button={{ icon: 'log-in-outline', text: 'Sign Up' }}
-                        setLoading={ setLoading }
                         onLinkPress={ () => setSignIn(true) }
-                        handleSubmit={ handleSubmit } />
+                        handleSubmit={ handleSubmit }
+                        state={{
+                            appUser, setAppUser,
+                            loading, setLoading,
+                        }}
+                        />
 
                 </>
             )}

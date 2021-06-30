@@ -8,13 +8,16 @@ import * as app_common from "./../../App/Common";
 
 const Footer = (
     {
+        state: {
+            appUser, setAppUser,
+            loading, setLoading,
+        },
         text,
         link,
         button,
-        setLoading,
         onLinkPress,
         handleSubmit,
-        googleConnect
+        googleConnect,
     }
 ) => {
 
@@ -30,9 +33,10 @@ const Footer = (
             </Button>
 
             { googleConnect &&
-                <GoogleConnect
-                    setLoading={ setLoading }
-                    signInWithGoogle={ googleConnect.signIn } />
+                <GoogleConnect state={{
+                    appUser, setAppUser,
+                    loading, setLoading,
+                }} />
             }
 
             <Center>

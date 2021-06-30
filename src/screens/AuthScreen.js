@@ -6,14 +6,13 @@ import { lockAsync, OrientationLock } from "expo-screen-orientation";
 
 import { SignIn, SignUp } from "./Auth";
 
-import { redirectTo } from "./../tools";
+import { load, redirect_to } from "./../tools";
 
 const AuthScreen = (
     {
         state: {
             appUser, setAppUser,
             loading, setLoading,
-            googlePromptAsync,
         },
         navigation,
     }
@@ -28,20 +27,20 @@ const AuthScreen = (
     // == useEffect ===
 
     useEffect(() => {
-        if (appUser)
-            redirectTo.Home(navigation);
+        load.appUser({ toast }, {
+            appUser, setAppUser,
+            loading, setLoading,
+        });
         lockAsync(OrientationLock.PORTRAIT);
     }, []);
 
     useEffect(() => {
         if (appUser)
-            redirectTo.Home(navigation);
+            redirect_to.home(navigation);
     }, [appUser]);
 
     useEffect(() => {
         return navigation.addListener('focus', () => {
-            if (appUser)
-                redirectTo.Home(navigation);
             lockAsync(OrientationLock.PORTRAIT);
         });
     }, [navigation]);
@@ -56,7 +55,7 @@ const AuthScreen = (
     return (
         <Column px={10} pt={70}>
             { isSignIn &&
-                <SignIn state={{ ...signState, googlePromptAsync }} />
+                <SignIn state={{ ...signState }} />
             }
             { !isSignIn &&
                 <SignUp state={{ ...signState }} />

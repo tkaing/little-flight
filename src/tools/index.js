@@ -3,6 +3,6 @@ import load from './load'
 import drone from './drone'
 import schema from './schema'
 import ffmpeg from './ffmpeg'
-import redirectTo from './redirectTo'
+import redirect_to from './redirect_to'
 
-export { on, load, redirectTo, schema, ffmpeg, drone }
+export { on, load, redirect_to, schema, ffmpeg, drone }

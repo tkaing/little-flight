@@ -15,7 +15,6 @@ const SignIn = (
             appUser, setAppUser,
             loading, setLoading,
             isSignIn, setSignIn,
-            googlePromptAsync,
         }
     }
 ) => {
@@ -74,10 +73,14 @@ const SignIn = (
                         text="Vous n'avez pas de compte ?"
                         link="Créez un compte !"
                         button={{ icon: 'log-in-outline', text: 'Login' }}
-                        setLoading={ setLoading }
                         onLinkPress={ () => setSignIn(false) }
                         handleSubmit={ handleSubmit }
-                        googleConnect={{ signIn: () => on.auth.signInWithGoogle(googlePromptAsync) }} />
+                        googleConnect={ true }
+                        state={{
+                            appUser, setAppUser,
+                            loading, setLoading,
+                        }}
+                        />
 
                 </>
             )}

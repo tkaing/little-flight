@@ -7,7 +7,7 @@ import * as api_node_js from "../Api/Nodejs";
 import * as app_service from "../App/Service";
 import * as api_secure_store from "../Api/SecureStore";
 
-import { load, redirectTo } from ".";
+import { load, redirect_to } from ".";
 
 export default {
     auth: {
@@ -21,14 +21,16 @@ export default {
             try {
                 setLoading(true);
 
-                const apiResponse = await axios.post(
+                const _response = await axios.post(
                     api_node_js.PersonCall.sign_in(), {
                         email: email,
                         password: password,
                     }, { timeout: 5000 }
                 );
-                const apiToken = apiResponse.data.jwt;
-                await SecureStore.setItemAsync(api_secure_store.TOKEN, apiToken);
+
+                const _token = _response.data.jwt;
+
+                await SecureStore.setItemAsync(api_secure_store.TOKEN, _token);
 
                 setLoading(false);
 
@@ -45,13 +47,13 @@ export default {
                     // anything else
                     app_service.toast(toast, 'danger', `Login failed.`);
                 }
+
                 setLoading(false);
 
                 return;
             }
 
-            await load.app.appUser({}, {
-                toast,
+            await load.appUser({ toast }, {
                 appUser, setAppUser,
                 loading, setLoading,
             });
@@ -66,22 +68,19 @@ export default {
             try {
                 setLoading(true);
 
-                const apiResponse = await axios.post(
+                const _response = await axios.post(
                     api_node_js.PersonCall.sign_up(), {
                         email: email,
                         password: password,
                         username: username,
                     }, { timeout: 5000 }
                 );
-                const apiToken = apiResponse.data.jwt;
-                await SecureStore.setItemAsync(api_secure_store.TOKEN, apiToken);
+
+                const _token = _response.data.jwt;
+
+                await SecureStore.setItemAsync(api_secure_store.TOKEN, _token);
 
                 setLoading(false);
-
-                await load.app.appUser({}, {
-                    appUser, setAppUser,
-                    loading, setLoading,
-                });
 
             } catch (failure) {
 
@@ -90,16 +89,88 @@ export default {
                     app_service.toast(toast, 'danger', `Unable to connect to Api. (${ failure.message })`);
                 } else if (failure.response) {
                     // an error response (5xx, 4xx)
-                    const { data } = failure.response;
-                    app_service.toast(toast, 'danger', data);
+                    const _response = failure.response;
+                    app_service.toast(toast, 'danger', _response.data);
                 } else {
                     // anything else
                     app_service.toast(toast, 'danger', `Sign up failed.`);
                 }
+
                 setLoading(false);
+
+                return;
             }
+
+            await load.appUser({ toast }, {
+                appUser, setAppUser,
+                loading, setLoading,
+            });
         },
-        signInWithGoogle: (googlePromptAsync) => googlePromptAsync()
+        signInWithGoogle: async ({ toast }, {
+            appUser, setAppUser,
+            loading, setLoading,
+            googleResponse,
+        }) => {
+
+            console.log("=== GOOGLE ===");
+
+            setLoading(true);
+
+            try {
+
+                console.log(googleResponse);
+
+                if (googleResponse.type === 'error') {
+
+                    setLoading(false);
+
+                    app_service.toast(
+                        toast,
+                        'danger',
+                        'Unable to connect to Google'
+                    );
+
+                    return;
+                }
+
+                if (googleResponse.type === 'success') {
+
+                    const _token = googleResponse.params.access_token;
+
+                    const _response = await axios.post(
+                        api_node_js.PersonCall.sign_in_with_google(_token),
+                        {}, { timeout: 5000 }
+                    );
+
+                    const _data = _response.data;
+
+                    await SecureStore.setItemAsync(api_secure_store.TOKEN, _data.jwt);
+
+                    setLoading(false);
+                }
+
+            } catch (failure) {
+
+                setLoading(false);
+
+                console.log(failure);
+
+                app_service.toast(
+                    toast,
+                    'danger',
+                    failure.code === 'ECONNABORTED' || failure.message === 'Network Error'
+                        ? `Unable to connect to Api.`
+                        : `Unable to connect to Google. (ECONNABORTED)`
+                );
+
+                return;
+            }
+
+            await load.appUser({ toast }, {
+                appUser, setAppUser,
+                loading, setLoading,
+            });
+        }
     },
     home: {
         tabChange: ({ index }, { setTabIndex }) => setTabIndex(index),
@@ -147,12 +218,12 @@ export default {
                         console.log("=== FJIOSJO ===", _data);
                         switch (_data) {
                             case 'Invalid token.':
-                                setAppUser();
-                                redirectTo.Auth(navigation);
+                                setAppUser(null);
+                                redirect_to.auth(navigation);
                                 break;
                             case 'Malformed token.':
-                                setAppUser();
-                                redirectTo.Auth(navigation);
+                                setAppUser(null);
+                                redirect_to.auth(navigation);
                                 break;
                         }
                     }
@@ -188,8 +259,8 @@ export default {
                         console.log(_data);
                         switch (_data) {
                             case 'Invalid token.':
-                                setAppUser();
-                                redirectTo.Auth(navigation);
+                                setAppUser(null);
+                                redirect_to.auth(navigation);
                                 break;
                         }
                     }
@@ -243,8 +314,8 @@ export default {
                             app_service.toast(toast, 'danger', `${username} doesn't exist`);
                             break;
                         case 'Invalid token.':
-                            setAppUser();
-                            redirectTo.Auth(navigation);
+                            setAppUser(null);
+                            redirect_to.auth(navigation);
                             break;
                     }
                 }

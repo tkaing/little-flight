@@ -6,6 +6,7 @@ import { lockAsync, OrientationLock } from "expo-screen-orientation";
 
 import * as app_screen from '../App/Screen';
 import {MainLoader} from "../core";
+import {redirect_to} from "../tools";
 
 const HomeScreen = (
     {
@@ -28,6 +29,11 @@ const HomeScreen = (
     }, []);
 
     useEffect(() => {
+        if (!appUser)
+            redirect_to.auth(navigation);
+    }, [appUser]);
+
+    useEffect(() => {
         return navigation.addListener(
             'focus', () => lockAsync(OrientationLock.DEFAULT)
         );
@@ -42,8 +48,8 @@ const HomeScreen = (
                 { cloneElement(
                     subview.content, {
                         state: {
-                            loading, setLoading,
                             appUser, setAppUser,
+                            loading, setLoading,
                         },
                         navigation
                     }
