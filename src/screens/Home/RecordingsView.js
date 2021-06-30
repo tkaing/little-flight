@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from "react";
-import styles from "./Styles.Recordings";
 
 import * as RNFS from "react-native-fs";
-import RecordingsGallery from "./RecordingsGallery";
 import { PermissionsAndroid, Dimensions } from "react-native";
-import { Center, Text, Button, Column, Box, Row, Wrap, Image} from "native-base";
+import { Text, Button, Column, Box, Wrap, Image} from "native-base";
 
 import Color from "../../App/Color";
-
-
+import { ScrollView } from "react-native-gesture-handler";
 
 const RecordingsView = ({ navigation }) => {
 
@@ -52,53 +49,19 @@ const RecordingsView = ({ navigation }) => {
     };
 
     const readFolder = async () => {
-
-        // get a list of files and directories in the main bundle
-        console.log('READFOLDER');
-        
-        let imagesFolder = `${ RNFS.PicturesDirectoryPath }/LittleFlight Images`;
-        
-        // On Android, use "RNFS.DocumentDirectoryPath" (MainBundlePath is not defined)
-
         try {
-            const listOfImages = await RNFS.readDir(imagesFolder);
+            const listOfImages = await RNFS.readDir(`${ RNFS.PicturesDirectoryPath }/LittleFlight Images`);
             console.log(listOfImages);
             setTableau(listOfImages);
         } catch (xxx) {
             console.log(xxx);
-        }
-
-       /* RNFS.readDir(imagesFolder) 
-            .then(result => {
-                console.log('GOT RESULT', result);
-                console.log(Array.isArray(result));
-               
-                return Promise.all([RNFS.stat(result[0].path), result[0].path]);
-            })
-            .then((statResult) => {
-                if (statResult[0].isFile()) {
-                    
-                    return RNFS.readFile(statResult[1], 'utf8');
-                }
-
-        return 'no file';
-        })
-        .then((contents) => {
-        
-        console.log(contents);
-        })
-        .catch((err) => {
-        console.log(err.message, err.code);
-        });*/
-        
+        }        
     };
 
     useEffect(() => {
         saveFile();
         readFolder();
     }, []);
-
-    console.log('tableau : ', tableau);
 
     return (
         <Column bg={ Color.blue } flex={1}>
@@ -115,18 +78,21 @@ const RecordingsView = ({ navigation }) => {
                 </Button>
             </Button.Group>
 
-            <Box bg={ Color.black } flex={1}>
+            <Box bg={ Color.black }>
 
-                <Wrap direction="row" spacing={2} flex={1}>
-                    
-                    {/*<Image source={{uri:'file:///storage/emulated/0/Pictures/LittleFlight Images/download (2) (1).jpeg'}} style={{width: 200, height: 200}}/>*/}
-                    { tableau.map(_it => 
-                        <Image source={{ uri: `file://${ _it.path }` }} style={{width: Dimensions.get('window').width / 2, height: Dimensions.get('window').width / 2}}/>
-                    ) }
+                <ScrollView>
 
-                </Wrap>
+                    <Wrap direction="row" paddingBottom={100}>
 
-                {/*<RecordingsGallery />*/}
+                        { tableau.concat(tableau).map(_it => 
+                            <Image source={{ uri: `file://${ _it.path }` }}
+                                style={{ width: Dimensions.get('window').width / 2, height: Dimensions.get('window').width / 2 }} 
+                                />
+                        ) }
+
+                    </Wrap>
+
+                </ScrollView>
 
             </Box>
 
