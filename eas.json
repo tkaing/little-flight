@@ -4,7 +4,7 @@
       "release": {
         "workflow": "generic"
       },
-      "development": {
+      "simureal": {
         "workflow": "generic",
         "gradleCommand": ":app:assembleDebug",
         "distribution": "internal"
