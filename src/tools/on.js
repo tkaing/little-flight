@@ -57,7 +57,7 @@ const on = {
             }
 
             await load.appUser({ toast }, {
-                appUser, setAppUser,
+                appUser: null, setAppUser,
                 loading, setLoading,
             });
         },
@@ -105,7 +105,7 @@ const on = {
             }
 
             await load.appUser({ toast }, {
-                appUser, setAppUser,
+                appUser: null, setAppUser,
                 loading, setLoading,
             });
         },
@@ -166,7 +166,7 @@ const on = {
             }
 
             await load.appUser({ toast }, {
-                appUser, setAppUser,
+                appUser: null, setAppUser,
                 loading, setLoading,
             });
         }

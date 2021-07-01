@@ -55,7 +55,8 @@ const AuthScreen = (
 
     return (
         <Column px={10} pt={70} bg={"#282828"} flex={1}>
-            <Image alignSelf="center" source={require('../../assets/DroneLogo.jpeg')} mb={10}/>
+
+            <Image alt="logo" alignSelf="center" source={require('../../assets/DroneLogo.jpeg')} mb={10}/>
 
             { isSignIn &&
                 <SignIn state={{ ...signState }} />
