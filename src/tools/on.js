@@ -8,8 +8,11 @@ import * as app_service from "../App/Service";
 import * as api_secure_store from "../Api/SecureStore";
 
 import { load, redirect_to } from ".";
+import {PermissionsAndroid} from "react-native";
+import * as RNFS from "react-native-fs";
+import RecordingsFolderConst from "../App/const/RecordingsFolderConst";
 
-export default {
+const on = {
     auth: {
         signInSubmit: async (
             { email, password }, {
@@ -169,7 +172,6 @@ export default {
         }
     },
     home: {
-        tabChange: ({ index }, { setTabIndex }) => setTabIndex(index),
         profile: {
             share: async () => {
                 try {
@@ -319,6 +321,82 @@ export default {
                     }
                 }
             },
-        }
+        },
+        recordings: {
+            share: async ({url}) => {
+                try {
+                    const _response = await Share.open({
+                        message: 'I\'m a droner! See my profile on the new app : LittleFlight',
+                        url: url,
+                        //urls: [files.image1, files.image2]
+                    });
+                    console.log('=== SHARE DATA ===', JSON.stringify(_response));
+
+                } catch (failure) {
+
+                    console.log('=== SHARE FAILURE ===', failure);
+                }
+            },
+            tabChange: ({ index }, { setTabIndex }) => setTabIndex(index),
+            readPhotos: async ({}, { setListOfPhotos }) => {
+                try {
+                    const listOfPhotos = await RNFS.readDir(RecordingsFolderConst.IMAGE);
+                    setListOfPhotos(listOfPhotos);
+                } catch (failure) {
+                    console.log("=== LIST OF PHOTOS ===", failure);
+                }
+            },
+            readVideos: async ({}, { setListOfVideos }) => {
+                try {
+                    const listOfVideos = await RNFS.readDir(RecordingsFolderConst.VIDEO);
+                    setListOfVideos(listOfVideos);
+                } catch (failure) {
+                    console.log("=== LIST OF VIDEOS ===", failure);
+                }
+            },
+            initFoldersAndMedias: async ({}, {
+                setListOfPhotos, setListOfVideos
+            }) => {
+                try {
+                    await PermissionsAndroid.requestMultiple([
+                        PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+                        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+                    ]);
+                } catch (failure) {
+                    console.log("=== INIT FOLDERS ===", failure);
+                }
+
+                const readGranted = await PermissionsAndroid.check(
+                    PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE
+                );
+                const writeGranted = await PermissionsAndroid.check(
+                    PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
+                );
+
+                if (!readGranted || !writeGranted) {
+                    console.log(
+                        "=== INIT FOLDERS ===",
+                        'Read and write permissions have not been granted'
+                    );
+                    return;
+                }
+
+                console.log("=== GRANTED ===");
+
+                const listOfFolders = [
+                    RecordingsFolderConst.VIDEO,
+                    RecordingsFolderConst.IMAGE,
+                ];
+
+                for await (_it of listOfFolders)
+                    if (!(await RNFS.exists(_it))) await RNFS.mkdir(_it);
+
+                await on.home.recordings.readPhotos({}, { setListOfPhotos });
+                await on.home.recordings.readVideos({}, { setListOfVideos });
+            },
+        },
+        footerTabChange: ({ index }, { setTabIndex }) => setTabIndex(index)
     },
-}
+};
+
+export default on
