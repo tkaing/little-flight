@@ -3,7 +3,7 @@
     "name": "LittleFlight",
     "slug": "little-flight",
     "owner": "kenmav",
-    "version": "1.0.0",
+    "version": "2.0.0",
     "scheme": "littleflight",
     "orientation": "default",
     "icon": "./assets/icon.png",
