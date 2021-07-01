@@ -324,6 +324,20 @@ const on = {
             },
         },
         recordings: {
+            share: async ({url}) => {
+                try {
+                    const _response = await Share.open({
+                        message: 'I\'m a droner! See my profile on the new app : LittleFlight',
+                        url: url,
+                        //urls: [files.image1, files.image2]
+                    });
+                    console.log('=== SHARE DATA ===', JSON.stringify(_response));
+
+                } catch (failure) {
+
+                    console.log('=== SHARE FAILURE ===', failure);
+                }
+            },
             tabChange: ({ index }, { setTabIndex }) => setTabIndex(index),
             readPhotos: async ({}, { setListOfPhotos }) => {
                 try {

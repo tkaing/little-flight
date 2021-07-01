@@ -1,7 +1,8 @@
 import React from "react";
 
-import { Dimensions } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 import { Image, ScrollView, Wrap } from "native-base";
+import Video from 'react-native-video';
 
 const GalleryVideo = (
     {
@@ -9,19 +10,31 @@ const GalleryVideo = (
     }
 ) => {
 
+    let player;
+
     return (
         <ScrollView>
-            <Wrap direction="row" paddingBottom={100}>
-                { listOfVideos.map(_it =>
-                    <Image
-                        alt="Video"
-                        style={{ width: Dimensions.get('window').width / 2, height: Dimensions.get('window').width / 2 }}
-                        source={{ uri: `file://${ _it.path }` }}
-                        />
-                ) }
-            </Wrap>
+            { listOfVideos.map(_it =>
+                <Video
+                    source={{ uri: `file://${ _it.path }` }}
+                    resizeMode="cover"
+                    autoplay={false}
+                    controls={true}
+                    ref={(ref) => {
+                        this.player = ref
+                    }}
+                    style={ styles.backgroundVideo }
+                />                  
+            ) }
         </ScrollView>
     );
 };
+
+var styles = StyleSheet.create({
+    backgroundVideo: {
+      width: Dimensions.get('window').width,
+      height: 250
+    },
+  });
 
 export default GalleryVideo
