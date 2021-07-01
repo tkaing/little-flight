@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 
 import { MainLoader } from "../core";
-import { Column, useToast } from "native-base";
+import { Column, useToast, Image } from "native-base";
 import { lockAsync, OrientationLock } from "expo-screen-orientation";
 
 import { SignIn, SignUp } from "./Auth";
 
 import { load, redirect_to } from "./../tools";
+
 
 const AuthScreen = (
     {
@@ -53,7 +54,9 @@ const AuthScreen = (
     };
 
     return (
-        <Column px={10} pt={70}>
+        <Column px={10} pt={70} bg={"#282828"} flex={1}>
+            <Image alignSelf="center" source={require('../../assets/DroneLogo.jpeg')} mb={10}/>
+
             { isSignIn &&
                 <SignIn state={{ ...signState }} />
             }

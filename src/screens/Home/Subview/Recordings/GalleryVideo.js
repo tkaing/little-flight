@@ -1,10 +1,11 @@
-import React from "react";
+import React, {useState} from "react";
 
 import { Dimensions, StyleSheet, TouchableOpacity } from "react-native";
-import { Image, ScrollView, Wrap, Column, Box, Row } from "native-base";
+import { Image, ScrollView, Wrap, Column, Box, Row, Icon, IconButton } from "native-base";
 import Video from 'react-native-video';
 import Color from "../../../../App/Color"
 import { on } from "../../../../tools"
+import * as app_common from "../../../../App/Common";
 
 const GalleryVideo = (
     {
@@ -12,34 +13,32 @@ const GalleryVideo = (
     }
 ) => {
 
-    let player;
+    const [player, setPlayer] = useState();
 
     return (
         <ScrollView>
             
                 { listOfVideos.map((_it, index) =>
-                    <Row flex={1} height={250}>
+                    <Row flex={1} height={250} >
                         <Video
                             source={{ uri: `file://${ _it.path }` }}
                             resizeMode="cover"
                             autoplay={false}
                             controls={true}
-                            ref={(ref) => {
-                                this.player = ref
-                            }}
+                            paused={true}
+                            poster={`file://${ _it.path }`}
                             style={ styles.backgroundVideo }
                         />
 
-                        <TouchableOpacity key={index} onPress={() => {
-                            console.log("OnPress")
-                            on.home.recordings.share({url: `file://${ _it.path }`})
-                            }}>
-
-                            <Box bg={ Color.blue } height={250} width={50}/>   
-
-                        </TouchableOpacity> 
-                                            
-                          
+                        <Box flex={1} justifyContent="center">
+                            <IconButton
+                                { ...app_common.IconButton.forProfile }
+                                bg="#41444B"
+                                icon={ <Icon { ...app_common.Icon.default } name="share-social" size="sm" /> }
+                                onPress={ () => on.home.recordings.share({url: `file://${ _it.path }`}) }
+                                alignSelf="center"
+                            />
+                        </Box>
                     </Row>
       
                 ) }

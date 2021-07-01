@@ -1,11 +1,11 @@
 import React from "react";
 
 const PHOTO = {
-    name: "Photo",
+    name: "Photos",
 };
 
 const VIDEO = {
-    name: "Video",
+    name: "Videos",
 
 }
 
