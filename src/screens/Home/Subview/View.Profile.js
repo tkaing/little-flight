@@ -22,32 +22,34 @@ const Profile = (
 
     const toast = useToast();
 
+    const [pending, setPending] = useState(false);
     const [username, setUsername] = useState();
     const [showModal, setShowModal] = useState(false);
     const [loadingBtn, setLoadingBtn] = useState(false);
-    const [listOfFriends, setListOfFriends] = useState([]);
-    const [pendingFriend, setPendingFriend] = useState(false);
+    const [listOfFriends, setListOfFriends] = useState({
+        requestByMe: {
+            pending: [],
+            accepted: []
+        },
+        requestByOthers: {
+            pending: [],
+            accepted: []
+        },
+    });
 
     const handle = {
         FriendButtonPress: (forPending) => {
+            setPending(forPending);
             setShowModal(true);
-            setPendingFriend(forPending);
         }
     };
 
     useEffect(() => {
         load.home.profile.listOfFriends(
-            { navigation, toast },
+            { toast, navigation },
             { setAppUser, setListOfFriends }
         );
     }, []);
-
-    useEffect(() => {
-        console.log(appUser);
-    }, [appUser]);
-
-    const listOfFriendsByPending = listOfFriends.filter(_it => !_it.isAccepted);
-    const listOfFriendsByAccepted = listOfFriends.filter(_it => _it.isAccepted);
 
     return (
         <Box flex={1}>
@@ -58,6 +60,7 @@ const Profile = (
                 <Box mt={10}>
                     <SearchBar
                         state={{
+                            setListOfFriends,
                             appUser, setAppUser,
                             username, setUsername,
                             loadingBtn, setLoadingBtn
@@ -92,8 +95,16 @@ const Profile = (
                 {/* === Username === */}
                 { appUser &&
                     <Column mt={5} alignItems="center">
-                        <Text color="#e9eaec" fontWeight="200" textTransform="capitalize" style={{ fontSize: 36 }}>{ appUser.username }</Text>
-                        <Text color="#AEB5BC" style={{ fontSize: 14 }}>{ appUser.email }</Text>
+                        <Text color="#e9eaec"
+                              style={{ fontSize: 36 }}
+                              fontWeight="200"
+                              textTransform="capitalize">
+                            { appUser.username }
+                        </Text>
+                        <Text color="#AEB5BC"
+                              style={{ fontSize: 14 }}>
+                            { appUser.email }
+                        </Text>
                     </Column>
                 }
 
@@ -103,7 +114,8 @@ const Profile = (
                         count: 2,
                         title: 'Medias'
                     }, {
-                        count: listOfFriendsByAccepted.length,
+                        count: listOfFriends.requestByMe.accepted.length
+                            + listOfFriends.requestByOthers.accepted.length,
                         title: 'Droners'
                     }, {
                         count: 300,
@@ -145,13 +157,12 @@ const Profile = (
             </ScrollView>
 
             <ModalOverview state={{
+                pending,
                 showModal,
                 setShowModal,
-                pendingFriend,
+                listOfFriends,
                 setListOfFriends,
                 appUser, setAppUser,
-                listOfFriendsByPending,
-                listOfFriendsByAccepted,
             }} />
 
         </Box>

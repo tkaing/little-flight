@@ -19,14 +19,18 @@ export default {
             }) => {
                 try {
                     const _response = await axios.get(
-                        api_node_js.PersonCall.list_of_friends(), await api_node_js.Config()
+                        api_node_js.FriendCall.list(), await api_node_js.Config()
                     );
+
                     if (_response) {
                         const _data = _response.data;
                         setListOfFriends(_data);
                     }
+
                 } catch (failure) {
+
                     const _response = failure.response;
+
                     if (_response) {
                         const _data = _response.data;
                         console.log(_data);

@@ -9,12 +9,12 @@ import { Item } from "../Profile";
 const ModalOverview = (
     {
         state: {
-            appUser, setAppUser,
-            showModal, setShowModal,
-            pendingFriend,
+            pending,
+            showModal,
+            setShowModal,
+            listOfFriends,
             setListOfFriends,
-            listOfFriendsByPending,
-            listOfFriendsByAccepted,
+            appUser, setAppUser
         },
         navigation
     }
@@ -25,16 +25,21 @@ const ModalOverview = (
             <Modal.Content maxWidth="400px">
                 <Modal.Header>
                     <Text { ...app_common.Text.forModal }>
-                        { pendingFriend ? 'En attente' : 'Liste d\'amis' }
+                        { pending ? 'Demandes d\'ajout' : 'Ma Liste d\'amis' }
                     </Text>
                 </Modal.Header>
                 <Modal.Body mt={5}>
                     <FlatList
-                        data={ pendingFriend ? listOfFriendsByPending : listOfFriendsByAccepted }
+                        data={ pending
+                            ? listOfFriends.requestByOthers.pending
+                            : listOfFriends.requestByOthers.accepted
+                                .concat(listOfFriends.requestByMe.accepted)
+                                .concat(listOfFriends.requestByMe.pending)
+                        }
                         renderItem={ ({ item }) => (
                             <Item item={ item } state={{
+                                pending,
                                 setAppUser,
-                                pendingFriend,
                                 setListOfFriends
                             }} navigation={ navigation } />
                         ) }

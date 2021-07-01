@@ -10,8 +10,8 @@ const Item = (
     {
         item,
         state: {
+            pending,
             setAppUser,
-            pendingFriend,
             setListOfFriends
         },
         navigation
@@ -19,6 +19,8 @@ const Item = (
 ) => {
 
     const [loadingBtn, setLoadingBtn] = useState(false);
+
+    console.log('=== ITEM ===', item.requestTo.username);
 
     return (
         <Box
@@ -30,10 +32,11 @@ const Item = (
             <Row alignItems="center" justifyContent="center">
 
                 <Text flex={2} textAlign="center" fontWeight="bold" textTransform="capitalize" variant="modal">
-                    { item.person.username }
+                    { item.requestBy.username && item.requestBy.username }
+                    { item.requestTo.username && item.requestTo.username }
                 </Text>
 
-                { pendingFriend &&
+                { pending &&
                     <Button.Group
                         flex={2}
                         isAttached>
@@ -44,8 +47,8 @@ const Item = (
                                 { friendId: item._id, navigation },
                                 {
                                     setAppUser,
-                                    setListOfFriends,
-                                    loadingBtn, setLoadingBtn
+                                    setLoadingBtn,
+                                    setListOfFriends
                                 }
                             ) }
                             padding={3}
@@ -55,13 +58,17 @@ const Item = (
                         />
                         <IconButton
                             mx={1}
-                            icon={ loadingBtn ? undefined : <Icon { ...app_common.IconButton.default } name='close' size={4} /> }
+                            icon={ loadingBtn
+                                ? undefined
+                                : <Icon { ...app_common.Icon.default }
+                                        name='close' size={4} />
+                            }
                             onPress={ () => on.home.profile.rejectFriend(
                                 { friendId: item._id, navigation },
                                 {
                                     setAppUser,
+                                    setLoadingBtn,
                                     setListOfFriends,
-                                    loadingBtn, setLoadingBtn
                                 }
                             ) }
                             padding={3}
@@ -72,15 +79,17 @@ const Item = (
                     </Button.Group>
                 }
 
-                { !pendingFriend &&
-                    <Button.Group
-                        flex={2}
-                        isAttached>
+                { !pending &&
+                    <Button.Group flex={2} isAttached>
                         <IconButton
                             mx={1}
-                            icon={ loadingBtn ? undefined : <Icon { ...app_common.IconButton.default } name='share-social' size={4} /> }
+                            icon={ loadingBtn
+                                ? undefined
+                                : <Icon { ...app_common.Icon.default }
+                                        name={ item.isAccepted ? 'share-social' : 'ellipsis-horizontal' } size={4} />
+                            }
                             padding={3}
-                            variant="blue"
+                            variant={ item.isAccepted ? 'blue' : 'red' }
                             isLoading={ loadingBtn }
                             isDisabled={ loadingBtn }
                         />

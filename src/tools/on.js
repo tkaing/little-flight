@@ -185,97 +185,17 @@ export default {
                     console.log('=== SHARE FAILURE ===', failure);
                 }
             },
-            acceptFriend: async ({ friendId, navigation }, {
+            addFriend: async ({ toast, navigation }, {
+                username,
                 setAppUser,
-                loadingBtn,
                 setLoadingBtn,
-                setListOfFriends
+                setListOfFriends,
             }) => {
                 try {
                     setLoadingBtn(true);
-
-                    const _response = await axios.patch(
-                        api_node_js.PersonCall.accept_friend(friendId), {}, await api_node_js.Config()
-                    );
-
-                    setLoadingBtn(false);
-
-                    if (_response) {
-                        const _data = _response.data;
-                        setListOfFriends(_data);
-                    }
-                } catch (failure) {
-
-                    setLoadingBtn(false);
-                    const _response = failure.response;
-
-                    if (_response) {
-                        const _data = _response.data;
-                        console.log("=== FJIOSJO ===", _data);
-                        switch (_data) {
-                            case 'Invalid token.':
-                                setAppUser(null);
-                                redirect_to.auth(navigation);
-                                break;
-                            case 'Malformed token.':
-                                setAppUser(null);
-                                redirect_to.auth(navigation);
-                                break;
-                        }
-                    }
-                }
-            },
-            rejectFriend: async ({ friendId, navigation }, {
-                setAppUser,
-                loadingBtn,
-                setLoadingBtn,
-                setListOfFriends
-            }) => {
-                try {
-                    setLoadingBtn(true);
-
-                    const _response = await axios.delete(
-                        api_node_js.PersonCall.reject_friend(friendId), await api_node_js.Config()
-                    );
-
-                    setLoadingBtn(false);
-
-                    if (_response) {
-                        const _data = _response.data;
-                        setListOfFriends(_data);
-                    }
-                } catch (failure) {
-
-                    setLoadingBtn(false);
-
-                    const _response = failure.response;
-
-                    if (_response) {
-                        const _data = _response.data;
-                        console.log(_data);
-                        switch (_data) {
-                            case 'Invalid token.':
-                                setAppUser(null);
-                                redirect_to.auth(navigation);
-                                break;
-                        }
-                    }
-                }
-            },
-            searchFriend: async ({ navigation }, {
-                toast, username,
-                appUser, setAppUser,
-                loadingBtn, setLoadingBtn,
-            }) => {
-                try {
-                    setLoadingBtn(true);
-
-                    const _token = await SecureStore.getItemAsync(api_secure_store.TOKEN);
 
                     const _response = await axios.post(
-                        api_node_js.PersonCall.add_friend(),
-                        {username: username},
-                        {timeout: 5000, headers: {'Authorization': `Bearer ${_token}`}}
+                        api_node_js.FriendCall.add(), { username: username }, await api_node_js.Config()
                     );
 
                     setLoadingBtn(false);
@@ -283,6 +203,8 @@ export default {
                     const _data = _response.data;
 
                     console.log("=== SEARCH FRIEND DATA ===", _data);
+
+                    setListOfFriends(_data);
 
                     app_service.toast(toast, 'success', `Okay, ${username} is added !`);
 
@@ -313,6 +235,87 @@ export default {
                             setAppUser(null);
                             redirect_to.auth(navigation);
                             break;
+                    }
+                }
+            },
+            acceptFriend: async ({ friendId, navigation }, {
+                setAppUser,
+                setLoadingBtn,
+                setListOfFriends
+            }) => {
+                try {
+                    setLoadingBtn(true);
+
+                    const _response = await axios.patch(
+                        api_node_js.FriendCall.accept(friendId), {}, await api_node_js.Config()
+                    );
+
+                    setLoadingBtn(false);
+
+                    if (_response) {
+                        const _data = _response.data;
+                        setListOfFriends(_data);
+                    }
+
+                } catch (failure) {
+
+                    setLoadingBtn(false);
+
+                    const _response = failure.response;
+
+                    if (_response) {
+
+                        const _data = _response.data;
+
+                        console.log("=== FJIOSJO ===", _data);
+
+                        switch (_data) {
+                            case 'Invalid token.':
+                                setAppUser(null);
+                                redirect_to.auth(navigation);
+                                break;
+                            case 'Malformed token.':
+                                setAppUser(null);
+                                redirect_to.auth(navigation);
+                                break;
+                        }
+                    }
+                }
+            },
+            rejectFriend: async ({ friendId, navigation }, {
+                setAppUser,
+                setLoadingBtn,
+                setListOfFriends
+            }) => {
+                try {
+                    setLoadingBtn(true);
+
+                    const _response = await axios.delete(
+                        api_node_js.FriendCall.reject(friendId), await api_node_js.Config()
+                    );
+
+                    setLoadingBtn(false);
+
+                    if (_response) {
+                        const _data = _response.data;
+                        setListOfFriends(_data);
+                    }
+
+                } catch (failure) {
+
+                    setLoadingBtn(false);
+
+                    const _response = failure.response;
+
+                    if (_response) {
+                        const _data = _response.data;
+                        console.log(_data);
+                        switch (_data) {
+                            case 'Invalid token.':
+                                setAppUser(null);
+                                redirect_to.auth(navigation);
+                                break;
+                        }
                     }
                 }
             },

@@ -9,14 +9,14 @@ import Color from "../App/Color";
 import * as app_common from "../App/Common"
 
 import { on } from './../tools'
-import {isLoading} from "expo-font";
 
 const SearchBar = (
     {
         state: {
+            setListOfFriends,
             appUser, setAppUser,
             username, setUsername,
-            loadingBtn, setLoadingBtn,
+            loadingBtn, setLoadingBtn
         },
         navigation
     }
@@ -44,12 +44,13 @@ const SearchBar = (
                             alignSelf="center"
                             alignItems="center"
                             isLoading={ loadingBtn }
-                            onPress={ () => on.home.profile.searchFriend({
-                                navigation
+                            onPress={ () => on.home.profile.addFriend({
+                                toast, navigation
                             }, {
-                                toast, username,
-                                appUser, setAppUser,
-                                loadingBtn, setLoadingBtn,
+                                username,
+                                setAppUser,
+                                setLoadingBtn,
+                                setListOfFriends,
                             }) }
                     />
             </Box>
