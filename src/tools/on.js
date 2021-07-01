@@ -109,7 +109,7 @@ export default {
         signInWithGoogle: async ({ toast }, {
             appUser, setAppUser,
             loading, setLoading,
-            googleResponse,
+            GoogleResponse
         }) => {
 
             console.log("=== GOOGLE ===");
@@ -118,9 +118,7 @@ export default {
 
             try {
 
-                console.log(googleResponse);
-
-                if (googleResponse.type === 'error') {
+                if (GoogleResponse.type === 'error') {
 
                     setLoading(false);
 
@@ -133,9 +131,9 @@ export default {
                     return;
                 }
 
-                if (googleResponse.type === 'success') {
+                if (GoogleResponse.type === 'success') {
 
-                    const _token = googleResponse.params.access_token;
+                    const _token = GoogleResponse.params.access_token;
 
                     const _response = await axios.post(
                         api_node_js.PersonCall.sign_in_with_google(_token),
@@ -152,8 +150,6 @@ export default {
             } catch (failure) {
 
                 setLoading(false);
-
-                console.log(failure);
 
                 app_service.toast(
                     toast,
