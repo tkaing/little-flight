@@ -28,4 +28,6 @@ target 'LittleFlight' do
   #pod 'RNThread', :path => '../node_modules/react-native-threads'
   
 
+  pod 'react-native-udp', :path => '../node_modules/react-native-udp'
+
 end
