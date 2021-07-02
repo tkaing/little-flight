@@ -222,13 +222,13 @@ const on = {
 
                     switch (_data) {
                         case 'MYSELF':
-                            app_service.toast(toast, 'danger', `${username} __MYSELF__`);
+                            app_service.toast(toast, 'danger', `${username} is myself, i can't be friend with myself!`);
                             break;
                         case 'PENDING':
-                            app_service.toast(toast, 'danger', `${username} __PENDING__`);
+                            app_service.toast(toast, 'danger', `${username} take his time for your invitation...`);
                             break;
                         case 'ACCEPTED':
-                            app_service.toast(toast, 'danger', `${username} __ACCEPTED__`);
+                            app_service.toast(toast, 'danger', `${username} is already my friend`);
                             break;
                         case 'NOT FOUND':
                             app_service.toast(toast, 'danger', `${username} doesn't exist`);
@@ -397,6 +397,34 @@ const on = {
         },
         footerTabChange: ({ index }, { setTabIndex }) => setTabIndex(index)
     },
+    fpv: { 
+        openReport: async ( { toast }, {
+            subject,
+            createdAt,
+            description,
+        }) => {
+            try {
+                const _response = await axios.post(
+                    api_node_js.ReportCall.open(), {
+                        subject: subject,
+                        createdAt: createdAt,
+                        description: description,
+                    }, await api_node_js.Config()
+                );
+
+                const _data = _response.data;
+
+                console.log('=== SEND BUG REPORT ===', JSON.stringify(_data));
+
+                app_service.toast(toast, 'success', `Okay, thank you we will look at this issue !`);
+
+
+            } catch (failure) {
+                console.log('=== SEND BUG REPORT ===', failure);
+                app_service.toast(toast, 'danger', `Ooops, an eror has been declared !`);
+            }
+        },
+    }
 };
 
 export default on

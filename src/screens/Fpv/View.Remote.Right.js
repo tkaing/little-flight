@@ -1,16 +1,28 @@
 import React, { useState } from "react"
 
-import { Center, Column, Icon, IconButton, Row, Text } from "native-base"
+import { Center, Column, Icon, IconButton, Row, Text, useToast } from "native-base"
 
 import DirectionalButton from '../../components/DirectionnalButton'
 
 import * as app_common from "./../../App/Common"
 
-import { drone } from "../../tools";
+import { drone } from "../../tools"
+
+import { on, load } from '../../tools'
+
+import ModalBugOverview from './Subview/ModalBugOverview'
+
 
 const RemoteRight = ({  }) => {
 
     const [loading, setLoading] = useState(false);
+    const [showModal, setShowModal] = useState(false);
+    
+    const handle = {
+        BugReportButtonPress: () => {
+            setShowModal(true);
+        }
+    };
 
     return (
         <Column flex={ 1 } bg="#595758">
@@ -21,7 +33,9 @@ const RemoteRight = ({  }) => {
                 <IconButton { ...app_common.IconButton.forRemote }
                             icon={ <Icon { ...app_common.Icon.forRemote } name="camera-outline" /> } />
                 <IconButton { ...app_common.IconButton.forRemote }
-                            icon={ <Icon { ...app_common.Icon.forRemote } name="bug-outline" /> } />
+                    icon={ <Icon { ...app_common.Icon.forRemote } name="bug-outline" /> } 
+                    onPress={ () => handle.BugReportButtonPress() }
+                />
             </Row>
 
             <Center flex={ 3 }>
@@ -36,6 +50,11 @@ const RemoteRight = ({  }) => {
             <Center mb={ 5 }>
                 <Text>🔄 direction 🔄</Text>
             </Center>
+
+            <ModalBugOverview state={{
+                showModal,
+                setShowModal
+            }} />
 
         </Column>
     );
