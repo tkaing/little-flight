@@ -87,7 +87,7 @@ const ffmpeg = {
             socket.on('close', (msg) => {
                 console.log('Close', msg);
             });
-            socket.on('message', (msg) => console.log('Message', msg));
+            //socket.on('message', (msg) => console.log('Message', msg));
             socket.once('listening', () => {
 
                 ffmpeg.config(setNewFrame);

@@ -13,9 +13,9 @@ drone.on('close', message => {
     console.log('=== CLOSE ===', message.toString());
 });
 
-drone.on('message', message => {
+/*drone.on('message', message => {
     console.log('=== DRONE ===', message.toString());
-});
+});*/
 
 const run = async (command) => {
 

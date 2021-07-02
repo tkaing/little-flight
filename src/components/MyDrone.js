@@ -39,10 +39,9 @@ const MyDrone = (
             console.log('=== CLOSE ===', message.toString());
         });
         drone.on('message', message => {
-            if (message.toString() === "ok")
-                isConnected = isConnected + 1;
             console.log('=== DRONE ===', message.toString());
-            // TODO: Change Icon (Connected)
+            //if (message.toString() === "ok")
+                isConnected = isConnected + 1;
         });
 
         const id = setInterval(async function () {
@@ -65,10 +64,13 @@ const MyDrone = (
 
     useEffect(() => {
         if (time) {
+            //console.log(isConnected);
             setConnected(isConnected > 0);
             isConnected = 0;
         }
     }, [time]);
+
+    console.log(isConnected);
 
     return (
         <Row bg="#37393E" width="100%" justifyContent="flex-end" paddingY={2} paddingRight={4}>
