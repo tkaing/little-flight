@@ -20,6 +20,8 @@ const RemoteRight = ({  }) => {
                             icon={ <Icon { ...app_common.Icon.forRemote } name="videocam" /> } />
                 <IconButton { ...app_common.IconButton.forRemote }
                             icon={ <Icon { ...app_common.Icon.forRemote } name="camera-outline" /> } />
+                <IconButton { ...app_common.IconButton.forRemote }
+                            icon={ <Icon { ...app_common.Icon.forRemote } name="bug-outline" /> } />
             </Row>
 
             <Center flex={ 3 }>
