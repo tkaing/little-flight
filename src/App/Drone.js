@@ -6,6 +6,7 @@ const run = (command) => {
     console.log(socket);
     socket.bind(8001);
 
+    socket.on( 'error', (error) => console.log("UDP socket error", error));
     socket.on('close', (msg, info) => console.log('Close', msg));
     socket.on('message', (msg, info) => console.log('Message', msg));
     socket.once('listening', () => {
