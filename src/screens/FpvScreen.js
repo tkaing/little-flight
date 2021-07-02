@@ -1,11 +1,13 @@
 import React, { useEffect } from "react";
 
-import { Box, Row } from "native-base";
+import { Box, Column, Row } from "native-base";
 import { lockAsync, OrientationLock } from "expo-screen-orientation";
 
 import { Stream, Remote } from "./Fpv";
 
-import { drone } from "../tools";
+import MyDrone from "../components/MyDrone";
+
+import { drone } from "./../tools"
 
 const FpvScreen = ({ navigation }) => {
 
@@ -24,21 +26,27 @@ const FpvScreen = ({ navigation }) => {
     }, [navigation]);
 
     return (
-        <Row flex={1} justifyContent="center">
+        <Column flex={1}>
 
-            <Box flex={1}>
-                <Remote.Left />
-            </Box>
+            <MyDrone />
 
-            <Box flex={2}>
-                <Stream />
-            </Box>
+            <Row flex={1} justifyContent="center">
 
-            <Box flex={1}>
-                <Remote.Right />
-            </Box>
+                <Box flex={1}>
+                    <Remote.Left />
+                </Box>
 
-        </Row>
+                <Box flex={2}>
+                    <Stream />
+                </Box>
+
+                <Box flex={1}>
+                    <Remote.Right />
+                </Box>
+
+            </Row>
+
+        </Column>
     );
 };
 
