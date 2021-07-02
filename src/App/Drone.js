@@ -1,29 +1,39 @@
 import dgram from "react-native-udp";
 
-const run = (command) => {
-    const socket = dgram.createSocket({ type: 'udp4', debug: true });
+// === Drone ===
 
-    console.log(socket);
-    socket.bind(8001);
+const PORT = 8889;
+const HOST = '192.168.10.1';
 
-    socket.on('close', (msg, info) => console.log('Close', msg));
-    socket.on('message', (msg, info) => console.log('Message', msg));
-    socket.once('listening', () => {
-        console.log(command);
-        socket.send('command', undefined, undefined, 8889, '192.168.10.1', (failure) => {
-            if (failure) {
-                socket.send('land', undefined, undefined, 8889, '192.168.10.1');
-                socket.close();
-            } else {
-                socket.send(command, undefined, undefined, 8889, '192.168.10.1', (failure) => {
-                    if (failure) {
-                        socket.send('land', undefined, undefined, 8889, '192.168.10.1');
-                        socket.close();
-                    }
-                });
-            }
-        });
+const drone = dgram.createSocket({ type: 'udp4', debug: true });
+
+drone.bind(8001);
+
+drone.on('close', message => {
+    console.log('=== CLOSE ===', message.toString());
+});
+
+drone.on('message', message => {
+    console.log('=== DRONE ===', message.toString());
+});
+
+const run = async (command) => {
+
+    drone.send('command', undefined, undefined, PORT, HOST, (failure) => {
+        if (failure) {
+            drone.send('land', undefined, undefined, PORT, HOST);
+            drone.close();
+        } else {
+            drone.send(command, undefined, undefined, PORT, HOST, (failure) => {
+                if (failure) {
+                    drone.send('land', undefined, undefined, PORT, HOST);
+                    drone.close();
+                }
+            });
+        }
     });
 };
+
+
 
 export { run };
