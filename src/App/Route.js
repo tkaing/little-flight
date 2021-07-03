@@ -29,8 +29,17 @@ const home = {
     }
 };
 
+const vr = {
+    name: 'vr',
+    options: {
+        title: 'VR',
+        cardStyleInterpolator: forFade
+    }
+};
+
 export {
     fpv,
     auth,
     home,
+    vr,
 };
