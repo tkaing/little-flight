@@ -8,6 +8,9 @@ import * as app_common from "../../App/Common";
 
 import { on, schema } from "./../../tools";
 
+
+import { translate } from '../../locale/local';
+
 const SignIn = (
     {
         state: {
@@ -71,7 +74,7 @@ const SignIn = (
 
                     <Footer
                         text="Vous n'avez pas de compte ?"
-                        link="Créez un compte !"
+                        link={translate("CREATE_ACCOUNT")}
                         button={{ icon: 'log-in-outline', text: 'Login' }}
                         onLinkPress={ () => setSignIn(false) }
                         handleSubmit={ handleSubmit }
