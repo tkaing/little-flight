@@ -9,7 +9,7 @@ const data = {
 
 const setAppLang = () => {
     let trad = Localization.locale.split("-")[0];
-    console.log("Language : ", trad)
+    //console.log("Language : ", trad)
   // Set par défaut une Langue si la langue du téléphone n'est pas traduite dans un JSON 
     if (!data.hasOwnProperty(trad)) {
         console.log("Default language");

@@ -73,7 +73,7 @@ const SignIn = (
                     </FormControl>
 
                     <Footer
-                        text="Vous n'avez pas de compte ?"
+                        text="You don't have an account already ?"
                         link={translate("CREATE_ACCOUNT")}
                         button={{ icon: 'log-in-outline', text: 'Login' }}
                         onLinkPress={ () => setSignIn(false) }
