@@ -50,11 +50,12 @@ Notifications.setNotificationHandler({
         <Box justifyContent="center" alignItems="center">
         <IconButton
                     bg="blue"
-                    icon={ <Icon { ...app_common.Icon.default } name="gift-outline" size={4} /> }
+                    icon={ <Icon name="gift-outline" size={4} /> }
                     alignSelf="center"
                     alignItems="center"
                     //isLoading={ loadingBtn }
                     onPress={async () => {
+
                         await sendPushNotification(expoPushToken);
                       }}
             />
