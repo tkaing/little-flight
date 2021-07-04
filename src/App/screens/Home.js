@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { translate } from '../../locale/local';
+
 import {
     Home,
     History,
@@ -10,31 +12,31 @@ import {
 
 const listOfTabs = [
     {
-        name: 'home',
+        name: translate("HOME"),
         icon: 'home-sharp',
         style: {},
         content: <Home />
     },
     {
-        name: 'history',
+        name: translate("HISTORY"),
         icon: 'analytics-outline',
         style: {},
         content: <History />
     },
     {
-        name: 'recordings',
+        name: translate("RECORDING"),
         icon: 'film',
         style: { /*fontSize: 9*/ },
         content: <Recordings />
     },
     {
-        name: 'settings',
+        name: translate("SETTING"),
         icon: 'settings',
         style: {},
         content: <Settings />
     },
     {
-        name: 'profile',
+        name: translate("PROFILE"),
         icon: 'person',
         style: {},
         content: <Profile />

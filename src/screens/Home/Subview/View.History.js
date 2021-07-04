@@ -4,6 +4,7 @@ import { Item, SectionHeader, ModalOverview } from "./History";
 import { Box, SectionList } from "native-base";
 
 import Headline from "../../../core/Headline";
+import { translate } from "../../../locale/local"
 
 const History = ({ navigation }) => {
 
@@ -24,7 +25,7 @@ const History = ({ navigation }) => {
     return (
         <>
             <Box flex={ 1 }>
-                <Headline icon="stats-chart">flights</Headline>
+                <Headline icon="stats-chart">{translate("TITLE_HISTORY")}</Headline>
             </Box>
 
             <Box flex={ 5 } mx={ 5 }>

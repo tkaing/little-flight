@@ -75,7 +75,7 @@ const SignIn = (
                     <Footer
                         text={translate("NO_ACCOUNT")}
                         link={translate("CREATE_ACCOUNT")}
-                        button={{ icon: 'log-in-outline', text: 'Login' }}
+                        button={{ icon: 'log-in-outline', text: translate("LOGIN") }}
                         onLinkPress={ () => setSignIn(false) }
                         handleSubmit={ handleSubmit }
                         googleConnect={ true }

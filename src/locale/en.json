@@ -2,6 +2,8 @@
     //
     "LOGIN": "Login",
     "LOGIN_GOOGLE": "Log in with Google",
+    "ACCOUNT_ALREADY": "Already have an account ?",
+    "LOG_IN": "Log in",
     //View.SignIn.js
     "NO_ACCOUNT": "You don't have an account already ?",
     "CREATE_ACCOUNT": "Create an account !",
@@ -16,6 +18,18 @@
     //View.Profile.js
     "WAITING": "Waiting",
     "FRIENDS_LIST": "Friends list",
+    //Home.js
+    "HOME": "Home",
+    "HISTORY": "History",
+    "RECORDING": "Recordings",
+    "SETTING": "Settings",
+    "PROFILE": "Profile",
+    //View.History.js
+    "TITLE_HISTORY": "Flights",
+    //ModalOverview.js
+    "FRIEND_LIST": "My friends list",
+    "FRIEND_REQUEST": "Friend requests",
+    "CLOSE": "Close",
     //Not define
     "NOT_DEFINE": "No trad for this"
 }
