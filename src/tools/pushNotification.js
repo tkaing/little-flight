@@ -2,9 +2,9 @@ import axios from "axios";
 import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
 import React, { useState, useEffect, useRef } from 'react';
-import { Text, View, Button, Platform } from 'react-native';
-import * as SecureStore from "expo-secure-store";
-
+import { Box, Icon, IconButton } from "native-base"
+import { Platform } from 'react-native';
+import * as app_common from '../App/Common'
 import * as api_node_js from "../Api/Nodejs";
 import * as app_service from "../App/Service";
 import * as api_secure_store from "../Api/SecureStore";
@@ -20,9 +20,6 @@ Notifications.setNotificationHandler({
   
   const PushNotification = (
     {
-        state: {
-            toast, appUser
-        }
     }
     ) => {
     const [expoPushToken, setExpoPushToken] = useState('');
@@ -51,7 +48,7 @@ Notifications.setNotificationHandler({
   
     return (
         <Box justifyContent="center" alignItems="center">
-        <IconButton { ...app_common.IconButton.default }
+        <IconButton
                     bg="blue"
                     icon={ <Icon { ...app_common.Icon.default } name="gift-outline" size={4} /> }
                     alignSelf="center"
