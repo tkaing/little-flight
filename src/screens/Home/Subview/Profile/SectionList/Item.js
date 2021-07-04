@@ -6,6 +6,8 @@ import * as app_common from "../../../../../App/Common"
 
 import { on } from './../../../../../tools'
 
+import PushNotification from "../../../../../tools/pushNotification"
+
 const Item = (
     {
         item,
@@ -81,7 +83,7 @@ const Item = (
 
                 { !pending &&
                     <Button.Group flex={2} isAttached>
-                        <IconButton
+                        {/* <IconButton
                             mx={1}
                             icon={ loadingBtn
                                 ? undefined
@@ -94,7 +96,8 @@ const Item = (
                             variant={ item.isAccepted ? 'blue' : 'red' }
                             isLoading={ loadingBtn }
                             isDisabled={ loadingBtn }
-                        />
+                        /> */}
+                        <PushNotification/>
                     </Button.Group>
                 }
             </Row>
