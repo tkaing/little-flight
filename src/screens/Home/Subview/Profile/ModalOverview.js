@@ -3,6 +3,7 @@ import React from "react"
 import { Modal, Button, Text, FlatList } from "native-base"
 
 import * as app_common from "./../../../../App/Common"
+import { translate } from "../../../../locale/local"
 
 import { Item } from "../Profile";
 
@@ -25,7 +26,7 @@ const ModalOverview = (
             <Modal.Content maxWidth="400px">
                 <Modal.Header>
                     <Text { ...app_common.Text.forModal }>
-                        { pending ? 'Demandes d\'ajout' : 'Ma Liste d\'amis' }
+                        { pending ? translate("FRIEND_REQUEST") : translate("FRIEND_LIST") }
                     </Text>
                 </Modal.Header>
                 <Modal.Body mt={5}>
@@ -49,7 +50,7 @@ const ModalOverview = (
                 <Modal.Footer>
                     <Button.Group variant="ghost" space={2}>
                         <Button onPress={ () => setShowModal(false) }>
-                            Fermer
+                            {translate("CLOSE")}
                         </Button>
                     </Button.Group>
                 </Modal.Footer>

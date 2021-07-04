@@ -8,6 +8,9 @@ import * as app_common from "../../App/Common";
 
 import { on, schema } from "./../../tools";
 
+
+import { translate } from '../../locale/local';
+
 const SignIn = (
     {
         state: {
@@ -70,9 +73,9 @@ const SignIn = (
                     </FormControl>
 
                     <Footer
-                        text="Vous n'avez pas de compte ?"
-                        link="Créez un compte !"
-                        button={{ icon: 'log-in-outline', text: 'Login' }}
+                        text={translate("NO_ACCOUNT")}
+                        link={translate("CREATE_ACCOUNT")}
+                        button={{ icon: 'log-in-outline', text: translate("LOGIN") }}
                         onLinkPress={ () => setSignIn(false) }
                         handleSubmit={ handleSubmit }
                         googleConnect={ true }

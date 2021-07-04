@@ -5,6 +5,7 @@ import { ENTRIES1 } from './HomeCarousel/entries';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import { sliderWidth, itemWidth } from './HomeCarousel/SliderEntry.style';
 import { View, Text, ScrollView, StatusBar } from 'react-native'
+import { translate } from "../locale/local"
 
 const SLIDER_1_FIRST_ITEM = 1;
 
@@ -53,7 +54,7 @@ export class HomeCarousel extends Component {
 
         return (
             <View style={[ styles.exampleContainer ]}>
-                <Text style={[ styles.title ]}>{`Little Flight Project`}</Text>
+                <Text style={[ styles.title ]}>{`Little Flight`}</Text>
                 <Text style={[ styles.subtitle ]}>{ title }</Text>
                 <Carousel
                   ref={c => this._slider1Ref = c}
@@ -94,7 +95,7 @@ export class HomeCarousel extends Component {
 
     render () {
 
-        const example1 = this.mainExample(1, 'You can connect yout drone now.');
+        const example1 = this.mainExample(1, translate("HOME_DRONE_CONNECT"));
 
         return (
                 <View style={[ styles.container ]}>

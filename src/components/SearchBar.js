@@ -5,6 +5,7 @@ import { Box, Icon, IconButton, Row, useToast } from 'native-base'
 import { SearchBar as RNSearchBar } from 'react-native-elements'
 
 import Color from "../App/Color";
+import { translate } from "../locale/local"
 
 import * as app_common from "../App/Common"
 
@@ -30,7 +31,7 @@ const SearchBar = (
             <Box flex={1}>
                 <RNSearchBar
                     value={ username }
-                    placeholder="Search a DRONER"
+                    placeholder={translate("SEARCHBAR")}
                     onChangeText={ _value => setUsername(_value) }
                     />
             </Box>

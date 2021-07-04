@@ -86,7 +86,9 @@ const Item = (
                             icon={ loadingBtn
                                 ? undefined
                                 : <Icon { ...app_common.Icon.default }
-                                        name={ item.isAccepted ? 'share-social' : 'ellipsis-horizontal' } size={4} />
+                                        name={ item.isAccepted ? 'share-social' : 'ellipsis-horizontal' } 
+                                        size={4} 
+                                    />
                             }
                             padding={3}
                             variant={ item.isAccepted ? 'blue' : 'red' }

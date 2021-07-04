@@ -7,6 +7,7 @@ import { FormControl, Icon, Input } from "native-base";
 import * as app_common from "../../App/Common";
 
 import { on, schema } from "./../../tools";
+import { translate } from "../../locale/local"
 
 const SignUp = (
     {
@@ -84,8 +85,8 @@ const SignUp = (
                     </FormControl>
 
                     <Footer
-                        text="Vous avez déjà un compte ?"
-                        link="Connectez-vous !"
+                        text={translate("ACCOUNT_ALREADY")}
+                        link={translate("LOG_IN")}
                         button={{ icon: 'log-in-outline', text: 'Sign Up' }}
                         onLinkPress={ () => setSignIn(true) }
                         handleSubmit={ handleSubmit }

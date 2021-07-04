@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import { Image, Row, Text } from "native-base"
 import { lockAsync, OrientationLock } from "expo-screen-orientation"
+import { translate } from "../locale/local"
 
 import TelloClass from "./../App/class/TelloClass"
 import DroneConnectedImg from "../../assets/wi-fi.png"
@@ -50,14 +51,13 @@ const MyDrone = (
     }, [time]);
 
     return (
-        <Row bg="#37393E"
-             width="100%"
-             paddingY={2}
-             paddingRight={4}
-             justifyContent="flex-end">
-
-            <Text marginTop={1} marginRight={3}>Connexion du drone : </Text>
-
+        <Row 
+            bg="#37393E" 
+            width="100%" 
+            justifyContent="flex-end" 
+            paddingY={2} 
+            paddingRight={4}>
+            <Text marginTop={1} marginRight={3}> {translate("DRONE_CONNECTION")} </Text>
             <Image
                 alt="xxx"
                 style={{ width: 30, height: 30 }}

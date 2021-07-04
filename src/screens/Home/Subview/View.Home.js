@@ -6,6 +6,8 @@ import { Box, Button, Center, Icon, Text } from "native-base";
 import * as app_route from "../../../App/Route";
 import * as app_common from "../../../App/Common";
 
+import { translate } from '../../../locale/local';
+
 const Home = ({ navigation }) => {
 
     return (
@@ -22,7 +24,7 @@ const Home = ({ navigation }) => {
                     variant="green"
                     onPress={ () => navigation.navigate(app_route.fpv.name) }
                     startIcon={ <Icon { ...app_common.Icon.forButton } name='videocam-outline' /> }>
-                    <Text>Go FPV Screen</Text>
+                    <Text>{translate("FPV_BUTTON")}</Text>
                 </Button>
             </Center>
 
