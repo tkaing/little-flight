@@ -145,11 +145,11 @@ const Profile = (
                     space={6}
                     isAttached
                     variant="solid">
-                    <Button variant="red" mr={2}
+                    <Button variant="red" mr={2} //Button Waiting
                             onPress={ () => handle.FriendButtonPress(true) }>
                         <Text>{translate("WAITING")}</Text>
                     </Button>
-                    <Button variant="blue"
+                    <Button variant="blue" //Button Friend
                             onPress={ () => handle.FriendButtonPress(false) }>
                         <Text>{translate("FRIENDS_LIST")}</Text>
                     </Button>

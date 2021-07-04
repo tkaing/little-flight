@@ -27,7 +27,7 @@ const drone = {
         await droneSocket.send(`${ direction } 60`, undefined, undefined, PORT, HOST, drone.failure);
     },
     // === stream on / off ===
-    streamOnOrOff: async ({ droneSocket, onOrOff }) => {
+    streamOnOrOff: async ({ droneSocket, onOrOff }) => { //Drone Start "Takeoff" Stop "Land"
         await droneSocket.send('command', undefined, undefined, PORT, HOST, drone.failure);
         await droneSocket.send(`stream${ onOrOff }`, undefined, undefined, PORT, HOST, drone.failure);
     },

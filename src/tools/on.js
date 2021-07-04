@@ -355,7 +355,7 @@ const on = {
 
                     const _data = _response.data;
 
-                    switch (_data) {
+                    switch (_data) { //UseCase pour les toast lié à l'ajout d'user dans ma friendList
                         case 'MYSELF':
                             app_service.toast(toast, 'danger', `${username} is myself, i can't be friend with myself!`);
                             break;
@@ -458,12 +458,11 @@ const on = {
             },
         },
         recordings: {
-            share: async ({url}) => {
+            share: async ({url}) => { //Fonction pour partager sur les réseaux les Photos/Videos depuis l'url du FS
                 try {
                     const _response = await Share.open({
-                        message: 'I\'m a droner! See my profile on the new app : LittleFlight',
-                        url: url,
-                        //urls: [files.image1, files.image2]
+                        message: 'I\'m a droner! See my profile on the new app : LittleFlight', //Message par defaut avec le partage
+                        url: url, //Url de l'image/Video du FS
                     });
                     console.log('=== SHARE DATA ===', JSON.stringify(_response));
 
@@ -472,18 +471,18 @@ const on = {
                     console.log('=== SHARE FAILURE ===', failure);
                 }
             },
-            tabChange: ({ index }, { setTabIndex }) => setTabIndex(index),
-            readPhotos: async ({}, { setListOfPhotos }) => {
+            tabChange: ({ index }, { setTabIndex }) => setTabIndex(index), //Permet de modifier le TabIndex pour changer le contenu de la View
+            readPhotos: async ({}, { setListOfPhotos }) => { //Function Get photos du dossier LittleFlight_Image
                 try {
-                    const listOfPhotos = await RNFS.readDir(MediaFolderConst.IMAGE);
+                    const listOfPhotos = await RNFS.readDir(MediaFolderConst.IMAGE);//Read la liste des photos du folder Image de l'appli
                     setListOfPhotos(listOfPhotos);
                 } catch (failure) {
                     console.log("=== LIST OF PHOTOS ===", failure);
                 }
             },
-            readVideos: async ({}, { setListOfVideos }) => {
+            readVideos: async ({}, { setListOfVideos }) => { //Function Get Video du dossier LittelFlight_Video
                 try {
-                    const listOfVideos = await RNFS.readDir(MediaFolderConst.VIDEO);
+                    const listOfVideos = await RNFS.readDir(MediaFolderConst.VIDEO); //Read la liste des vidéos
                     setListOfVideos(listOfVideos);
                 } catch (failure) {
                     console.log("=== LIST OF VIDEOS ===", failure);
@@ -493,7 +492,7 @@ const on = {
                 setListOfPhotos, setListOfVideos
             }) => {
                 try {
-                    await PermissionsAndroid.requestMultiple([
+                    await PermissionsAndroid.requestMultiple([ //Permission READ/WRITE de l'external storage du téléphone
                         PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
                         PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
                     ]);
@@ -501,10 +500,10 @@ const on = {
                     console.log("=== INIT FOLDERS ===", failure);
                 }
 
-                const readGranted = await PermissionsAndroid.check(
+                const readGranted = await PermissionsAndroid.check( //Check permission READ
                     PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE
                 );
-                const writeGranted = await PermissionsAndroid.check(
+                const writeGranted = await PermissionsAndroid.check( //Check permission Write
                     PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
                 );
 

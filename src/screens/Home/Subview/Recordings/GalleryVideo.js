@@ -21,7 +21,7 @@ const GalleryVideo = (
                 { listOfVideos.map((_it, index) =>
                     <Row flex={1} height={250} >
                         <Video
-                            source={{ uri: `file://${ _it.path }` }}
+                            source={{ uri: `file://${ _it.path }` }} //Affichage de la vidéo avec le Path du FileSystem
                             resizeMode="cover"
                             autoplay={false}
                             controls={true}
@@ -31,11 +31,11 @@ const GalleryVideo = (
                         />
 
                         <Box flex={1} justifyContent="center">
-                            <IconButton
+                            <IconButton //Bouton de Share pour appeler On.share (Partager la vidéo avec le path FS)
                                 { ...app_common.IconButton.forProfile }
                                 bg="#41444B"
                                 icon={ <Icon { ...app_common.Icon.default } name="share-social" size="sm" /> }
-                                onPress={ () => on.home.recordings.share({url: `file://${ _it.path }`}) }
+                                onPress={ () => on.home.recordings.share({url: `file://${ _it.path }`}) } 
                                 alignSelf="center"
                             />
                         </Box>
