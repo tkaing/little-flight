@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import dgram from "react-native-udp"
 import { Image, Row, Text } from "native-base"
 import { lockAsync, OrientationLock } from "expo-screen-orientation"
+import { translate } from "../locale/local"
 
 import DroneConnectedImg from "../../assets/wi-fi.png";
 import DroneDisconnectedImg from "../../assets/wi-fi-disconnect.png";
@@ -74,7 +75,7 @@ const MyDrone = (
 
     return (
         <Row bg="#37393E" width="100%" justifyContent="flex-end" paddingY={2} paddingRight={4}>
-            <Text marginTop={1} marginRight={3}>Connexion du drone : </Text>
+            <Text marginTop={1} marginRight={3}> {translate("DRONE_CONNECTION")} </Text>
             <Image
                 alt="xxx"
                 style={{ width: 30, height: 30 }}

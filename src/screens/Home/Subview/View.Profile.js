@@ -4,6 +4,7 @@ import { ScrollView } from "react-native"
 import { Avatar, Box, Button, Column, Icon, IconButton, Row, Text, useToast } from "native-base";
 
 import SearchBar from "../../../components/SearchBar";
+import { translate } from "../../../locale/local";
 import { ModalOverview } from "./Profile";
 
 import * as app_common from "../../../App/Common";
@@ -146,11 +147,11 @@ const Profile = (
                     variant="solid">
                     <Button variant="red" mr={2}
                             onPress={ () => handle.FriendButtonPress(true) }>
-                        <Text>En attente</Text>
+                        <Text>{translate("WAITING")}</Text>
                     </Button>
                     <Button variant="blue"
                             onPress={ () => handle.FriendButtonPress(false) }>
-                        <Text>Liste d'amis</Text>
+                        <Text>{translate("FRIENDS_LIST")}</Text>
                     </Button>
                 </Button.Group>
 

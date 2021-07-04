@@ -1,4 +1,21 @@
 {
+    //
+    "LOGIN": "Login",
+    "LOGIN_GOOGLE": "Log in with Google",
+    //View.SignIn.js
+    "NO_ACCOUNT": "You don't have an account already ?",
     "CREATE_ACCOUNT": "Create an account !",
+    //View.Home.js
+    "FPV_BUTTON": "Go FPV Screen",
+    //HomeCarousel.js
+    "HOME_DRONE_CONNECT": "You can connect yout drone now.",
+    //MyDrone.js
+    "DRONE_CONNECTION": "Drone connection : ",
+    //SearchBar.js
+    "SEARCHBAR": "Search a DRONER",
+    //View.Profile.js
+    "WAITING": "Waiting",
+    "FRIENDS_LIST": "Friends list",
+    //Not define
     "NOT_DEFINE": "No trad for this"
 }
