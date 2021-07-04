@@ -3,7 +3,9 @@ import React from "react";
 import { Box, Text } from "native-base";
 
 import Color from "./Color";
-
+/*
+Implémente un toast et ses différents états selon les arguments avec lesquels il est appelé
+*/
 const toast = (_toast, _type, _message, _duration = 5000) => {
     console.log(_message);
     _toast.show({

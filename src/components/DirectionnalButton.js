@@ -3,6 +3,9 @@ import React from 'react'
 import { View } from 'react-native'
 import { Box, Button, Row } from 'native-base'
 
+/*
+Component des flèches directionelles
+*/
 const DirectionalButton = (
     {
         top,

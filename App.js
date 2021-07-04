@@ -25,6 +25,10 @@ import { load } from "./src/tools";
 
 const Stack = createStackNavigator();
 
+/*         --------- DOC ----------      
+C'est le point d'entrée de l'application
+*/
+
 const App = () => {
 
     const toast = useToast();

@@ -3,8 +3,6 @@ import * as RNFS from "react-native-fs"
 import { RNFFmpeg, RNFFmpegConfig } from "react-native-ffmpeg"
 
 import * as app_service from './../App/Service'
-import * as VideoThumbnails from 'expo-video-thumbnails'
-
 import { on, drone } from "./../tools"
 
 import LiveConst from "./../App/const/LiveConst"

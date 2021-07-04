@@ -10,6 +10,9 @@ import {
     Recordings
 } from "../../screens/Home";
 
+/*
+Liste des tabs de l'application
+*/
 const listOfTabs = [
     {
         name: translate("HOME"),

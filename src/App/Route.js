@@ -1,3 +1,7 @@
+/*
+Différentes routes de l'application
+*/
+
 const forFade = ({ current }) => ({
     cardStyle: {
         opacity: current.progress

@@ -25,6 +25,7 @@ const RemoteLeft = (
                  justifyContent="center">
 
                 <Button variant="green"
+                        marginRight= {10}
                         onPress={ () => setOpenVR(true) }>
                     <Text>VR</Text>
                 </Button>

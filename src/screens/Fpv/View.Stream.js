@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 import styles from "./Styles.Stream"
 
-import {Box, Button, Image, Row, Text, useToast, View} from "native-base"
+import {Box, Button, Image, Row, Text, useToast, View, Center} from "native-base"
 
 import { ffmpeg } from "./../../tools";
 import { RNFFmpeg } from "react-native-ffmpeg";
@@ -81,12 +81,12 @@ const Stream = (
         <Row flex={1}>
 
             { openVR &&
-                <Box>
+                <Center>
                     <Button variant="green"
                             onPress={ () => setOpenVR(false) }>
                         <Text>FPV</Text>
                     </Button>
-                </Box>
+                </Center>
             }
 
             {/* Stream Preview */}

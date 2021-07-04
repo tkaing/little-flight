@@ -7,6 +7,9 @@ import * as app_common from "./../App/Common";
 import {load, on} from './../tools'
 import * as Google from "expo-auth-session/providers/google";
 
+/*
+Composant permettant de se connecter à Google
+*/
 const GoogleConnect = (
     {
         state: {

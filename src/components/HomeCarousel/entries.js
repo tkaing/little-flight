@@ -5,14 +5,14 @@ export const ENTRIES1 = [
         illustration: 'https://cdn.pixabay.com/photo/2016/11/29/02/07/drone-1866742_1280.jpg'
     },
     {
-        title: 'Live feature',
-        subtitle: 'You can share your experience with social media',
-        illustration: 'https://image.shutterstock.com/image-vector/template-colorful-multimedia-frame-mockup-600w-1642324960.jpg'
+        title: 'Share on social media',
+        subtitle: 'You can share your experience on social media',
+        illustration: 'https://psknews.com/wp-content/uploads/2019/02/social-media.jpg'
     },
     {
-        title: 'Controlling drone with PS4 controller',
-        subtitle: 'Lorem ipsum dolor sit amet',
-        illustration: 'https://cdn.pixabay.com/photo/2017/08/10/07/29/sony-2619483_1280.jpg'
+        title: 'Real immersion in VR experience',
+        subtitle: 'Gets your goggles VR for see a real First Person View',
+        illustration: 'https://cdn-bhnbm.nitrocdn.com/oorPTwwpXALZhrKXObMBVtxipyuALjEI/assets/static/optimized/rev-b908514/wp-content/uploads/2018/11/Which-One-Is-The-Best-FPV-Goggles-for-Drones.jpg'
     }
 ];
 

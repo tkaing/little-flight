@@ -43,6 +43,7 @@ const Recordings = ({ navigation }) => {
                 { tabIndex === 0 &&
                     <GalleryPhoto state={{ listOfPhotos }} />
                 }
+                
                 { tabIndex === 1 &&
                     <GalleryVideo state={{ listOfVideos }} />
                 }
