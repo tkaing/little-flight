@@ -44,6 +44,67 @@ export default {
                 }
             }
         },
+        history: {
+            listOfSessions: async ({ toast, navigation }, {
+                setListOfSessions,
+                setAppUser, setLoading
+            }) => {
+                try {
+                    setLoading(true);
+
+                    let overview = await SecureStore.getItemAsync(api_secure_store.TELLO_OVERVIEW);
+
+                    if (overview && Array.isArray( JSON.parse(overview) ) ) {
+
+                        overview = JSON.parse(overview);
+
+                        console.log("=== OVERVIEW ===", overview);
+
+                        if (overview.length > 0) {
+
+                            const _response = await axios.post(
+                                api_node_js.SessionCall.import(), {
+                                    list: overview
+                                }, await api_node_js.Config()
+                            );
+
+                            if (_response) {
+                                setListOfSessions(_response.data);
+                                await SecureStore.deleteItemAsync(api_secure_store.TELLO_OVERVIEW);
+                            }
+                        }
+                    } else {
+
+                        const _response = await axios.get(
+                            api_node_js.SessionCall.list_by_token(), await api_node_js.Config()
+                        );
+
+                        if (_response) {
+                            setListOfSessions(_response.data);
+                            await SecureStore.deleteItemAsync(api_secure_store.TELLO_OVERVIEW);
+                        }
+                    }
+
+                    setLoading(false);
+
+                } catch (failure) {
+
+                    setLoading(false);
+
+                    const _response = failure.response;
+
+                    if (_response) {
+                        const _data = _response.data;
+                        switch (_data) {
+                            case 'Invalid token.':
+                                setAppUser(null);
+                                redirect_to.auth(navigation);
+                                break;
+                        }
+                    }
+                }
+            }
+        },
         recordings: {
             listOfFolders: () => {
 

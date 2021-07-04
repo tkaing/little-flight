@@ -1,10 +1,7 @@
 import PersonCall from './calls/PersonCall';
-import PersonModel from './models/PersonModel';
-
 import FriendCall from './calls/FriendCall';
-import FriendModel from './models/FriendModel';
-
 import ReportCall from './calls/ReportCall';
+import SessionCall from './calls/SessionCall';
 
 import * as SecureStore from "expo-secure-store";
 import * as api_secure_store from "../SecureStore";
@@ -19,11 +16,8 @@ const Config = async (withToken = true) => {
 
 export {
     Config,
-    // Person
     PersonCall,
-    PersonModel,
-    ReportCall,
-    // Friend
     FriendCall,
-    FriendModel,
+    ReportCall,
+    SessionCall
 };

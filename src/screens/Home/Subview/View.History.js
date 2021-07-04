@@ -1,25 +1,34 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Item, SectionHeader, ModalOverview } from "./History";
-import { Box, SectionList } from "native-base";
+import {Box, SectionList, useToast} from "native-base";
 
 import Headline from "../../../core/Headline";
 
-const History = ({ navigation }) => {
+import { load } from "./../../../tools"
+
+const History = (
+    {
+        navigation,
+        state: {
+            loading, setLoading,
+            appUser, setAppUser,
+        }
+    }
+) => {
+
+    const toast = useToast();
 
     const [showModal, setShowModal] = useState(false);
-    const [modalContent, setModalContent] = useState();
+    const [modalContent, setModalContent] = useState({ item: null });
+    const [listOfSessions, setListOfSessions] = useState([]);
 
-    const data = [
-        {
-            title: "Juillet",
-            data: ["3m", "1h45", "45m"],
-        },
-        {
-            title: "Juin",
-            data: ["15m", "5m", "30s"],
-        },
-    ];
+    useEffect(() => {
+        load.home.history.listOfSessions({ toast, navigation }, {
+            setListOfSessions,
+            setAppUser, setLoading
+        });
+    }, []);
 
     return (
         <>
@@ -29,16 +38,19 @@ const History = ({ navigation }) => {
 
             <Box flex={ 5 } mx={ 5 }>
                 <SectionList
-                    sections={ data }
+                    sections={
+                        listOfSessions.length > 0
+                            ? [{ title: "Mes derniers vols", data: listOfSessions }]
+                            : []
+                    }
                     renderItem={ ({ item }) => <Item item={ item } state={{ setShowModal, setModalContent }} /> }
-                    keyExtractor={ (item, index) => item + index }
+                    keyExtractor={ (item, index) => index }
                     renderSectionHeader={ ({ section: { title } }) => <SectionHeader title={ title } /> }
                 />
             </Box>
 
             <ModalOverview state={{
-                showModal, setShowModal,
-                modalContent
+                showModal, setShowModal, modalContent
             }} />
         </>
     );

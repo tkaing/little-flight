@@ -87,6 +87,11 @@ const IconButton = {
         size: "lg",
         borderRadius: 50
     },
+    forFpvRecording: {
+        ...Default.IconButton,
+        size: "lg",
+        borderRadius: 50
+    },
 };
 
 export {

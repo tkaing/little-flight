@@ -16,32 +16,9 @@ const Item = (
     const on = {
         OpenModal: () => {
             setShowModal(true);
-            setModalContent({ text: text });
+            setModalContent({ item });
         }
     };
-
-    const text = "Sit nulla est ex deserunt exercitation anim occaecat. Nostrud\n" +
-        "                    ullamco deserunt aute id consequat veniam incididunt duis in sint\n" +
-        "                    irure nisi. Mollit officia cillum Lorem ullamco minim nostrud elit\n" +
-        "                    officia tempor esse quis. Sunt ad dolore quis aute consequat. Magna\n" +
-        "                    exercitation reprehenderit magna aute tempor cupidatat consequat\n" +
-        "                    elit dolor adipisicing. Mollit dolor eiusmod sunt ex incididunt\n" +
-        "                    cillum quis. Velit duis sit officia eiusmod Lorem aliqua enim\n" +
-        "                    ullamco deserunt aute id consequat veniam incididunt duis in sint\n" +
-        "                    irure nisi. Mollit officia cillum Lorem ullamco minim nostrud elit\n" +
-        "                    officia tempor esse quis. Sunt ad dolore quis aute consequat. Magna\n" +
-        "                    exercitation reprehenderit magna aute tempor cupidatat consequat\n" +
-        "                    elit dolor adipisicing. Mollit dolor eiusmod sunt ex incididunt\n" +
-        "                    cillum quis. Velit duis sit officia eiusmod Lorem aliqua enim\n" +
-        "                    exercitation reprehenderit magna aute tempor cupidatat consequat\n" +
-        "                    elit dolor adipisicing. Mollit dolor eiusmod sunt ex incididunt\n" +
-        "                    cillum quis. Velit duis sit officia eiusmod Lorem aliqua enim\n" +
-        "                    ullamco deserunt aute id consequat veniam incididunt duis in sint\n" +
-        "                    irure nisi. Mollit officia cillum Lorem ullamco minim nostrud elit\n" +
-        "                    officia tempor esse quis. Sunt ad dolore quis aute consequat. Magna\n" +
-        "                    exercitation reprehenderit magna aute tempor cupidatat consequat\n" +
-        "                    elit dolor adipisicing. Mollit dolor eiusmod sunt ex incididunt\n" +
-        "                    cillum quis. Velit duis sit officia eiusmod Lorem aliqua enim";
 
     return (
         <Box
@@ -54,7 +31,7 @@ const Item = (
 
             <Row alignItems="center">
 
-                <Text flex={ 4 } textAlign="left" fontWeight="bold">Vol de { item }</Text>
+                <Text flex={ 4 } textAlign="left" fontWeight="bold">Vol de { item.time }s</Text>
 
                 <IconButton
                     flex={ 1 } onPress={ on.OpenModal } opacity={ 80 } bg={ "#ADD8E6" }

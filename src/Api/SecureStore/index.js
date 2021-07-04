@@ -1,3 +1,5 @@
 const TOKEN = 'AccessToken';
 
-export { TOKEN };
+const TELLO_OVERVIEW = 'TelloOverview';
+
+export { TOKEN, TELLO_OVERVIEW };

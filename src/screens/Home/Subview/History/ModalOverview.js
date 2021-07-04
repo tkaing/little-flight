@@ -8,7 +8,7 @@ const ModalOverview = (
     {
         state: {
             showModal, setShowModal,
-            modalContent
+            modalContent: { item }
         }
     }
 ) => {
@@ -19,30 +19,27 @@ const ModalOverview = (
                 <Modal.Header>
                     <Text { ...app_common.Text.forModal }>Overview</Text>
                 </Modal.Header>
-                <Modal.Body mt={5}>
-                    { modalContent && modalContent.text &&
+                <Modal.Body mt={5} justifyContent="center">
+                    { item &&
                         <>
                             <Button
-                                mb={2}
-                                width="70%"
-                                variant="blue"
-                                startIcon={ <Icon { ...app_common.Icon.forButton } name='stats-chart' /> }>
-                                <Text>Points</Text>
-                            </Button>
-
-                            <Button
-                                mb={2}
-                                width="70%"
-                                variant="red"
-                                startIcon={ <Icon { ...app_common.Icon.forButton } name='stats-chart' /> }>
-                                <Text>Altitude</Text>
-                            </Button>
-
-                            <Button
-                                width="70%"
                                 variant="green"
                                 startIcon={ <Icon { ...app_common.Icon.forButton } name='stats-chart' /> }>
-                                <Text>Duration</Text>
+                                <Text>Duration : { item.time }s</Text>
+                            </Button>
+                            
+                            <Button
+                                mb={2}
+                                variant="red"
+                                startIcon={ <Icon { ...app_common.Icon.forButton } name='stats-chart' /> }>
+                                <Text>Battery : { item.battery }%</Text>
+                            </Button>
+
+                            <Button
+                                mb={2}
+                                variant="blue"
+                                startIcon={ <Icon { ...app_common.Icon.forButton } name='stats-chart' /> }>
+                                <Text>Temperature : { item.temp }</Text>
                             </Button>
                         </>
                     }

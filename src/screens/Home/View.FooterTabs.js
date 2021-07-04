@@ -21,6 +21,7 @@ const FooterTabs = (
             { app_screen.home.listOfTabs.map((_it, _index) =>
                 <Pressable
                     py={ 2 }
+                    key={ _index }
                     flex={ 1 }
                     opacity={ tabIndex === _index ? 1 : 0.5 }
                     onPress={ () => on.home.footerTabChange({ index: _index },{ setTabIndex }) }>

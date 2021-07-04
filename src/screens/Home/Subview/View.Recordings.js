@@ -1,6 +1,5 @@
-import React, {cloneElement, useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 
-import { Dimensions } from "react-native";
 import { Column, Text, Button, Box, ScrollView, Wrap, Image } from "native-base";
 
 import Color from "../../../App/Color";
@@ -21,9 +20,6 @@ const Recordings = ({ navigation }) => {
             setListOfPhotos, setListOfVideos
         });
     }, []);
-
-    console.log("=== LIST OF PHOTOS ===", listOfPhotos);
-    console.log("=== LIST OF VIDEOS ===", listOfVideos);
 
     return (
         <Column bg={ Color.blue } flex={1}>

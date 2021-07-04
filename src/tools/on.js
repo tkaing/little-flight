@@ -1,5 +1,6 @@
 import axios from "axios";
 import Share from 'react-native-share';
+import TelloClass from "./../App/class/TelloClass"
 
 import * as SecureStore from "expo-secure-store";
 
@@ -7,12 +8,146 @@ import * as api_node_js from "../Api/Nodejs";
 import * as app_service from "../App/Service";
 import * as api_secure_store from "../Api/SecureStore";
 
-import { load, redirect_to } from ".";
-import {PermissionsAndroid} from "react-native";
+import { load, ffmpeg, redirect_to } from ".";
+import { PermissionsAndroid } from "react-native";
 import * as RNFS from "react-native-fs";
-import RecordingsFolderConst from "../App/const/RecordingsFolderConst";
+import MediaFolderConst from "../App/const/MediaFolderConst";
+import { RNFFmpeg } from "react-native-ffmpeg";
+import LiveConst from "../App/const/LiveConst";
 
 const on = {
+    fpv: {
+        openReport: async ( { toast }, {
+            subject,
+            createdAt,
+            description,
+        }) => {
+            try {
+                const _response = await axios.post(
+                    api_node_js.ReportCall.open(), {
+                        subject: subject,
+                        createdAt: createdAt,
+                        description: description,
+                    }, await api_node_js.Config()
+                );
+
+                const _data = _response.data;
+
+                console.log('=== SEND BUG REPORT ===', JSON.stringify(_data));
+
+                app_service.toast(toast, 'success', `Okay, thank you we will look at this issue !`);
+
+
+            } catch (failure) {
+                console.log('=== SEND BUG REPORT ===', failure);
+                app_service.toast(toast, 'danger', `Ooops, an eror has been declared !`);
+            }
+        },
+        recordingTap: async ({ toast }, {
+            liveExecId,
+            setNewFrame,
+            setLiveExecId,
+            recordingExecId,
+            setRecordingExecId,
+            setLoadingRecordingBtn,
+        }) => {
+            if (!recordingExecId) {
+                setLoadingRecordingBtn(true);
+                if (liveExecId) {
+                    RNFFmpeg.cancelExecution(liveExecId);
+                    setLiveExecId(null);
+                }
+                await ffmpeg.launchRecording(
+                    { toast }, { setRecordingExecId }
+                );
+                setLoadingRecordingBtn(false);
+            } else {
+                RNFFmpeg.cancelExecution(recordingExecId);
+                setRecordingExecId(null);
+                app_service.toast(toast, 'success', 'Votre vidéo a bien été enregistrée', 2000);
+                await ffmpeg.launchLive({ toast }, {
+                    liveExecId,
+                    setNewFrame,
+                    setLiveExecId
+                });
+            }
+        },
+        screenshotTap: async ({ toast }, {
+            setLoadingScreenshotBtn
+        }) => {
+            setLoadingScreenshotBtn(true);
+            try {
+                await ffmpeg.copyFrameFromLiveToImage({ toast });
+            } catch (reason) {
+                console.log("=== SCREENSHOT FAILED ===", reason);
+                app_service.toast(toast, 'danger', 'Oups! Impossible prendre un screenshot. Veuillez réessayer', 2000);
+            }
+            setLoadingScreenshotBtn(false);
+        },
+        telloOverviewSave: async () => {
+            if (TelloClass.time > 0) {
+                let data = await SecureStore.getItemAsync(api_secure_store.TELLO_OVERVIEW);
+                if (!data || !Array.isArray( JSON.parse(data) ) ) {
+                    data = JSON.stringify([]);
+                }
+                await SecureStore.setItemAsync(api_secure_store.TELLO_OVERVIEW, JSON.stringify([
+                    ...(JSON.parse(data)), {
+                        //tof: TelloClass.tof.toString().trim(),
+                        time: TelloClass.time.toString().trim(),
+                        temp: TelloClass.temp.toString().trim(),
+                        //height: TelloClass.height.toString().trim(),
+                        battery: TelloClass.battery.toString().trim(),
+                        createdAt: new Date()
+                    }
+                ]));
+            }
+        },
+        askForFolderPermissions: async ({ toast }, {}) => {
+
+            try {
+                await PermissionsAndroid.requestMultiple([
+                    PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+                    PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+                ]);
+            } catch (failure) {
+                app_service.toast(toast, 'danger', `Oups! Impossible d'accorder les permissions`, 2000);
+                return;
+            }
+
+            const readGranted = await PermissionsAndroid.check(
+                PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE
+            );
+
+            const writeGranted = await PermissionsAndroid.check(
+                PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
+            );
+
+            if (!readGranted || !writeGranted) {
+                app_service.toast(toast, 'danger', `Oups! Le dossier LittleFlight est inaccessible`, 2000);
+                return;
+            }
+
+            console.log("=== GRANTED ===");
+
+            const listOfFolders = [
+                MediaFolderConst.LIVE,
+                MediaFolderConst.IMAGE,
+                MediaFolderConst.VIDEO,
+            ];
+
+            for await (_it of listOfFolders)
+                if (!(await RNFS.exists(_it))) await RNFS.mkdir(_it);
+
+            try {
+                if (await RNFS.exists(LiveConst.OUTPUT)) {
+                    await RNFS.unlink(LiveConst.OUTPUT);
+                    await RNFS.scanFile(LiveConst.OUTPUT);
+                }
+            } catch (reason) {
+                console.log("=== DELETE FRAME ===", reason);
+            }
+        }
+    },
     auth: {
         signInSubmit: async (
             { email, password }, {
@@ -340,7 +475,7 @@ const on = {
             tabChange: ({ index }, { setTabIndex }) => setTabIndex(index),
             readPhotos: async ({}, { setListOfPhotos }) => {
                 try {
-                    const listOfPhotos = await RNFS.readDir(RecordingsFolderConst.IMAGE);
+                    const listOfPhotos = await RNFS.readDir(MediaFolderConst.IMAGE);
                     setListOfPhotos(listOfPhotos);
                 } catch (failure) {
                     console.log("=== LIST OF PHOTOS ===", failure);
@@ -348,7 +483,7 @@ const on = {
             },
             readVideos: async ({}, { setListOfVideos }) => {
                 try {
-                    const listOfVideos = await RNFS.readDir(RecordingsFolderConst.VIDEO);
+                    const listOfVideos = await RNFS.readDir(MediaFolderConst.VIDEO);
                     setListOfVideos(listOfVideos);
                 } catch (failure) {
                     console.log("=== LIST OF VIDEOS ===", failure);
@@ -384,8 +519,8 @@ const on = {
                 console.log("=== GRANTED ===");
 
                 const listOfFolders = [
-                    RecordingsFolderConst.VIDEO,
-                    RecordingsFolderConst.IMAGE,
+                    MediaFolderConst.VIDEO,
+                    MediaFolderConst.IMAGE,
                 ];
 
                 for await (_it of listOfFolders)
@@ -397,34 +532,6 @@ const on = {
         },
         footerTabChange: ({ index }, { setTabIndex }) => setTabIndex(index)
     },
-    fpv: { 
-        openReport: async ( { toast }, {
-            subject,
-            createdAt,
-            description,
-        }) => {
-            try {
-                const _response = await axios.post(
-                    api_node_js.ReportCall.open(), {
-                        subject: subject,
-                        createdAt: createdAt,
-                        description: description,
-                    }, await api_node_js.Config()
-                );
-
-                const _data = _response.data;
-
-                console.log('=== SEND BUG REPORT ===', JSON.stringify(_data));
-
-                app_service.toast(toast, 'success', `Okay, thank you we will look at this issue !`);
-
-
-            } catch (failure) {
-                console.log('=== SEND BUG REPORT ===', failure);
-                app_service.toast(toast, 'danger', `Ooops, an eror has been declared !`);
-            }
-        },
-    }
 };
 
 export default on

@@ -1,109 +1,126 @@
-import dgram from "react-native-udp";
+import * as RNFS from "react-native-fs"
 
-import * as RNFS from "react-native-fs";
+import { RNFFmpeg, RNFFmpegConfig } from "react-native-ffmpeg"
 
-import { PermissionsAndroid } from "react-native";
-import { RNFFmpeg, RNFFmpegConfig } from "react-native-ffmpeg";
+import * as app_service from './../App/Service'
+import * as VideoThumbnails from 'expo-video-thumbnails'
+
+import { on, drone } from "./../tools"
+
+import LiveConst from "./../App/const/LiveConst"
+import RecordingConst from "../App/const/RecordingConst";
+import ScreenshotConst from "../App/const/ScreenshotConst"
 
 const ffmpeg = {
-    core: async (setNewFrame) => {
-        try {
-            const granted = await PermissionsAndroid.request(
-                PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
-            );
-            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-                console.log('=== FFMPEG ===');
-                RNFFmpeg.listExecutions().then(value => {
-                    if (value.length === 0) {
-                        ffmpeg.instance(setNewFrame);
-                    } else {
-                        RNFFmpeg.cancel();
-                        ffmpeg.instance(setNewFrame);
-                    }
+    launchLive: async ({ toast }, {
+        liveExecId,
+        setNewFrame,
+        setLiveExecId
+    }) => {
+
+        await on.fpv.askForFolderPermissions({ toast }, {});
+
+        RNFFmpeg.listExecutions().then(value => {
+            if (value.length === 0) {
+                ffmpeg.instance({}, {
+                    liveExecId,
+                    setNewFrame,
+                    setLiveExecId
+                });
+            } else {
+                RNFFmpeg.cancel();
+                ffmpeg.instance({}, {
+                    liveExecId,
+                    setNewFrame,
+                    setLiveExecId
                 });
             }
-        } catch (e) {
-            console.log('Permission Denied.');
-        }
+        });
     },
-    close: () => {
-        RNFFmpeg.cancel();
-    },
-    input: () => {
-        //let input = `file://${ RNFS.DownloadDirectoryPath }/sample-video.mp4`;
-        //let input = `file://${ RNFS.DownloadDirectoryPath }/sample-mp4-file.mp4`;
-        //let input = "udp://0.0.0.0:11111"; // ???
-        let input = "udp://127.0.0.1:11111"; // OK
-        //let input = "udp://192.168.10.1:11111"; // ???
-        return input;
-    },
-    output: () => {
-        let output = `file://${ RNFS.DownloadDirectoryPath }/output_frame.jpg`;
-        return output;
-    },
-    config: (setNewFrame) => {
+    config: ({}, { setNewFrame, liveExecId }) => {
+
         RNFFmpegConfig.enableLogCallback(
-            (log) => {
-                //console.log(`Logs; ${log.executionId}:${log.message}`);
-            }
+            (log) => { /*console.log(`Logs; ${log.executionId}:${log.message}`)*/ }
         );
         RNFFmpegConfig.enableStatisticsCallback(
             (statistics) => {
                 try {
-                    const now = Date.now();
-                    const number = statistics.videoFrameNumber;
-                    setNewFrame({ number: now, uri: ffmpeg.output() + `?${ now }` });
+                    //if (statistics.executionId === liveExecId) {
+                        const now = Date.now();
+                        //console.log(now);
+                        //const number = statistics.videoFrameNumber;
+                        setNewFrame({ uri: LiveConst.OUTPUT + `?${ now }`, number: now });
+                    //}
                 } catch (failure) {
-                    console.log('Cannot generate frame.', failure);
+                    console.log('=== FRAME FAILED ===', failure);
                 }
-                //console.log(`Statistics; executionId: ${statistics.executionId}, video frame number: ${statistics.videoFrameNumber}, video fps: ${statistics.videoFps}, video quality: ${statistics.videoQuality}, size: ${statistics.size}, time: ${statistics.time}, bitrate: ${statistics.bitrate}, speed: ${statistics.speed}`);
             }
         );
     },
-    instance: async (setNewFrame) => {
+    instance: async ({ }, {
+        liveExecId,
+        setNewFrame,
+        setLiveExecId,
+    }) => {
 
-        // Full command
-        // = full cmd from api = '-r 30 -s 960x720 -codec:v mpeg1video -b:v 800k -f h264'
-        // = override single image = '-q:v 4 -r 1 -update 1'
-        // Ne pas utiliser
-        // = -vf fps=1/X
-        // Informations utiles
-        // = qscale:v = qualité vidéo (1-31)
-        // = R = '-r 1/20';
-        // = R = '-r 30 -f image2';
+        ffmpeg.config({}, { setNewFrame, liveExecId });
 
-        const exists = await RNFS.exists(ffmpeg.output());
+        try {
+            console.log(LiveConst.FULL_COMMAND);
 
-        if (exists) {
+            const executionId = await RNFFmpeg.executeAsync(
+                LiveConst.FULL_COMMAND, (execution) => console.log(execution)
+            );
+            console.log(`=== LIVE with executionId ${executionId} ===`);
+            setLiveExecId(executionId);
 
-            console.log('Supprimer fichier d\'abord.');
+        } catch (reason) {
+            console.log("=== LIVE FAILED ===", reason);
+            app_service.toast(toast, 'danger', 'Oups! Impossible de lancer le live', 2000);
+        }
+    },
+    launchRecording: async ({ toast }, { setRecordingExecId }) => {
 
-        } else {
+        let recordingId = 0;
+        let recordingExist = await RNFS.exists(RecordingConst.OUTPUT(recordingId));
 
-            const socket = dgram.createSocket({ type: 'udp4', debug: true });
-            const command = `-i ${ ffmpeg.input() } -q:v 4 -r 1 -update 1 ${ ffmpeg.output() }`;
+        while (recordingExist) {
+            recordingId += 1;
+            recordingExist = await RNFS.exists(RecordingConst.OUTPUT(recordingId));
+        }
 
-            socket.bind(8001);
-            socket.on('close', (msg) => {
-                console.log('Close', msg);
-            });
-            //socket.on('message', (msg) => console.log('Message', msg));
-            socket.once('listening', () => {
+        try {
+            const executionId = await RNFFmpeg.executeAsync(
+                RecordingConst.FULL_COMMAND(recordingId), (execution) => {
+                    if (execution.returnCode === 1) {
+                        console.log("=== RECORDING FAILED ===");
+                        app_service.toast(toast, 'danger', 'Oups! Impossible d\'enregistrer le recording', 2000);
+                    }
+                }
+            );
+            console.log(`=== RECORDING with executionId ${executionId} ===`);
+            setRecordingExecId(executionId);
 
-                ffmpeg.config(setNewFrame);
+        } catch (reason) {
+            console.log("=== RECORDING FAILED ===", reason);
+            app_service.toast(toast, 'danger', 'Oups! Impossible de lancer le recording', 2000);
+        }
+    },
+    copyFrameFromLiveToImage: async ({ toast }) => {
+        try {
+            let screenshotId = 0;
+            let screenshotExist = await RNFS.exists(RecordingConst.OUTPUT(screenshotId));
 
-                RNFFmpeg.executeAsync(command, (execution) => {
-                    console.log(execution);
-                })
-                    .then(executionId => {
-                        console.log(`Async FFmpeg process started with executionId ${executionId}.`);
-                    })
-                    .catch(reason => {
-                        console.log(reason);
-                    })
-                ;
-
-            });
+            while (screenshotExist) {
+                screenshotId += 1;
+                screenshotExist = await RNFS.exists(RecordingConst.OUTPUT(screenshotId));
+            }
+            await RNFS.moveFile(
+                LiveConst.OUTPUT, ScreenshotConst.OUTPUT(screenshotId)
+            );
+        } catch (reason) {
+            console.log("=== SCREENSHOT FAILED ===", reason);
+            app_service.toast(toast, 'danger', 'Oups! Impossible prendre un screenshot. Veuillez réessayer', 2000);
         }
     }
 };

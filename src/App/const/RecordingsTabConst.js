@@ -1,18 +1,11 @@
 import React from "react";
 
-const PHOTO = {
-    name: "Photos",
-};
+const PHOTO = { name: "Photos" };
 
-const VIDEO = {
-    name: "Videos",
-
-}
-
-const LIST = [PHOTO, VIDEO];
+const VIDEO = { name: "Videos" };
 
 export default {
-    LIST,
+    LIST: [PHOTO, VIDEO],
     PHOTO,
     VIDEO,
 }
