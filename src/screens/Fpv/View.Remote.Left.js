@@ -14,9 +14,9 @@ const RemoteLeft = ({  }) => {
         <Column flex={ 1 } bg="#595758">
 
             <Box flex={ 1 } justifyContent="center" alignItems="center">
-                <Button variant="blue" onPress={ () => drone.takeOffOrLand({ takeoff, setTakeoff }) }>
+                <Button variant="blue" onPress={ () => drone.takeOffOrLand({ takeoff, setTakeoff }) }> 
                     <Text>{ !takeoff ? 'START' : 'STOP' }</Text>
-                </Button>
+                </Button> 
             </Box>
 
             <Center flex={ 3 }>

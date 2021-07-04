@@ -10,10 +10,10 @@ const drone = {
     upOrDown: (direction) => { // up down
         app_drone.run(`${ direction } 60`);
     },
-    streamOnOrOff: (onOrOff) => {
+    streamOnOrOff: (onOrOff) => { //Stream On OFF
         app_drone.run(`stream${ onOrOff }`);
     },
-    takeOffOrLand: ({ takeoff, setTakeoff }) => {
+    takeOffOrLand: ({ takeoff, setTakeoff }) => { //Drone Strat "Takeoff" Stop "Land"
         if (!takeoff) {
             app_drone.run('takeoff');
             setTakeoff(true);
