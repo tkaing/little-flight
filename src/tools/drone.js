@@ -47,7 +47,7 @@ const drone = {
     // === check connection ===
     checkConnection: async (droneSocket) => {
         await droneSocket.send('command', undefined, undefined, PORT, HOST, drone.failure);
-
+        await droneSocket.send('streamon', undefined, undefined, PORT, HOST, drone.failure);
         await droneSocket.send('tof?', undefined, undefined, PORT, HOST, drone.failure);
         await droneSocket.send('time?', undefined, undefined, PORT, HOST, drone.failure);
         await droneSocket.send('temp?', undefined, undefined, PORT, HOST, drone.failure);
