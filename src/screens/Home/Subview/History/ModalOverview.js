@@ -13,6 +13,17 @@ const ModalOverview = (
     }
 ) => {
 
+    const getBatteryIcon = () => {
+        switch (item.battery) {
+            case 100:
+                return "battery-full-sharp";
+            case 0:
+                return "battery-dead-sharp";
+            default:
+                return "battery-half-sharp";
+        }
+    }
+
     return (
         <Modal isOpen={ showModal } onClose={ () => setShowModal(false) }>
             <Modal.Content maxWidth="400px">
@@ -23,22 +34,23 @@ const ModalOverview = (
                     { item &&
                         <>
                             <Button
+                                mb={2}
                                 variant="green"
-                                startIcon={ <Icon { ...app_common.Icon.forButton } name='stats-chart' /> }>
+                                startIcon={ <Icon { ...app_common.Icon.forButton } name='hourglass-outline' /> }>
                                 <Text>Duration : { item.time }s</Text>
                             </Button>
-                            
+
                             <Button
                                 mb={2}
                                 variant="red"
-                                startIcon={ <Icon { ...app_common.Icon.forButton } name='stats-chart' /> }>
+                                startIcon={ <Icon { ...app_common.Icon.forButton } name={ getBatteryIcon() } /> }>
                                 <Text>Battery : { item.battery }%</Text>
                             </Button>
 
                             <Button
                                 mb={2}
                                 variant="blue"
-                                startIcon={ <Icon { ...app_common.Icon.forButton } name='stats-chart' /> }>
+                                startIcon={ <Icon { ...app_common.Icon.forButton } name='thermometer-outline' /> }>
                                 <Text>Temperature : { item.temp }</Text>
                             </Button>
                         </>

@@ -4,14 +4,12 @@ import dgram from "react-native-udp"
 import MyDrone from "../components/MyDrone"
 import TelloClass from "./../App/class/TelloClass"
 
-import { RNFFmpeg } from "react-native-ffmpeg"
 import { Stream, Remote } from "./Fpv"
-import { lockAsync, OrientationLock } from "expo-screen-orientation"
 import { Box, Column, Row, useToast } from "native-base"
-
-import * as app_service from "../App/Service"
+import { lockAsync, OrientationLock } from "expo-screen-orientation"
 
 import { on, drone } from "./../tools"
+import { MainLoader } from "../core"
 
 // === Drone Socket ===
 
@@ -36,6 +34,7 @@ droneSocket.on('message', (message, info) => {
     if (telloData.includes("s")) {
         telloData = telloData.replace("s", "");
         TelloClass.time = telloData;
+        console.log("=== TELLO TIME ===", TelloClass.time);
     }
     if (telloData.includes("C")) {
         TelloClass.temp = telloData;
@@ -52,7 +51,14 @@ droneSocket.on('message', (message, info) => {
     TelloClass.countConnections = TelloClass.countConnections + 1;
 });
 
-const FpvScreen = ({ navigation }) => {
+const FpvScreen = (
+    {
+        navigation,
+        state: {
+            loading, setLoading
+        }
+    }
+) => {
 
     const toast = useToast();
 
@@ -66,42 +72,29 @@ const FpvScreen = ({ navigation }) => {
     const [recordingExecId, setRecordingExecId] = useState();
 
     useEffect(() => {
+        (async () => {
+            console.log("=== FPV Screen ===");
 
-        lockAsync(OrientationLock.LANDSCAPE_LEFT);
+            setLoading(true);
 
-        on.fpv.askForFolderPermissions({ toast }, {});
+            await lockAsync(OrientationLock.LANDSCAPE_LEFT);
 
-        TelloClass.currentOverview = TelloClass.initialOverview;
-
-        return () => {
-
-            drone.streamOnOrOff({ droneSocket, onOrOff: 'off' });
-
-            if (liveExecId) {
-                RNFFmpeg.cancelExecution(liveExecId);
-                setLiveExecId(null);
-            }
-            if (recordingExecId) {
-                RNFFmpeg.cancelExecution(recordingExecId);
-                setRecordingExecId(null);
-                app_service.toast(toast, 'success', 'Votre vidéo a bien été enregistrée', 2000);
-            }
-
-            RNFFmpeg.cancel();
-
-            on.fpv.telloOverviewSave();
-        };
+            setLoading(false);
+        })();
     }, []);
 
     useEffect(() => {
-        return navigation.addListener(
-            'focus', () => lockAsync(OrientationLock.LANDSCAPE_LEFT)
-        );
-    }, [navigation]);
+        if (liveExecId || recordingExecId) {
+            (async () => {
 
-    useEffect(() => {
-        if (liveExecId || recordingExecId)
-            drone.streamOnOrOff({ droneSocket, onOrOff: 'on' });
+                if (liveExecId)
+                    TelloClass.liveExecId = liveExecId;
+                if (recordingExecId)
+                    TelloClass.recordingExecId = recordingExecId;
+
+                await drone.streamOnOrOff({droneSocket, onOrOff: 'on'});
+            })();
+        }
     }, [liveExecId, recordingExecId]);
 
     return (
@@ -154,6 +147,8 @@ const FpvScreen = ({ navigation }) => {
                 }
 
             </Row>
+
+            { loading && <MainLoader /> }
 
         </Column>
     );

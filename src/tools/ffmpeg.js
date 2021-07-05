@@ -8,6 +8,7 @@ import { on, drone } from "./../tools"
 import LiveConst from "./../App/const/LiveConst"
 import RecordingConst from "../App/const/RecordingConst";
 import ScreenshotConst from "../App/const/ScreenshotConst"
+import TelloClass from "../App/class/TelloClass";
 
 const ffmpeg = {
     launchLive: async ({ toast }, {
@@ -15,8 +16,6 @@ const ffmpeg = {
         setNewFrame,
         setLiveExecId
     }) => {
-
-        await on.fpv.askForFolderPermissions({ toast }, {});
 
         RNFFmpeg.listExecutions().then(value => {
             if (value.length === 0) {
@@ -43,12 +42,10 @@ const ffmpeg = {
         RNFFmpegConfig.enableStatisticsCallback(
             (statistics) => {
                 try {
-                    //if (statistics.executionId === liveExecId) {
-                        const now = Date.now();
-                        //console.log(now);
-                        //const number = statistics.videoFrameNumber;
-                        setNewFrame({ uri: LiveConst.OUTPUT + `?${ now }`, number: now });
-                    //}
+                    const now = Date.now();
+                    console.log(TelloClass.liveId);
+                    if (TelloClass.liveId)
+                        setNewFrame({ uri: LiveConst.OUTPUT(TelloClass.liveId) + `?${ now }`, number: now });
                 } catch (failure) {
                     console.log('=== FRAME FAILED ===', failure);
                 }
@@ -64,10 +61,22 @@ const ffmpeg = {
         ffmpeg.config({}, { setNewFrame, liveExecId });
 
         try {
-            console.log(LiveConst.FULL_COMMAND);
+            let liveId = 1;
+            let liveExist = await RNFS.exists(LiveConst.OUTPUT(liveId));
+
+            while (liveExist) {
+                liveId += 1;
+                liveExist = await RNFS.exists(LiveConst.OUTPUT(liveId));
+            }
+
+            TelloClass.liveId = liveId;
+
+            await RNFS.scanFile(LiveConst.OUTPUT(liveId));
+
+            console.log(LiveConst.FULL_COMMAND(TelloClass.liveId));
 
             const executionId = await RNFFmpeg.executeAsync(
-                LiveConst.FULL_COMMAND, (execution) => console.log(execution)
+                LiveConst.FULL_COMMAND(TelloClass.liveId), (execution) => console.log(execution)
             );
             console.log(`=== LIVE with executionId ${executionId} ===`);
             setLiveExecId(executionId);
@@ -113,12 +122,26 @@ const ffmpeg = {
                 screenshotId += 1;
                 screenshotExist = await RNFS.exists(RecordingConst.OUTPUT(screenshotId));
             }
-            await RNFS.moveFile(
-                LiveConst.OUTPUT, ScreenshotConst.OUTPUT(screenshotId)
-            );
+            if (TelloClass.liveId) {
+                const exist = await RNFS.exists(
+                    LiveConst.OUTPUT(TelloClass.liveId)
+                );
+                if (exist) {
+                    await RNFS.scanFile(
+                        LiveConst.OUTPUT(TelloClass.liveId)
+                    );
+                    const response = await RNFS.moveFile(
+                        LiveConst.OUTPUT(TelloClass.liveId), ScreenshotConst.OUTPUT(screenshotId)
+                    );
+                    console.log("=== SCREENSHOT RESPONSE ===", response);
+                } else {
+                    console.log("=== SCREENSHOT FAILED ===");
+                    app_service.toast(toast, 'danger', 'Oups! Échec du Screenshot. Réessayer !', 2000);
+                }
+            }
         } catch (reason) {
             console.log("=== SCREENSHOT FAILED ===", reason);
-            app_service.toast(toast, 'danger', 'Oups! Impossible prendre un screenshot. Veuillez réessayer', 2000);
+            app_service.toast(toast, 'danger', 'Oups! Échec du Screenshot. Réessayer !', 2000);
         }
     }
 };

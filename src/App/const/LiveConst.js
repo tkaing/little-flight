@@ -2,9 +2,9 @@ import MediaFolderConst from "./MediaFolderConst";
 
 const INPUT = "udp://0.0.0.1:11111";
 
-const OUTPUT = `file://${ MediaFolderConst.LIVE }/live.jpg`;
+const OUTPUT = (liveId) => `file://${ MediaFolderConst.LIVE }/live_${ liveId }.jpg`;
 
-const FULL_COMMAND = `-y -i ${ INPUT } -q:v 4 -r 1 -update 1 ${ OUTPUT }`;
+const FULL_COMMAND = (liveId) => `-i ${ INPUT } -q:v 4 -r 1 -update 1 ${ OUTPUT(liveId) }`;
 
 export default {
     INPUT,

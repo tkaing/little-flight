@@ -1,12 +1,16 @@
-import React, { useEffect, useState, cloneElement } from "react";
+import React, { useEffect, useState, cloneElement } from "react"
 
-import { Box } from "native-base";
-import { FooterTabs } from "./Home";
-import { lockAsync, OrientationLock } from "expo-screen-orientation";
+import TelloClass from "../App/class/TelloClass"
 
-import * as app_screen from '../App/Screen';
-import {MainLoader} from "../core";
-import {redirect_to} from "../tools";
+import {Box, useToast} from "native-base"
+import { RNFFmpeg } from "react-native-ffmpeg"
+import { FooterTabs } from "./Home"
+import { MainLoader } from "../core"
+import { on, redirect_to } from "../tools"
+import { lockAsync, OrientationLock } from "expo-screen-orientation"
+
+import * as app_screen from '../App/Screen'
+import * as app_service from "../App/Service"
 
 const HomeScreen = (
     {
@@ -18,6 +22,8 @@ const HomeScreen = (
     }
 ) => {
 
+    const toast = useToast();
+
     // == useState ===
 
     const [tabIndex, setTabIndex] = useState(0);
@@ -25,7 +31,11 @@ const HomeScreen = (
     // === useEffect ===
 
     useEffect(() => {
-        lockAsync(OrientationLock.DEFAULT);
+        (async () => {
+            setLoading(true);
+            await lockAsync(OrientationLock.DEFAULT);
+            setLoading(false);
+        })();
     }, []);
 
     useEffect(() => {
@@ -35,7 +45,29 @@ const HomeScreen = (
 
     useEffect(() => {
         return navigation.addListener(
-            'focus', () => lockAsync(OrientationLock.DEFAULT)
+            'focus', async () => {
+
+                setLoading(true);
+
+                await lockAsync(OrientationLock.DEFAULT);
+
+                setLoading(false);
+
+                TelloClass.listOfIntervals.forEach(_it => clearInterval(_it));
+
+                await on.fpv.telloOverviewSave();
+
+                if (TelloClass.liveExecId) {
+                    RNFFmpeg.cancelExecution(TelloClass.liveExecId);
+                    TelloClass.liveExecId = null;
+                }
+                if (TelloClass.recordingExecId) {
+                    RNFFmpeg.cancelExecution(TelloClass.recordingExecId);
+                    TelloClass.recordingExecId = null;
+                }
+
+                RNFFmpeg.cancel();
+            }
         );
     }, [navigation]);
 
