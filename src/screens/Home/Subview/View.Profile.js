@@ -27,6 +27,7 @@ const Profile = (
     const [username, setUsername] = useState();
     const [showModal, setShowModal] = useState(false);
     const [loadingBtn, setLoadingBtn] = useState(false);
+    const [loadingListBtn, setLoadingListBtn] = useState(false);
     const [listOfFriends, setListOfFriends] = useState({
         requestByMe: {
             pending: [],
@@ -39,8 +40,18 @@ const Profile = (
     });
 
     const handle = {
-        FriendButtonPress: (forPending) => {
+        FriendButtonPress: async (forPending) => {
+
             setPending(forPending);
+
+            setLoadingListBtn(true);
+
+            await load.home.profile.listOfFriends(
+                { toast, navigation },
+                { setAppUser, setListOfFriends }
+            );
+            setLoadingListBtn(false);
+
             setShowModal(true);
         }
     };
@@ -145,11 +156,15 @@ const Profile = (
                     space={6}
                     isAttached
                     variant="solid">
-                    <Button variant="red" mr={2} //Button Waiting
+                    {/* Button Waiting */}
+                    <Button variant="red" mr={2}
+                            isDisabled={ loadingListBtn }
                             onPress={ () => handle.FriendButtonPress(true) }>
                         <Text>{translate("WAITING")}</Text>
                     </Button>
-                    <Button variant="blue" //Button Friend
+                    {/* Button Friends */}
+                    <Button variant="blue"
+                            isDisabled={ loadingListBtn }
                             onPress={ () => handle.FriendButtonPress(false) }>
                         <Text>{translate("FRIENDS_LIST")}</Text>
                     </Button>

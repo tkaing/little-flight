@@ -124,7 +124,7 @@ const on = {
 
             if (!readGranted || !writeGranted) {
                 app_service.toast(toast, 'danger', `Oups! Le dossier LittleFlight est inaccessible`, 2000);
-                return;
+                return false;
             }
 
             console.log("=== GRANTED ===");
@@ -135,17 +135,14 @@ const on = {
                 MediaFolderConst.VIDEO,
             ];
 
-            for await (_it of listOfFolders)
-                if (!(await RNFS.exists(_it))) await RNFS.mkdir(_it);
-
-            try {
-                if (await RNFS.exists(LiveConst.OUTPUT)) {
-                    await RNFS.unlink(LiveConst.OUTPUT);
-                    await RNFS.scanFile(LiveConst.OUTPUT);
+            for await (_it of listOfFolders) {
+                if (!(await RNFS.exists(_it))) {
+                    await RNFS.mkdir(_it);
+                    await RNFS.scanFile(_it);
                 }
-            } catch (reason) {
-                console.log("=== DELETE FRAME ===", reason);
             }
+
+            return true;
         }
     },
     auth: {
@@ -522,8 +519,12 @@ const on = {
                     MediaFolderConst.IMAGE,
                 ];
 
-                for await (_it of listOfFolders)
-                    if (!(await RNFS.exists(_it))) await RNFS.mkdir(_it);
+                for await (_it of listOfFolders) {
+                    if (!(await RNFS.exists(_it))) {
+                        await RNFS.mkdir(_it);
+                        await RNFS.scanFile(_it);
+                    }
+                }
 
                 await on.home.recordings.readPhotos({}, { setListOfPhotos });
                 await on.home.recordings.readVideos({}, { setListOfVideos });

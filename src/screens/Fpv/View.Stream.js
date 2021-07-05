@@ -54,15 +54,15 @@ const Stream = (
 
     useEffect(() => {
         if (openStream) {
-            RNFFmpeg.cancel();
-            ffmpeg.launchLive({ toast }, {
-                liveExecId,
-                setNewFrame,
-                setLiveExecId
-            });
+            (async () => {
+                await ffmpeg.launchLive({ toast }, {
+                    liveExecId,
+                    setNewFrame,
+                    setLiveExecId
+                });
+            })();
         }
         if (!openStream) {
-            RNFFmpeg.cancel();
             setNewFrame(null);
             setListOfFrames([]);
         }

@@ -24,38 +24,42 @@ const MyDrone = (
 
     useEffect(() => {
 
-        const id = setInterval(async function () {
+        (async () => {
 
-            console.log("=== INTERVAL ===");
+            const intervalCallback = () => {
 
-            await drone.checkConnection(droneSocket);
+                return setInterval(async function () {
 
-            setTimeout(function () {
-                setTime( (new Date()).getTime() );
-            }, 2500);
-        }, 5000);
+                    console.log("=== INTERVAL ===");
 
-        lockAsync(OrientationLock.LANDSCAPE_LEFT);
+                    await drone.checkConnection(droneSocket);
 
-        return () => { clearInterval(id) };
+                    setTimeout(function () {
+                        setTime( (new Date()).getTime() );
+                    }, 2500);
+
+                }, 5000);
+            };
+
+            TelloClass.listOfIntervals.push( intervalCallback() );
+
+        })();
 
     }, []);
 
     useEffect(() => {
         if (time) {
-            setConnected(
-                TelloClass.countConnections > 0
-            );
+            setConnected(TelloClass.countConnections > 0);
             TelloClass.countConnections = 0;
         }
     }, [time]);
 
     return (
-        <Row 
-            bg="#37393E" 
-            width="100%" 
-            justifyContent="flex-end" 
-            paddingY={2} 
+        <Row
+            bg="#37393E"
+            width="100%"
+            justifyContent="flex-end"
+            paddingY={2}
             paddingRight={4}>
             <Text marginTop={1} marginRight={3}> {translate("DRONE_CONNECTION")} </Text>
             <Image
