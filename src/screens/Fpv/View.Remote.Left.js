@@ -1,10 +1,12 @@
 import React, { useState } from "react"
 
-import {Box, Button, Center, Column, Row, Text} from "native-base"
+import { Button, Center, Column, Row, Text } from "native-base"
 
 import DirectionalButton from '../../components/DirectionnalButton'
 
 import { drone } from "./../../tools"
+
+import * as app_service from "./../../App/Service";
 
 const RemoteLeft = (
     {
@@ -27,16 +29,21 @@ const RemoteLeft = (
                 <Button variant="green"
                         marginRight= {10}
                         onPress={ () => setOpenVR(true) }>
-                    <Text>VR</Text>
+                    <Text fontWeight="bold">VR</Text>
                 </Button>
 
-                <Button variant="blue"
+                <Button variant={ !takeoff ? 'blue': 'red' }
                         onPress={ () => {
                             drone.takeOffOrLand(
                                 { droneSocket }, { takeoff, setTakeoff }
                             );
                         }}>
-                    <Text>{ !takeoff ? 'START' : 'STOP' }</Text>
+                    <Text fontWeight="bold">
+                        { !takeoff
+                            ? app_service.capitalize('START')
+                            : app_service.capitalize('STOP')
+                        }
+                    </Text>
                 </Button>
 
             </Row>

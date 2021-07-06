@@ -1,24 +1,24 @@
 import React, { useState, useEffect } from "react"
 import styles from "./Styles.Stream"
 
-import {Box, Button, Image, Row, Text, useToast, View, Center} from "native-base"
+import {Box, Button, Image, Row, Text, useToast, View, Center, Icon} from "native-base"
 
 import { ffmpeg } from "./../../tools";
 import { RNFFmpeg } from "react-native-ffmpeg";
 import Video from "react-native-video";
 import LiveConst from "../../App/const/LiveConst";
 import Color from "../../App/Color";
+import * as app_common from "../../App/Common";
 
 const Stream = (
     {
-        droneSocket,
         state: {
             openVR,
             newFrame,
             setOpenVR,
-            liveExecId,
             setNewFrame,
             setLiveExecId,
+            recordingExecId
         }
     }
 ) => {
@@ -36,7 +36,6 @@ const Stream = (
     }, []);
 
     useEffect(() => {
-        //console.log(newFrame);
         if (newFrame) {
             switch (listOfFrames.length) {
                 case 0:
@@ -56,7 +55,6 @@ const Stream = (
         if (openStream) {
             (async () => {
                 await ffmpeg.launchLive({ toast }, {
-                    liveExecId,
                     setNewFrame,
                     setLiveExecId
                 });
@@ -68,14 +66,20 @@ const Stream = (
         }
     }, [openStream]);
 
-    useEffect(() => {
-        /*if (listOfFrames.length === 0)
-            console.log([]);
-        else
-            console.log(
-                listOfFrames.map(_it => _it.uri.substr(0, 100))
-            );*/
-    }, [listOfFrames]);
+    if (recordingExecId) {
+
+        return (
+            <Center flex={1}>
+                <Icon
+                    { ...app_common.Icon.default }
+                    name='videocam'
+                    size={20}
+                    color="red"
+                />
+                <Text>Recording en cours...</Text>
+            </Center>
+        );
+    }
 
     return (
         <Row flex={1}>
@@ -84,7 +88,7 @@ const Stream = (
                 <Center>
                     <Button variant="green"
                             onPress={ () => setOpenVR(false) }>
-                        <Text>FPV</Text>
+                        <Text fontWeight="bold">FPV</Text>
                     </Button>
                 </Center>
             }
@@ -103,12 +107,12 @@ const Stream = (
                         }
                     >
                         { listOfFrames.map((_it, index) =>
-                            <Image fadeDuration={ 0 }
+                            <Image fadeDuration={0}
                                    source={{ uri: _it.uri }}
                                    square
                                    style={[ styles.frameImage ]}
                                    large
-                                   alt="xxx"
+                                   alt="Stream"
                                    key={ _it.number + index } />
                         )}
                     </Box>
@@ -121,12 +125,12 @@ const Stream = (
                              borderBottomColor={ Color.red }
                         >
                             { listOfFrames.map((_it, index) =>
-                                <Image fadeDuration={ 0 }
+                                <Image fadeDuration={0}
                                        source={{ uri: _it.uri }}
                                        square
                                        style={[ styles.frameImage ]}
                                        large
-                                       alt="xxx"
+                                       alt="Stream"
                                        key={ _it.number + index } />
                             )}
                         </Box>

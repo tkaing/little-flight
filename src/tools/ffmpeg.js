@@ -3,7 +3,6 @@ import * as RNFS from "react-native-fs"
 import { RNFFmpeg, RNFFmpegConfig } from "react-native-ffmpeg"
 
 import * as app_service from './../App/Service'
-import { on, drone } from "./../tools"
 
 import LiveConst from "./../App/const/LiveConst"
 import RecordingConst from "../App/const/RecordingConst";
@@ -12,7 +11,6 @@ import TelloClass from "../App/class/TelloClass";
 
 const ffmpeg = {
     launchLive: async ({ toast }, {
-        liveExecId,
         setNewFrame,
         setLiveExecId
     }) => {
@@ -20,21 +18,19 @@ const ffmpeg = {
         RNFFmpeg.listExecutions().then(value => {
             if (value.length === 0) {
                 ffmpeg.instance({}, {
-                    liveExecId,
                     setNewFrame,
                     setLiveExecId
                 });
             } else {
                 RNFFmpeg.cancel();
                 ffmpeg.instance({}, {
-                    liveExecId,
                     setNewFrame,
                     setLiveExecId
                 });
             }
         });
     },
-    config: ({}, { setNewFrame, liveExecId }) => {
+    config: ({}, { setNewFrame }) => {
 
         RNFFmpegConfig.enableLogCallback(
             (log) => { /*console.log(`Logs; ${log.executionId}:${log.message}`)*/ }
@@ -53,52 +49,31 @@ const ffmpeg = {
         );
     },
     instance: async ({ }, {
-        liveExecId,
         setNewFrame,
         setLiveExecId,
     }) => {
 
-        ffmpeg.config({}, { setNewFrame, liveExecId });
+        ffmpeg.config({}, { setNewFrame });
 
         try {
-            let liveId = 1;
-            let liveExist = await RNFS.exists(LiveConst.OUTPUT(liveId));
+            TelloClass.liveId = Date.now();
 
-            while (liveExist) {
-                liveId += 1;
-                liveExist = await RNFS.exists(LiveConst.OUTPUT(liveId));
-            }
-
-            TelloClass.liveId = liveId;
-
-            await RNFS.scanFile(LiveConst.OUTPUT(liveId));
-
-            console.log(LiveConst.FULL_COMMAND(TelloClass.liveId));
+            await RNFS.scanFile(LiveConst.OUTPUT(TelloClass.liveId));
 
             const executionId = await RNFFmpeg.executeAsync(
                 LiveConst.FULL_COMMAND(TelloClass.liveId), (execution) => console.log(execution)
             );
             console.log(`=== LIVE with executionId ${executionId} ===`);
             setLiveExecId(executionId);
-
         } catch (reason) {
             console.log("=== LIVE FAILED ===", reason);
             app_service.toast(toast, 'danger', 'Oups! Impossible de lancer le live', 2000);
         }
     },
     launchRecording: async ({ toast }, { setRecordingExecId }) => {
-
-        let recordingId = 0;
-        let recordingExist = await RNFS.exists(RecordingConst.OUTPUT(recordingId));
-
-        while (recordingExist) {
-            recordingId += 1;
-            recordingExist = await RNFS.exists(RecordingConst.OUTPUT(recordingId));
-        }
-
         try {
             const executionId = await RNFFmpeg.executeAsync(
-                RecordingConst.FULL_COMMAND(recordingId), (execution) => {
+                RecordingConst.FULL_COMMAND(Date.now()), (execution) => {
                     if (execution.returnCode === 1) {
                         console.log("=== RECORDING FAILED ===");
                         app_service.toast(toast, 'danger', 'Oups! Impossible d\'enregistrer le recording', 2000);
@@ -107,7 +82,7 @@ const ffmpeg = {
             );
             console.log(`=== RECORDING with executionId ${executionId} ===`);
             setRecordingExecId(executionId);
-
+            app_service.toast(toast, 'success', 'Enregistrement en cours', 2000);
         } catch (reason) {
             console.log("=== RECORDING FAILED ===", reason);
             app_service.toast(toast, 'danger', 'Oups! Impossible de lancer le recording', 2000);
@@ -115,13 +90,6 @@ const ffmpeg = {
     },
     copyFrameFromLiveToImage: async ({ toast }) => {
         try {
-            let screenshotId = 0;
-            let screenshotExist = await RNFS.exists(RecordingConst.OUTPUT(screenshotId));
-
-            while (screenshotExist) {
-                screenshotId += 1;
-                screenshotExist = await RNFS.exists(RecordingConst.OUTPUT(screenshotId));
-            }
             if (TelloClass.liveId) {
                 const exist = await RNFS.exists(
                     LiveConst.OUTPUT(TelloClass.liveId)
@@ -130,10 +98,11 @@ const ffmpeg = {
                     await RNFS.scanFile(
                         LiveConst.OUTPUT(TelloClass.liveId)
                     );
-                    const response = await RNFS.moveFile(
-                        LiveConst.OUTPUT(TelloClass.liveId), ScreenshotConst.OUTPUT(screenshotId)
+                    const response = await RNFS.copyFile(
+                        LiveConst.OUTPUT(TelloClass.liveId), ScreenshotConst.OUTPUT(Date.now())
                     );
-                    console.log("=== SCREENSHOT RESPONSE ===", response);
+                    console.log("=== SCREENSHOT SUCCESS ===", response);
+                    app_service.toast(toast, 'success', 'Screenshot enregistré !', 2000);
                 } else {
                     console.log("=== SCREENSHOT FAILED ===");
                     app_service.toast(toast, 'danger', 'Oups! Échec du Screenshot. Réessayer !', 2000);

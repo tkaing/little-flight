@@ -57,19 +57,24 @@ const on = {
                     RNFFmpeg.cancelExecution(liveExecId);
                     setLiveExecId(null);
                 }
-                await ffmpeg.launchRecording(
-                    { toast }, { setRecordingExecId }
-                );
-                setLoadingRecordingBtn(false);
+                RNFFmpeg.cancel();
+                setTimeout(async function () {
+                    await ffmpeg.launchRecording(
+                        { toast }, { setRecordingExecId }
+                    );
+                    setLoadingRecordingBtn(false);
+                }, 1000);
             } else {
                 RNFFmpeg.cancelExecution(recordingExecId);
                 setRecordingExecId(null);
+                RNFFmpeg.cancel();
                 app_service.toast(toast, 'success', 'Votre vidéo a bien été enregistrée', 2000);
-                await ffmpeg.launchLive({ toast }, {
-                    liveExecId,
-                    setNewFrame,
-                    setLiveExecId
-                });
+                setTimeout(async function () {
+                    await ffmpeg.launchLive({ toast }, {
+                        setNewFrame,
+                        setLiveExecId
+                    });
+                }, 1000);
             }
         },
         screenshotTap: async ({ toast }, {
@@ -77,7 +82,7 @@ const on = {
         }) => {
             setLoadingScreenshotBtn(true);
             try {
-                await ffmpeg.copyFrameFromLiveToImage({ toast });
+                await ffmpeg.copyFrameFromLiveToImage({toast});
             } catch (reason) {
                 console.log("=== SCREENSHOT FAILED ===", reason);
                 app_service.toast(toast, 'danger', 'Oups! Impossible prendre un screenshot. Veuillez réessayer', 2000);

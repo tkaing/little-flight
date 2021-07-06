@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
 import { Image, Row, Text } from "native-base"
-import { lockAsync, OrientationLock } from "expo-screen-orientation"
 import { translate } from "../locale/local"
 
 import TelloClass from "./../App/class/TelloClass"

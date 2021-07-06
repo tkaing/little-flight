@@ -68,8 +68,8 @@ const FpvScreen = (
 
     // === FFMPEG Execution Id ===
 
-    const [liveExecId, setLiveExecId] = useState();
-    const [recordingExecId, setRecordingExecId] = useState();
+    const [liveExecId, setLiveExecId] = useState(null);
+    const [recordingExecId, setRecordingExecId] = useState(null);
 
     useEffect(() => {
         (async () => {
@@ -118,14 +118,13 @@ const FpvScreen = (
 
                 <Box flex={2}>
                     <Stream
-                        droneSocket={ droneSocket }
                         state={{
                             openVR,
                             newFrame,
                             setOpenVR,
-                            liveExecId,
                             setNewFrame,
-                            setLiveExecId
+                            setLiveExecId,
+                            recordingExecId
                         }}
                         />
                 </Box>

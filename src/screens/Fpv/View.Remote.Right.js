@@ -51,18 +51,18 @@ const RemoteRight = (
                     />
                 <IconButton
                     { ...app_common.IconButton.forRemote }
-                    icon={ !loadingScreenshotBtn ? <Icon { ...app_common.Icon.forRemote } name="camera-outline" /> : null }
+                    icon={ !loadingScreenshotBtn ? <Icon { ...app_common.Icon.forRemote } name="camera" /> : null }
                     onPress={ () => on.fpv.screenshotTap(
                         { toast }, {
-                            loadingScreenshotBtn, setLoadingScreenshotBtn
+                            setLoadingScreenshotBtn
                         }
                     )}
                     isLoading={ loadingScreenshotBtn }
-                    isDisabled={ loadingScreenshotBtn }
+                    isDisabled={ loadingScreenshotBtn || recordingExecId !== null }
                     />
                 <IconButton
                     { ...app_common.IconButton.forRemote }
-                    icon={ <Icon { ...app_common.Icon.forRemote } name="bug-outline" /> }
+                    icon={ <Icon { ...app_common.Icon.forRemote } name="bug" /> }
                     onPress={ () => setShowModal(true) }
                     />
             </Row>
