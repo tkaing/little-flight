@@ -113,7 +113,7 @@ const Stream = (
                                    style={[ styles.frameImage ]}
                                    large
                                    alt="Stream"
-                                   key={ _it.number + index } />
+                                   key={ _it.number } />
                         )}
                     </Box>
 
@@ -131,7 +131,7 @@ const Stream = (
                                        style={[ styles.frameImage ]}
                                        large
                                        alt="Stream"
-                                       key={ _it.number + index } />
+                                       key={ _it.number } />
                             )}
                         </Box>
                     }

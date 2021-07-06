@@ -39,9 +39,9 @@ const ffmpeg = {
             (statistics) => {
                 try {
                     const now = Date.now();
-                    console.log(TelloClass.liveId);
+                    const random = Math.random().toString(36).substring(7);
                     if (TelloClass.liveId)
-                        setNewFrame({ uri: LiveConst.OUTPUT(TelloClass.liveId) + `?${ now }`, number: now });
+                        setNewFrame({ uri: LiveConst.OUTPUT(TelloClass.liveId) + `?${ now }`, number: now + random });
                 } catch (failure) {
                     console.log('=== FRAME FAILED ===', failure);
                 }
