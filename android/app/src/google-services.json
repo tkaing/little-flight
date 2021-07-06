@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "986795075193",
+    "project_id": "pc-api-6779777390059855421-487",
+    "storage_bucket": "pc-api-6779777390059855421-487.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:986795075193:android:88e40cefbe8aa5765b96a8",
+        "android_client_info": {
+          "package_name": "com.tiryboy.littleflight"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "986795075193-adpe65o34uoan9bmc1m1t908aqcla8mm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB0DRpu-Zkl2UbYOv-OVgLqsZMBn9sZiQ4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "986795075193-adpe65o34uoan9bmc1m1t908aqcla8mm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
