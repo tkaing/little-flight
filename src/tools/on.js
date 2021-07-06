@@ -538,25 +538,19 @@ const on = {
         footerTabChange: ({ index }, { setTabIndex }) => setTabIndex(index)
     },
     profile: {
-        sendGift: async ( { toast }, {
+        sendGift: async ( { toast, friendId}, {
             amount
         }) => {
             try {
                 const _response = await axios.post(
                     api_node_js.DronyCall.send_to_friend(), {
                         amount: amount,
-                        createdAt: createdAt,
-                        description: description,
                     }, await api_node_js.Config()
                 );
 
                 const _data = _response.data;
-
                 console.log('=== SEND GIFT ===', JSON.stringify(_data));
-
-                app_service.toast(toast, 'success', `Okay, you just send ${amount} to  !`);
-
-
+                app_service.toast(toast, 'success', `Okay, you just send ${amount} to friend!`);
             } catch (failure) {
                 console.log('=== SEND BUG REPORT ===', failure);
                 app_service.toast(toast, 'danger', `Ooops, an eror has been declared !`);
