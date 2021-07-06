@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { Box, Icon, IconButton, Row, useToast } from 'native-base'
+import { Platform } from 'react-native'
 
 import { SearchBar as RNSearchBar } from 'react-native-elements'
 
@@ -35,10 +36,16 @@ const SearchBar = (
                     />
             </Box>
 
-            <Box justifyContent="center" alignItems="center">
+            <Box justifyContent="center" alignItems="center" {...Platform.OS === 'ios' ? {height: 65, width: 65 } : {}}>
                 <IconButton { ...app_common.IconButton.default }
                             bg={ Color.blue }
-                            icon={ loadingBtn ? undefined : <Icon { ...app_common.Icon.default } name="person-add" size={6} /> }
+                            icon={ loadingBtn ? undefined : <Icon { ...app_common.Icon.default } name="person-add" size={6} 
+                                                                    {...(Platform.OS === 'ios' ? 
+                                                                    { 
+                                                                        mt:'9',
+                                                                        ml:'2'
+                                                                    } : {})}
+                                                            /> }
                             padding={5}
                             marginLeft={2}
                             alignSelf="center"

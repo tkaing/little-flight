@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 
-import { ScrollView } from "react-native"
+import { ScrollView, Platform } from "react-native"
 import { Avatar, Box, Button, Column, Icon, IconButton, Row, Text, useToast } from "native-base";
 
 import SearchBar from "../../../components/SearchBar";
@@ -72,9 +72,17 @@ const Profile = (
                 <Column mt={10}>
                     <IconButton
                         { ...app_common.IconButton.forProfile }
+                        style={{ height: 40, width: 40 }}
                         mr={140}
                         bg="#41444B"
-                        icon={ <Icon { ...app_common.Icon.default } name="share-social" size="sm" /> }
+                        //icon={ <Icon { ...app_common.Icon.default } name="share-social" size="sm"  /> }
+                        icon={ <Icon { ...app_common.Icon.default } name="share-social" size="sm"  
+                                        {...(Platform.OS === 'ios' ? 
+                                            { 
+                                                mt:'6',
+                                                ml:'2'
+                                            } : {})}
+                                /> }
                         onPress={ () => on.home.profile.share() }
                         alignSelf="center"
                         />
@@ -85,9 +93,16 @@ const Profile = (
                         />
                     <IconButton
                         { ...app_common.IconButton.forProfile }
+                        style={{ height: 70, width: 70 }}
                         ml={140}
                         bg="#41444B"
-                        icon={ <Icon { ...app_common.Icon.default } name="ios-add" size="xl" /> }
+                        icon={ <Icon { ...app_common.Icon.default } name="ios-add" size="xl"
+                                        {...(Platform.OS === 'ios' ? 
+                                            { 
+                                                mt:'6',
+                                                ml:'3'
+                                            } : {})}
+                        /> }
                         alignSelf="center"
                         />
                 </Column>
