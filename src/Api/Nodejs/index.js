@@ -19,5 +19,6 @@ export {
     PersonCall,
     FriendCall,
     ReportCall,
-    SessionCall
+    SessionCall, 
+    DronyCall
 };
