@@ -17,6 +17,8 @@ const droneSocket = dgram.createSocket({ type: 'udp4', debug: true });
 
 droneSocket.bind(8001);
 
+droneSocket.on('error', (error) => console.log("UDP socket error", error));
+
 droneSocket.on('close', message => {
     console.log('=== DRONE.CLOSE ===', message.toString());
 });
