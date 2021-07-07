@@ -1,5 +1,4 @@
 {
-    //
     "LOGIN": "Login",
     "LOGIN_GOOGLE": "Log in with Google",
     "ACCOUNT_ALREADY": "Already have an account ?",
@@ -30,6 +29,12 @@
     "FRIEND_LIST": "My friends list",
     "FRIEND_REQUEST": "Friend requests",
     "CLOSE": "Close",
+    //toast 
+    "TOAST_UNABLE": "Unable to connect to Api.",
+    "TOAST_SESSION": "Session expired. Please try to sign in again.",
+    "TOAST_BUGREPORT": "Okay, thank you we will look at this issue !",
+    "TOAST_FAILREPORT": "Ooops, an eror has been declared !",
+    "TOAST_VIDEO": "Votre vidéo a bien été enregistrée",
     //Not define
     "NOT_DEFINE": "No trad for this"
 }

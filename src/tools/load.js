@@ -8,6 +8,7 @@ import * as api_secure_store from "../Api/SecureStore";
 import * as app_service from "../App/Service";
 
 import { redirect_to } from './../tools'
+import { translate } from "../locale/local"
 
 export default {
     app: {},
@@ -148,8 +149,8 @@ export default {
                         toast,
                         'danger',
                         failure.code === 'ECONNABORTED'
-                            ? `Unable to connect to Api.`
-                            : `Session expired. Please try to sign in again.`
+                            ? translate("TOAST_UNABLE")
+                            : translate("TOAST_SESSION")
                     );
 
                     await SecureStore.deleteItemAsync(api_secure_store.TOKEN);
