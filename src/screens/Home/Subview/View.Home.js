@@ -32,6 +32,14 @@ const Home = (
         })();
     }, []);
 
+    useEffect(() => {
+        return navigation.addListener(
+            'focus', async () => {
+                setHasVR(await SecureStore.getItemAsync(api_secure_store.HAS_VR) !== null);
+            }
+        );
+    }, []);
+
     return (
         <Box flex={1}>
 
@@ -65,13 +73,14 @@ const Home = (
                         variant="green"
                         onPress={ async () =>  on.home.home.buyVR({ toast, navigation }, {
                             appUser,
+                            setHasVR,
                             setAppUser,
                             setLoadingGranted
                         }) }
                         startIcon={ <Icon { ...app_common.Icon.forButton } name='videocam' /> }
                         marginTop={8}
                         isDisabled={ loadingGranted }>
-                        <Text>Unlock VR mode</Text>
+                        <Text>{translate("UNLOCK_VR")}</Text>
                     </Button>
                 }
             </Column>

@@ -312,6 +312,7 @@ const on = {
         home: {
             buyVR: async ({ toast, navigation }, {
                 appUser,
+                setHasVR,
                 setAppUser,
                 setLoadingGranted,
             }) => {
@@ -343,6 +344,8 @@ const on = {
                         }
 
                         await SecureStore.setItemAsync(api_secure_store.HAS_VR, "HAS_VR");
+
+                        setHasVR(true);
 
                         app_service.toast(toast, 'success', `Okay, you can use the VR mode !`);
 

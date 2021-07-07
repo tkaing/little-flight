@@ -44,10 +44,11 @@ const Footer = (
                 <Text style={[ styles._text ]}
                       children={ text } />
                 <Link { ...app_common.Link._text }
-                      _text={{ color: Color.blue }}
+                      _text={{ color: Color.blue, fontWeight: "bold" }}
                       style={[ styles._link ]}
                       onPress={ onLinkPress }
-                      children={ link } />
+                      children={ link }
+                        />
             </Center>
 
         </Column>

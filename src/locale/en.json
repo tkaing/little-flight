@@ -20,6 +20,7 @@
     "FRIENDS_LIST": "Friends list",
     //Home.js
     "HOME": "Home",
+    "UNLOCK_VR": "Unlock VR Screen",
     "HISTORY": "History",
     "RECORDING": "Recordings",
     "SETTING": "Settings",
@@ -31,5 +32,5 @@
     "FRIEND_REQUEST": "Friend requests",
     "CLOSE": "Close",
     //Not define
-    "NOT_DEFINE": "No trad for this"
+    "NOT_DEFINE": "No trad for this",
 }

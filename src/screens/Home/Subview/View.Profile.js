@@ -31,6 +31,8 @@ const Profile = (
 
     const [loadingBtn, setLoadingBtn] = useState(false);
     const [loadingListBtn, setLoadingListBtn] = useState(false);
+    const [listOfPhotos, setListOfPhotos] = useState([]);
+    const [listOfVideos, setListOfVideos] = useState([]);
 
     const [listOfFriends, setListOfFriends] = useState({
         requestByMe: {
@@ -67,9 +69,12 @@ const Profile = (
         load.home.profile.listOfFriends(
             { toast, navigation },
             { setAppUser, setListOfFriends }
-        );
+        )
+        on.home.recordings.initFoldersAndMedias({}, {
+            setListOfPhotos, setListOfVideos
+        });
     }, []);
-
+    const tailleMedia = listOfPhotos.length + listOfVideos.length;
     return (
         <Box flex={1}>
 
@@ -123,7 +128,7 @@ const Profile = (
                 {/* === Overview === */}
                 <Row mt={35}>
                     { [{
-                        count: 2,
+                        count: tailleMedia,
                         title: 'Medias'
                     }, {
                         count: listOfFriends.requestByMe.accepted.length
