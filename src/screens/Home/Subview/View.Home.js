@@ -27,7 +27,7 @@ const Home = ({ navigation }) => {
                 <Button
                     mx={ 10 }
                     px={ 10 }
-                    variant="green"
+                    variant="blue"
                     isDisabled={ loadingGranted }
                     onPress={ async () => {
                         setLoadingGranted(true);
@@ -40,6 +40,18 @@ const Home = ({ navigation }) => {
                     }}
                     startIcon={ <Icon { ...app_common.Icon.forButton } name='videocam' /> }>
                     <Text>{translate("FPV_BUTTON")}</Text>
+                </Button>
+            </Center>
+            <Center flex={ 1 }>
+                <Button
+                    mx={ 10 }
+                    px={ 10 }
+                    variant="green"
+                    isDisabled={ loadingGranted }
+                    onPress={   () => {
+                    }}
+                    startIcon={ <Icon { ...app_common.Icon.forButton } name='videocam' /> }>
+                    <Text>Go VR Screen</Text>
                 </Button>
             </Center>
 

@@ -1,6 +1,6 @@
 import React, {useState} from "react"
 
-import { Box, Button, Icon, IconButton, Row, Text } from "native-base"
+import { Box, Button, Icon, IconButton, Row, Text, useToast } from "native-base"
 
 import * as app_common from "../../../../../App/Common"
 
@@ -21,6 +21,10 @@ const Item = (
     const [loadingBtn, setLoadingBtn] = useState(false);
 
     console.log('=== ITEM ===', item.requestTo.username);
+    console.log('=== ITEM ===', pending, item.requestTo.username);
+
+    const toast = useToast();
+
 
     return (
         <Box
@@ -83,6 +87,7 @@ const Item = (
                     <Button.Group flex={2} isAttached>
                         <IconButton
                             mx={1}
+                            onPress= { async () => on.profile.sendGift({toast, friendId: item.requestTo._id, amount: 40 }) }
                             icon={ loadingBtn
                                 ? undefined
                                 : <Icon { ...app_common.Icon.default }

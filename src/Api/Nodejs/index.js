@@ -2,6 +2,7 @@ import PersonCall from './calls/PersonCall';
 import FriendCall from './calls/FriendCall';
 import ReportCall from './calls/ReportCall';
 import SessionCall from './calls/SessionCall';
+import DronyCall from './calls/DronyCall';
 
 import * as SecureStore from "expo-secure-store";
 import * as api_secure_store from "../SecureStore";
@@ -19,5 +20,6 @@ export {
     PersonCall,
     FriendCall,
     ReportCall,
-    SessionCall
+    SessionCall,
+    DronyCall
 };
