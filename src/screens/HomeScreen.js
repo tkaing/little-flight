@@ -32,26 +32,26 @@ const HomeScreen = (
 
     useEffect(() => {
         (async () => {
-            setLoading(true);
-            await lockAsync(OrientationLock.DEFAULT);
-            setLoading(false);
+            //setLoading(true);
+            //await lockAsync(OrientationLock.DEFAULT);
+            //setLoading(false);
         })();
     }, []);
 
     useEffect(() => {
-        if (!appUser)
-            redirect_to.auth(navigation);
+        //if (!appUser)
+            //redirect_to.auth(navigation);
     }, [appUser]);
 
     useEffect(() => {
         return navigation.addListener(
             'focus', async () => {
 
-                setLoading(true);
+                //setLoading(true);
 
-                await lockAsync(OrientationLock.DEFAULT);
+               //await lockAsync(OrientationLock.DEFAULT);
 
-                setLoading(false);
+                /*setLoading(false);
 
                 TelloClass.listOfIntervals.forEach(_it => clearInterval(_it));
 
@@ -66,7 +66,7 @@ const HomeScreen = (
                     TelloClass.recordingExecId = null;
                 }
 
-                RNFFmpeg.cancel();
+                RNFFmpeg.cancel();*/
             }
         );
     }, [navigation]);
