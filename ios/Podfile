@@ -26,6 +26,7 @@ target 'LittleFlight' do
   pod 'RNFS', :path => '../node_modules/react-native-fs'
 
   #pod 'RNThread', :path => '../node_modules/react-native-threads'
+  use_native_modules!
 
   pod 'react-native-udp', :path => '../node_modules/react-native-udp'
 
