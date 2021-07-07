@@ -32,7 +32,7 @@ const AuthScreen = (
             appUser, setAppUser,
             loading, setLoading,
         });
-        lockAsync(OrientationLock.PORTRAIT);
+        //lockAsync(OrientationLock.PORTRAIT);
     }, []);
 
     useEffect(() => {
@@ -41,9 +41,9 @@ const AuthScreen = (
     }, [appUser]);
 
     useEffect(() => {
-        return navigation.addListener('focus', () => {
-            lockAsync(OrientationLock.PORTRAIT);
-        });
+        //return navigation.addListener('focus', () => {
+            //lockAsync(OrientationLock.PORTRAIT);
+        //});
     }, [navigation]);
 
     const signState = {

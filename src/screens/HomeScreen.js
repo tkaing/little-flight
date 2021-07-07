@@ -32,9 +32,9 @@ const HomeScreen = (
 
     useEffect(() => {
         (async () => {
-            setLoading(true);
-            await lockAsync(OrientationLock.DEFAULT);
-            setLoading(false);
+            //setLoading(true);
+            //await lockAsync(OrientationLock.DEFAULT);
+            //setLoading(false);
         })();
     }, []);
 
@@ -47,17 +47,19 @@ const HomeScreen = (
         return navigation.addListener(
             'focus', async () => {
 
-                setLoading(true);
+                console.log("dsdsfdsffs");
 
-                await lockAsync(OrientationLock.DEFAULT);
+                //setLoading(true);
 
-                setLoading(false);
+                //await lockAsync(OrientationLock.DEFAULT);
 
-                TelloClass.listOfIntervals.forEach(_it => clearInterval(_it));
+                //setLoading(false);
 
-                await on.fpv.telloOverviewSave();
+                //TelloClass.listOfIntervals.forEach(_it => clearInterval(_it));
 
-                if (TelloClass.liveExecId) {
+                //await on.fpv.telloOverviewSave();
+
+                /*if (TelloClass.liveExecId) {
                     RNFFmpeg.cancelExecution(TelloClass.liveExecId);
                     TelloClass.liveExecId = null;
                 }
@@ -66,7 +68,7 @@ const HomeScreen = (
                     TelloClass.recordingExecId = null;
                 }
 
-                RNFFmpeg.cancel();
+                RNFFmpeg.cancel();*/
             }
         );
     }, [navigation]);
