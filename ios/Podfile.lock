@@ -7,15 +7,15 @@ PODS:
   - boost-for-react-native (1.63.0)
   - CocoaAsyncSocket (7.6.5)
   - DoubleConversion (1.1.6)
-  - EXAppAuth (10.1.2):
+  - EXAppAuth (10.2.2):
     - AppAuth (~> 1.2)
     - UMCore
-  - EXApplication (3.1.2):
+  - EXApplication (3.2.0):
     - UMCore
-  - EXConstants (10.1.3):
-    - UMConstantsInterface
+  - EXConstants (11.0.1):
+    - ExpoModulesCore
     - UMCore
-  - EXCrypto (9.1.0):
+  - EXCrypto (9.2.0):
     - UMCore
   - EXErrorRecovery (1.4.0):
     - UMCore
@@ -43,13 +43,18 @@ PODS:
     - UMCore
   - EXLocalization (10.2.0):
     - UMCore
-  - EXLocation (10.0.0):
-    - UMCore
-    - UMPermissionsInterface
-    - UMTaskManagerInterface
   - EXPermissions (10.0.0):
     - UMCore
     - UMPermissionsInterface
+  - ExpoModulesCore (0.2.0):
+    - ExpoModulesCore/Core (= 0.2.0)
+    - ExpoModulesCore/Interfaces (= 0.2.0)
+    - UMCore
+  - ExpoModulesCore/Core (0.2.0):
+    - UMCore
+  - ExpoModulesCore/Interfaces (0.2.0):
+    - ExpoModulesCore/Core
+    - UMCore
   - EXRandom (10.0.0):
     - React-Core
   - EXScreenOrientation (2.1.0):
@@ -57,7 +62,7 @@ PODS:
     - UMCore
   - EXSecureStore (9.3.0):
     - UMCore
-  - EXSplashScreen (0.10.2):
+  - EXSplashScreen (0.11.2):
     - React-Core
     - UMCore
   - EXSQLite (8.5.0):
@@ -66,7 +71,10 @@ PODS:
   - EXUpdates (0.4.2):
     - React-Core
     - UMCore
-  - EXWebBrowser (9.1.0):
+  - EXVideoThumbnails (4.4.0):
+    - UMCore
+    - UMFileSystemInterface
+  - EXWebBrowser (9.2.0):
     - UMCore
   - FBLazyVector (0.63.4)
   - FBReactNativeSpec (0.63.4):
@@ -403,14 +411,15 @@ DEPENDENCIES:
   - EXKeepAwake (from `../node_modules/expo-keep-awake/ios`)
   - EXLinearGradient (from `../node_modules/expo-linear-gradient/ios`)
   - EXLocalization (from `../node_modules/expo-localization/ios`)
-  - EXLocation (from `../node_modules/expo-location/ios`)
   - EXPermissions (from `../node_modules/expo-permissions/ios`)
+  - ExpoModulesCore (from `../node_modules/expo-modules-core/ios`)
   - EXRandom (from `../node_modules/expo-random/ios`)
   - EXScreenOrientation (from `../node_modules/expo-screen-orientation/ios`)
   - EXSecureStore (from `../node_modules/expo-secure-store/ios`)
   - EXSplashScreen (from `../node_modules/expo-app-loading/node_modules/expo-splash-screen/ios`)
   - EXSQLite (from `../node_modules/expo-sqlite/ios`)
   - EXUpdates (from `../node_modules/expo-updates/ios`)
+  - EXVideoThumbnails (from `../node_modules/expo-video-thumbnails/ios`)
   - EXWebBrowser (from `../node_modules/expo-web-browser/ios`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - FBReactNativeSpec (from `../node_modules/react-native/Libraries/FBReactNativeSpec`)
@@ -509,10 +518,10 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-linear-gradient/ios"
   EXLocalization:
     :path: "../node_modules/expo-localization/ios"
-  EXLocation:
-    :path: "../node_modules/expo-location/ios"
   EXPermissions:
     :path: "../node_modules/expo-permissions/ios"
+  ExpoModulesCore:
+    :path: "../node_modules/expo-modules-core/ios"
   EXRandom:
     :path: "../node_modules/expo-random/ios"
   EXScreenOrientation:
@@ -525,6 +534,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-sqlite/ios"
   EXUpdates:
     :path: "../node_modules/expo-updates/ios"
+  EXVideoThumbnails:
+    :path: "../node_modules/expo-video-thumbnails/ios"
   EXWebBrowser:
     :path: "../node_modules/expo-web-browser/ios"
   FBLazyVector:
@@ -639,10 +650,10 @@ SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   DoubleConversion: cde416483dac037923206447da6e1454df403714
-  EXAppAuth: aadce7faa2cf26e33e8123eeaacd73fd9655138c
-  EXApplication: 4797b8b37f0b0470f587fdccf6407f44b50d18b5
-  EXConstants: c4dd28acc12039c999612507a5f935556f2c86ce
-  EXCrypto: 9cbeb90f6c60a8ae9f26242fd2db916b21c55700
+  EXAppAuth: 4eceeef2d606a5fd9412dcd8a447885dc625a2e2
+  EXApplication: 9ff2a206009d6e55bca6c20b3f33d07986b51ef3
+  EXConstants: 3babb61f8f4bb7dffe85b8b7d6eaa31d903e4d7e
+  EXCrypto: 46e28f1eb7ec3e2ae5aab652fe1dc4d46bafb386
   EXErrorRecovery: b46af4b91e2b4ec598ab1fa51d2cf088aaf5511f
   EXFacebook: 72bd4ed1d19914318b7e19d4060e14dfe7ca6ba9
   EXFileSystem: 0e4974ab77bff04cda68d2886d070cbe64b93a6b
@@ -652,15 +663,16 @@ SPEC CHECKSUMS:
   EXKeepAwake: 615c5a6fca5c2afedf611bb6f7f2ca323246de94
   EXLinearGradient: c803fbd1aa974be038177b1e45524bc35759fe9c
   EXLocalization: 356f4e16a606cec21a77d6250528fde526152b45
-  EXLocation: d55e2a37f61bcfb4eba9c813b3f4621d896c4c00
   EXPermissions: 17d4846ad1880f6891c74ae58ca1acb43e47ed47
+  ExpoModulesCore: 2734852616127a6c1fc23012197890a6f3763dc7
   EXRandom: d7e0f3dd64810aabd27d59f8ecffee359177e2c3
   EXScreenOrientation: 74ec9be3963b613eb37730d41ef0954e014b08ff
   EXSecureStore: 1b571851e6068b30b8ec097be848a04603c03bae
-  EXSplashScreen: a9baaf4fa866003884c90ba049f18760d6a8ce39
+  EXSplashScreen: 6208ca88470ff5979fd49a08ef3feb01143a2b79
   EXSQLite: bda6a286dded0637bb312ee781239dcca163ff4b
   EXUpdates: 5124c03b19730078482a27b97fcb4718b06ca6b5
-  EXWebBrowser: 0b466c50e5ff61c9758095d49d5081e3229d77ac
+  EXVideoThumbnails: 8ff241784f1d89fdd451bcdb7f733d06361d44a8
+  EXWebBrowser: 76783ba5dcb8699237746ecf41a9643d428a4cc5
   FBLazyVector: 3bb422f41b18121b71783a905c10e58606f7dc3e
   FBReactNativeSpec: f2c97f2529dd79c083355182cc158c9f98f4bd6e
   FBSDKCoreKit: e7dcac0aabcfb09d0166998edd95fe3b05a0ce5d
