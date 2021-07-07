@@ -12,13 +12,13 @@ const Settings = ({ navigation }) => {
             </Box>
             <Box flex={6}>
                 <Text fontWeight="bold" fontSize={20}>A propos</Text>
-                <Text mt={10}>  - Vue FPV pour accèder au commande du drone</Text>
-                <Text mt={3}>  - Controle de drone avec l'application</Text>
-                <Text mt={3}>  - Retour en directe de la caméra du drone</Text>
+                <Text mt={10}>  - Vue FPV (First Person View) pour accèder aux commandes du drone</Text>
+                <Text mt={3}>  - Contrôle du drone avec l'application</Text>
+                <Text mt={3}>  - Retour en direct de la caméra du drone</Text>
                 <Text mt={3}>  - Possibilité d'enregistrer des photos et vidéos en plein vol </Text>
-                <Text mt={3}>  - VR accessible depuis la vue FPV </Text>
-                <Text mt={3}>  - Accèss à un profile personnalisé avec la possibilité d'ajouter des amis et de leurs envoyer des points </Text>
-                <Text mt={3}>  - Partage de photo et vidéo sur les réseaux </Text>
+                <Text mt={3}>  - VR accessible depuis la vue FPV en débloquant la fonctionnalité </Text>
+                <Text mt={3}>  - Accèss à un profil personnalisé avec la possibilité d'ajouter des amis et de leurs envoyer des points (dronies) </Text>
+                <Text mt={3}>  - Partage de photos et vidéos sur les réseaux </Text>
             </Box>
             <Box flex={1}>
                 <Text style={{color:Color.pink}}
@@ -27,7 +27,7 @@ const Settings = ({ navigation }) => {
                     fontSize={30}
                     fontWeight="bold"
                     >
-                    Mentions legal
+                    Mentions légales
                 </Text>
             </Box>
             <Box flex={1}>
