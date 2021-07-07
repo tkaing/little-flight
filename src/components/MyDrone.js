@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-import { Image, Row, Text } from "native-base"
+import {Button, Image, Row, Text} from "native-base"
 import { translate } from "../locale/local"
 
 import TelloClass from "./../App/class/TelloClass"
@@ -13,6 +13,9 @@ const MyDrone = (
     {
         droneSocket,
         state: {
+            hasVR,
+            openVR,
+            setOpenVR,
             connected,
             setConnected
         }
@@ -57,15 +60,28 @@ const MyDrone = (
         <Row
             bg="#37393E"
             width="100%"
-            justifyContent="flex-end"
             paddingY={2}
-            paddingRight={4}>
-            <Text marginTop={1} marginRight={3}> {translate("DRONE_CONNECTION")} </Text>
-            <Image
-                alt="xxx"
-                style={{ width: 30, height: 30 }}
-                source={ connected ? DroneConnectedImg : DroneDisconnectedImg }
+            paddingRight={4}
+            justifyContent="flex-end">
+
+            <Row flex={1}>
+                { hasVR && openVR &&
+                    <Button ml={3}
+                            variant="green"
+                            onPress={ () => setOpenVR(false) }>
+                        <Text fontWeight="bold">FPV</Text>
+                    </Button>
+                }
+            </Row>
+
+            <Row flex={2} justifyContent="flex-end">
+                <Text marginTop={1} marginRight={3}> {translate("DRONE_CONNECTION")} </Text>
+                <Image
+                    alt="xxx"
+                    style={{ width: 30, height: 30 }}
+                    source={ connected ? DroneConnectedImg : DroneDisconnectedImg }
                 />
+            </Row>
 
         </Row>
     );

@@ -2,6 +2,12 @@
 Différentes routes de l'application
 */
 
+import React from "react"
+
+import { HeaderBackButton } from "@react-navigation/stack"
+
+import { redirect_to } from './../tools'
+
 const forFade = ({ current }) => ({
     cardStyle: {
         opacity: current.progress
@@ -10,10 +16,20 @@ const forFade = ({ current }) => ({
 
 const fpv = {
     name: 'fpv',
-    options: {
+    options: ({ navigation }) => ({
         title: 'My FPV Screen',
-        cardStyleInterpolator: forFade
-    }
+        cardStyleInterpolator: forFade,
+        headerLeft: () => (
+            <HeaderBackButton
+                onPress={ () => {
+                    redirect_to.home(navigation);
+                    setTimeout(function () {
+                        alert(`Pensez à vous reconnecter à Internet 😎`);
+                    },100);
+                }}
+            />
+        )
+    }),
 };
 
 const auth = {
@@ -27,7 +43,6 @@ const auth = {
 const home = {
     name: 'home',
     options: {
-        title: 'My Home',
         headerShown: false,
         cardStyleInterpolator: forFade
     }

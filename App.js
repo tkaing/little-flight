@@ -6,7 +6,7 @@ import AppLoading from "expo-app-loading/src/AppLoading";
 
 import { Ionicons } from "@expo/vector-icons";
 import { NativeBaseProvider } from "native-base/src/core/NativeBaseProvider";
-import { createStackNavigator } from '@react-navigation/stack';
+import {createStackNavigator, HeaderBackButton} from '@react-navigation/stack';
 import { NavigationContainer, DarkTheme } from '@react-navigation/native';
 import { useFonts, Roboto_400Regular, Roboto_500Medium } from '@expo-google-fonts/roboto';
 
@@ -21,11 +21,9 @@ import * as api_firebase from "./src/Api/Firebase";
 
 import { useToast } from "native-base";
 
-import { load } from "./src/tools";
-
 const Stack = createStackNavigator();
 
-/*         --------- DOC ----------      
+/*         --------- DOC ----------
 C'est le point d'entrée de l'application
 */
 
@@ -82,13 +80,14 @@ const App = () => {
                     </Stack.Screen>
                     <Stack.Screen
                         name={ app_route.fpv.name }
-                        options={ app_route.fpv.options }>
+                        options={ app_route.fpv.options }
+                    >
                         { props => (
                             <FpvScreen { ...props }
-                                        state={{
-                                            appUser, setAppUser,
-                                            loading, setLoading,
-                                        }} />
+                                       state={{
+                                           appUser, setAppUser,
+                                           loading, setLoading,
+                                       }} />
                         ) }
                     </Stack.Screen>
                     </Stack.Navigator>

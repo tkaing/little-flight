@@ -5,6 +5,7 @@ import { GoogleConnect } from "../../components";
 import { Button, Center, Column, Icon, Link, Text } from "native-base";
 
 import * as app_common from "./../../App/Common";
+import Color from "../../App/Color";
 
 const Footer = (
     {
@@ -43,6 +44,7 @@ const Footer = (
                 <Text style={[ styles._text ]}
                       children={ text } />
                 <Link { ...app_common.Link._text }
+                      _text={{ color: Color.blue }}
                       style={[ styles._link ]}
                       onPress={ onLinkPress }
                       children={ link } />

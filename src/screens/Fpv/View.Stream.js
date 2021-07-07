@@ -84,15 +84,6 @@ const Stream = (
     return (
         <Row flex={1}>
 
-            { openVR &&
-                <Center>
-                    <Button variant="green"
-                            onPress={ () => setOpenVR(false) }>
-                        <Text fontWeight="bold">FPV</Text>
-                    </Button>
-                </Center>
-            }
-
             {/* Stream Preview */}
             { openStream &&
                 <Row flex={1}>

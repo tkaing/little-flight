@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 
-import { ScrollView } from "react-native"
-import { Avatar, Box, Button, Column, Icon, IconButton, Row, Text, useToast } from "native-base";
+import {ScrollView, TouchableOpacity} from "react-native"
+import {Avatar, Box, Button, Center, Column, Icon, IconButton, Row, Text, useToast} from "native-base";
 
 import SearchBar from "../../../components/SearchBar";
 import { translate } from "../../../locale/local";
@@ -9,7 +9,8 @@ import { ModalOverview } from "./Profile";
 
 import * as app_common from "../../../App/Common";
 
-import { on, load } from './../../../tools'
+import {on, load, redirect_to} from './../../../tools'
+import Color from "../../../App/Color";
 
 const Profile = (
     {
@@ -168,6 +169,19 @@ const Profile = (
                         <Text>{translate("FRIENDS_LIST")}</Text>
                     </Button>
                 </Button.Group>
+
+                {/* === Friends === */}
+                <Center mt={12}>
+                    <TouchableOpacity onPress={ () => {
+                        setAppUser(null);
+                        redirect_to.auth(navigation);
+                    }}>
+                        <Row>
+                            <Icon { ...app_common.Icon.default } color={ Color.red } name='log-out' />
+                            <Text ml={2} color={ Color.red } fontWeight="bold" alignSelf="center">Log out</Text>
+                        </Row>
+                    </TouchableOpacity>
+                </Center>
 
             </ScrollView>
 

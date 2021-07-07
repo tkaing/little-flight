@@ -3,12 +3,14 @@ import React, { useEffect, useState } from "react"
 import dgram from "react-native-udp"
 import MyDrone from "../components/MyDrone"
 import TelloClass from "./../App/class/TelloClass"
+import * as SecureStore from "expo-secure-store";
+import * as api_secure_store from "../Api/SecureStore";
 
 import { Stream, Remote } from "./Fpv"
 import { Box, Column, Row, useToast } from "native-base"
 import { lockAsync, OrientationLock } from "expo-screen-orientation"
 
-import { on, drone } from "./../tools"
+import { drone } from "./../tools"
 import { MainLoader } from "../core"
 
 // === Drone Socket ===
@@ -62,6 +64,7 @@ const FpvScreen = (
 
     const toast = useToast();
 
+    const [hasVR, setHasVR] = useState(false);
     const [openVR, setOpenVR] = useState(false);
     const [newFrame, setNewFrame] = useState();
     const [connected, setConnected] = useState(false);
@@ -79,6 +82,8 @@ const FpvScreen = (
 
             await lockAsync(OrientationLock.LANDSCAPE_LEFT);
 
+            setHasVR(await SecureStore.getItemAsync(api_secure_store.HAS_VR) !== null);
+
             setLoading(false);
         })();
     }, []);
@@ -86,12 +91,10 @@ const FpvScreen = (
     useEffect(() => {
         if (liveExecId || recordingExecId) {
             (async () => {
-
                 if (liveExecId)
                     TelloClass.liveExecId = liveExecId;
                 if (recordingExecId)
                     TelloClass.recordingExecId = recordingExecId;
-
                 await drone.streamOnOrOff({droneSocket, onOrOff: 'on'});
             })();
         }
@@ -102,7 +105,7 @@ const FpvScreen = (
 
             <MyDrone
                 droneSocket={ droneSocket }
-                state={{ connected, setConnected }}
+                state={{ hasVR, openVR, setOpenVR, connected, setConnected }}
                 />
 
             <Row flex={1} justifyContent="center">
@@ -111,7 +114,7 @@ const FpvScreen = (
                     <Box flex={1}>
                         <Remote.Left
                             droneSocket={ droneSocket }
-                            state={{ setOpenVR }}
+                            state={{ hasVR, setOpenVR }}
                             />
                     </Box>
                 }

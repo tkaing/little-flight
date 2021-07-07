@@ -12,6 +12,7 @@ const RemoteLeft = (
     {
         droneSocket,
         state: {
+            hasVR,
             setOpenVR
         }
     }
@@ -26,11 +27,13 @@ const RemoteLeft = (
                  alignItems="center"
                  justifyContent="center">
 
-                <Button variant="green"
-                        marginRight= {10}
-                        onPress={ () => setOpenVR(true) }>
-                    <Text fontWeight="bold">VR</Text>
-                </Button>
+                { hasVR &&
+                    <Button variant="green"
+                            marginRight= {10}
+                            onPress={ () => setOpenVR(true) }>
+                        <Text fontWeight="bold">VR</Text>
+                    </Button>
+                }
 
                 <Button variant={ !takeoff ? 'blue': 'red' }
                         onPress={ () => {

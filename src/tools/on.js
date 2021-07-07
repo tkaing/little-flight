@@ -309,6 +309,61 @@ const on = {
         }
     },
     home: {
+        home: {
+            buyVR: async ({ toast, navigation }, {
+                appUser,
+                setAppUser,
+                setLoadingGranted,
+            }) => {
+
+                if (appUser.dronies < 300) {
+
+                    alert(`Vous n'avez pas assez de dronies (300 minimum, actuellement : ${ appUser.dronies }) 🥺`);
+
+                } else {
+
+                    try {
+                        setLoadingGranted(true);
+
+                        const response = await axios.post(
+                            api_node_js.DronyCall.buy(), { amount: 300 }, await api_node_js.Config()
+                        );
+
+                        setLoadingGranted(false);
+
+                        const data = response.data;
+
+                        console.log("=== BUY VR ===", data);
+
+                        if (appUser) {
+                            setAppUser({
+                               ...appUser,
+                               dronies: data.sender.dronies
+                            });
+                        }
+
+                        await SecureStore.setItemAsync(api_secure_store.HAS_VR, "HAS_VR");
+
+                        app_service.toast(toast, 'success', `Okay, you can use the VR mode !`);
+
+                    } catch (failure) {
+
+                        setLoadingGranted(false);
+
+                        const response = failure.response;
+
+                        const data = response.data;
+
+                        switch (data) {
+                            case 'Invalid token.':
+                                setAppUser(null);
+                                redirect_to.auth(navigation);
+                                break;
+                        }
+                    }
+                }
+            },
+        },
         profile: {
             share: async () => {
                 try {
@@ -538,7 +593,12 @@ const on = {
         footerTabChange: ({ index }, { setTabIndex }) => setTabIndex(index)
     },
     profile: {
-        sendGift: async ({ toast, friend, amount }, { setDronies, setLoadingBtn }) => {
+        sendGift: async ({ toast, friend, amount }, {
+            appUser,
+            setAppUser,
+            setDronies,
+            setLoadingBtn
+        }) => {
             try {
                 setLoadingBtn(true);
                 const response = await axios.post(
@@ -546,6 +606,11 @@ const on = {
                 );
                 const data = response.data;
                 const dronies = data.sender.dronies;
+                if (appUser) {
+                    setAppUser({
+                        ...appUser, dronies: dronies
+                    });
+                }
                 setDronies(dronies);
                 app_service.toast(toast, 'success', `Good transaction! +${ amount } to ${friend.username} and +25 for you!`);
             } catch (failure) {

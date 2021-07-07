@@ -89,6 +89,8 @@ const Item = (
                             mx={1}
                             onPress= { async () => on.profile.sendGift(
                                 { toast, friend, amount: 40 }, {
+                                    appUser,
+                                    setAppUser,
                                     setDronies,
                                     setLoadingBtn
                                 }
