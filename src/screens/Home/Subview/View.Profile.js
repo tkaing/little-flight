@@ -101,13 +101,6 @@ const Profile = (
                         source={ require("./../../../../assets/ken.jpeg") }
                         alignSelf="center"
                         />
-                    <IconButton
-                        { ...app_common.IconButton.forProfile }
-                        ml={140}
-                        bg="#41444B"
-                        icon={ <Icon { ...app_common.Icon.default } name="ios-add" size="xl" /> }
-                        alignSelf="center"
-                        />
                 </Column>
 
                 {/* === Username === */}

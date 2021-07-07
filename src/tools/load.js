@@ -33,10 +33,8 @@ export default {
 
                     if (_response) {
                         const _data = _response.data;
-                        console.log(_data);
                         switch (_data) {
                             case 'Invalid token.':
-                                setAppUser(null);
                                 redirect_to.auth(navigation);
                                 break;
                         }

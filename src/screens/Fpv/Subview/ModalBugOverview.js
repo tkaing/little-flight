@@ -18,7 +18,7 @@ const ModalBugOverview = (
     return (
     <DialogInput isDialogVisible={showModal}
                 title={"Bug Alert"}
-                message={"Please, describe your issue"}
+                message={"Please, connect to internet and describe your issue"}
                 hintInput={"Report / Bug"}
                 submitInput={ inputText => {
                     console.log("=== INPUT TEXT ===", inputText);
