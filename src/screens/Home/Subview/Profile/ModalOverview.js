@@ -12,11 +12,13 @@ const ModalOverview = (
         state: {
             pending,
             showModal,
+            setDronies,
             setShowModal,
             listOfFriends,
             setListOfFriends,
             appUser, setAppUser
         },
+        toast,
         navigation
     }
 ) => {
@@ -38,9 +40,11 @@ const ModalOverview = (
                                 .concat(listOfFriends.requestByMe.pending)
                         }
                         renderItem={ ({ item }) => (
-                            <Item item={ item } state={{
+                            <Item item={ item } toast={ toast } state={{
                                 pending,
+                                appUser,
                                 setAppUser,
+                                setDronies,
                                 setListOfFriends
                             }} navigation={ navigation } />
                         ) }

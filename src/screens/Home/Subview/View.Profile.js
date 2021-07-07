@@ -23,11 +23,14 @@ const Profile = (
 
     const toast = useToast();
 
+    const [dronies, setDronies] = useState();
     const [pending, setPending] = useState(false);
     const [username, setUsername] = useState();
     const [showModal, setShowModal] = useState(false);
+
     const [loadingBtn, setLoadingBtn] = useState(false);
     const [loadingListBtn, setLoadingListBtn] = useState(false);
+
     const [listOfFriends, setListOfFriends] = useState({
         requestByMe: {
             pending: [],
@@ -57,6 +60,9 @@ const Profile = (
     };
 
     useEffect(() => {
+        if (appUser) {
+            setDronies(appUser.dronies);
+        }
         load.home.profile.listOfFriends(
             { toast, navigation },
             { setAppUser, setListOfFriends }
@@ -130,7 +136,7 @@ const Profile = (
                             + listOfFriends.requestByOthers.accepted.length,
                         title: 'Droners'
                     }, {
-                        count: 300,
+                        count: dronies,
                         title: 'Drone Points'
                     }].map((_it, _index) =>
                         <Column flex={1}
@@ -172,14 +178,18 @@ const Profile = (
 
             </ScrollView>
 
-            <ModalOverview state={{
-                pending,
-                showModal,
-                setShowModal,
-                listOfFriends,
-                setListOfFriends,
-                appUser, setAppUser,
-            }} />
+            <ModalOverview
+                toast={ toast }
+                state={{
+                    pending,
+                    showModal,
+                    setDronies,
+                    setShowModal,
+                    listOfFriends,
+                    setListOfFriends,
+                    appUser, setAppUser,
+                }}
+                />
 
         </Box>
     );

@@ -9,9 +9,12 @@ import { on } from './../../../../../tools'
 const Item = (
     {
         item,
+        toast,
         state: {
             pending,
+            appUser,
             setAppUser,
+            setDronies,
             setListOfFriends
         },
         navigation
@@ -20,11 +23,9 @@ const Item = (
 
     const [loadingBtn, setLoadingBtn] = useState(false);
 
-    console.log('=== ITEM ===', item.requestTo.username);
-    console.log('=== ITEM ===', pending, item.requestTo.username);
+    //console.log('=== ITEM ===', pending, appUser, item.requestTo, item.requestBy);
 
-    const toast = useToast();
-
+    const friend = appUser.username === item.requestTo.username ? item.requestBy : item.requestTo;
 
     return (
         <Box
@@ -36,8 +37,7 @@ const Item = (
             <Row alignItems="center" justifyContent="center">
 
                 <Text flex={2} textAlign="center" fontWeight="bold" textTransform="capitalize" variant="modal">
-                    { item.requestBy.username && item.requestBy.username }
-                    { item.requestTo.username && item.requestTo.username }
+                    { friend.username }
                 </Text>
 
                 { pending &&
@@ -87,12 +87,17 @@ const Item = (
                     <Button.Group flex={2} isAttached>
                         <IconButton
                             mx={1}
-                            onPress= { async () => on.profile.sendGift({toast, friendId: item.requestTo._id, amount: 40 }) }
+                            onPress= { async () => on.profile.sendGift(
+                                { toast, friend, amount: 40 }, {
+                                    setDronies,
+                                    setLoadingBtn
+                                }
+                            ) }
                             icon={ loadingBtn
                                 ? undefined
                                 : <Icon { ...app_common.Icon.default }
-                                        name={ item.isAccepted ? 'share-social' : 'ellipsis-horizontal' } 
-                                        size={4} 
+                                        name={ item.isAccepted ? 'gift' : 'ellipsis-horizontal' }
+                                        size={4}
                                     />
                             }
                             padding={3}

@@ -130,15 +130,13 @@ export default {
                         api_node_js.PersonCall.find_by_token(), await api_node_js.Config()
                     );
 
-                    console.log("=== TOKEN ===");
-
                     setLoading(false);
 
-                    const { email, username } = data;
+                    const { email, username, dronies } = data;
 
-                    console.log(data);
+                    console.log("=== TOKEN ===", data);
 
-                    setAppUser({ email, username });
+                    setAppUser({ email, username, dronies });
 
                 } catch (failure) {
 
